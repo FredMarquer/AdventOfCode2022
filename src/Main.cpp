@@ -5,6 +5,7 @@
 
 #include "Day.h"
 #include "Days.h"
+#include "ScopeProfiler.h"
 
 void parseCommandLineArguments(int argc, char* argv[], int& outDay, int& outPart)
 {
@@ -67,23 +68,32 @@ void runDay(int dayNumber, int part)
         return;
     }
 
-    // Process the file
-    if (day->parseFile(file)) {
-        bool runPart1 = part == 0 || part == 1;
-        bool runPart2 = part == 0 || part == 2;
-
-        if (runPart1) {
-            Result result = day->runPart1();
-            std::cout << "part 1 : " << result << std::endl;
-        }
-
-        if (runPart2) {
-            Result result = day->runPart2();
-            std::cout << "part 2 : " << result << std::endl;
+    // Parse the input file
+    {
+        ScopeProfiler scopeProfiler("file parsing");
+        if (!day->parseFile(file)) {
+            std::cout << "fail to parse the input file '" << input << "'" << std::endl;
+            std::cout << "----------" << std::endl;
+            file.close();
+            return;
         }
     }
-    else {
-        std::cout << "fail to parse the input file '" << input << "'" << std::endl;
+
+    bool runPart1 = part == 0 || part == 1;
+    bool runPart2 = part == 0 || part == 2;
+
+    // Run part 1 if requested
+    if (runPart1) {
+        ScopeProfiler scopeProfiler("part 1");
+        Result result = day->runPart1();
+        std::cout << "part 1 result : " << result << std::endl;
+    }
+
+    // Run part 2 if requested
+    if (runPart2) {
+        ScopeProfiler scopeProfiler("part 2");
+        Result result = day->runPart2();
+        std::cout << "part 2 result : " << result << std::endl;
     }
 
     file.close();
