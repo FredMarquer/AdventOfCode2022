@@ -7,7 +7,7 @@
 #include "Days.h"
 #include "ScopeProfiler.h"
 
-void parseCommandLineArguments(int argc, char* argv[], int& outDay, int& outPart)
+bool parseCommandLineArguments(int argc, char* argv[], int& outDay, int& outPart)
 {
     for (int i = 1; i < argc; ++i) {
         std::string arg(argv[i]);
@@ -16,12 +16,12 @@ void parseCommandLineArguments(int argc, char* argv[], int& outDay, int& outPart
                 outDay = std::stoi(argv[++i]);
                 if (outDay < 0 || outDay > DayCount) {
                     std::cout << "invalid day argument '" << argv[i] << "'" << std::endl;
-                    return;
+                    return false;
                 }
             }
             else {
                 std::cout << "--day option requires one argument" << std::endl;
-                return;
+                return false;
             }
         }
         else if (arg == "--part") {
@@ -29,18 +29,21 @@ void parseCommandLineArguments(int argc, char* argv[], int& outDay, int& outPart
                 outPart = std::stoi(argv[++i]);
                 if (outPart < 0 || outPart > 2) {
                     std::cout << "invalid part argument '" << argv[i] << "'" << std::endl;
-                    return;
+                    return false;
                 }
             }
             else {
                 std::cout << "--part option requires one argument" << std::endl;
-                return;
+                return false;
             }
         }
         else {
             std::cout << "invalid option: " << arg << std::endl;
+            return false;
         }
     }
+
+    return true;
 }
 
 void runDay(int dayNumber, int part)
@@ -111,7 +114,10 @@ int main(int argc, char* argv[])
 {
     int day = 0;
     int part = 0;
-    parseCommandLineArguments(argc, argv, day, part);
+    if (!parseCommandLineArguments(argc, argv, day, part)) {
+        std::cout << "fail to parse command line arguments" << std::endl;
+        return 1;
+    }
 
     if (day == 0) {
         runAllDays(part);
