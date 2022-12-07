@@ -15,17 +15,10 @@ public:
 	int min;
 	int max;
 
-	Range(int min, int max) : min(min), max(max) {
-		assert(min <= max);
-	}
+	Range(int min, int max) : min(min), max(max) { assert(min <= max); }
 
-	bool contains(const Range& other) const {
-		return other.min >= min && other.max <= max;
-	}
-
-	bool overlap(const Range& other) const {
-		return other.min <= max && other.max >= min;
-	}
+	bool contains(const Range& other) const { return other.min >= min && other.max <= max; }
+	bool overlap(const Range& other) const { return other.min <= max && other.max >= min; }
 };
 
 class Day04 : public Day

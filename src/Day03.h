@@ -7,9 +7,17 @@
 #include "Day.h"
 #include "Result.h"
 
-struct Rucksack {
+struct Rucksack
+{
+public:
 	std::string firstCompartment;
 	std::string secondCompartment;
+
+	Rucksack() {}
+	Rucksack(Rucksack&& other) noexcept
+		: firstCompartment(std::move(other.firstCompartment))
+		, secondCompartment(std::move(other.secondCompartment))
+	{}
 };
 
 class Day03 : public Day

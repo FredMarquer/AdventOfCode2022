@@ -32,3 +32,4 @@ std::unique_ptr<Day> createDay(int dayNumber)
 
 	return std::unique_ptr<Day>(dayPtr);
 }
+

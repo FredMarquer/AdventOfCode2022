@@ -25,22 +25,19 @@ void applyInstructionCrateMover9001(const Instruction& instruction, std::vector<
     std::vector<char>& fromStack = stacks[instruction.fromStackIndex];
     std::vector<char>& toStack = stacks[instruction.toStackIndex];
 
-    int fromStackSize = fromStack.size();
-    for (int boxIndex = fromStackSize - instruction.numberOfBoxes; boxIndex < fromStackSize; ++boxIndex) {
+    size_t fromStackSize = fromStack.size();
+    for (size_t boxIndex = fromStackSize - instruction.numberOfBoxes; boxIndex < fromStackSize; ++boxIndex)
         toStack.push_back(fromStack[boxIndex]);
-    }
 
-    for (int i = 0; i < instruction.numberOfBoxes; ++i) {
+    for (int i = 0; i < instruction.numberOfBoxes; ++i)
         fromStack.pop_back();
-    }
 }
 
 std::string result(const std::vector<std::vector<char>>& stacks)
 {
     std::string result;
-    for (const auto& stack : stacks) {
+    for (const auto& stack : stacks)
         result.push_back(stack.back());
-    }
 
     return result;
 }
@@ -52,18 +49,22 @@ bool Day05::parseFile(std::ifstream& file)
     // Parse the box stacks
     std::string line;
     while (std::getline(file, line)) {
-        if (line[1] == '1') {
+        if (line[1] == '1')
             break;
-        }
-        for (int i = 0; i < 9; ++i) {
-            int pos = i * 4 + 1;
+        
+        for (size_t i = 0; i < 9; ++i) {
+            size_t pos = i * 4 + 1;
             char box = line[pos];
             if (box != ' ') {
                 std::vector<char>& stack = stacks[i];
-                stack.insert(stack.begin(), box);
+                stack.push_back(box);
             }
         }
     }
+
+    // Reverse the box stacks
+    for (size_t i = 0; i < 9; ++i)
+        std::reverse(stacks[i].begin(), stacks[i].end());
 
     // Skip the blank line
     std::getline(file, line);
@@ -94,9 +95,8 @@ Result Day05::runPart1() const
     std::vector workingStacks = stacks;
 
     // Process the instructions
-    for (const Instruction& instruction : instructions) {
+    for (const Instruction& instruction : instructions)
         applyInstructionCrateMover9000(instruction, workingStacks);
-    }
 
     return result(workingStacks);
 }
@@ -107,9 +107,8 @@ Result Day05::runPart2() const
     std::vector workingStacks = stacks;
 
     // Process the instructions
-    for (const Instruction& instruction : instructions) {
+    for (const Instruction& instruction : instructions)
         applyInstructionCrateMover9001(instruction, workingStacks);
-    }
 
     return result(workingStacks);
 }

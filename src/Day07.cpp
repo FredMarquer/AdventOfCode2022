@@ -58,8 +58,7 @@ bool Day07::parseFile(std::ifstream& file)
     // Build the file system tree
     std::vector<Directory*> currentPath;
     std::string line;
-    while (std::getline(file, line))
-    {
+    while (std::getline(file, line)) {
         std::string_view lineView(line);
 
         if (line[0] == '$') {

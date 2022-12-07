@@ -4,7 +4,6 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <string>
 
 int getLetterIndex(char letter)
 {
@@ -31,9 +30,8 @@ public:
         ++letterCounts[letterIndex];
 
         // Update the unique letter count if necessary
-        if (letterCounts[letterIndex] == 1) {
+        if (letterCounts[letterIndex] == 1)
             ++uniqueLetterCount;
-        }
         else if (letterCounts[letterIndex] == 2) {
             --uniqueLetterCount;
             assert(uniqueLetterCount >= 0);
@@ -52,9 +50,8 @@ public:
             --uniqueLetterCount;
             assert(uniqueLetterCount >= 0);
         }
-        else if (letterCounts[letterIndex] == 1) {
+        else if (letterCounts[letterIndex] == 1)
             ++uniqueLetterCount;
-        }
     }
 
     bool isMarker()
@@ -69,18 +66,16 @@ int findMarker(const std::string& signal)
     LetterTracker<N> letterTracker = LetterTracker<N>();
 
     // Add the first N-1 letters to the tracker
-    for (int i = 0; i < N-1; ++i) {
+    for (size_t i = 0; i < N-1; ++i)
         letterTracker.addLetter(signal[i]);
-    }
 
     // Process the remaining letters
-    int size = signal.size();
-    for (int i = N-1; i < size; ++i) {
+    size_t size = signal.size();
+    for (size_t i = N-1; i < size; ++i) {
         letterTracker.addLetter(signal[i]);
 
-        if (letterTracker.isMarker()) {
+        if (letterTracker.isMarker())
             return i + 1;
-        }
 
         letterTracker.removeLetter(signal[i - (N-1)]);
     }
@@ -92,7 +87,7 @@ int findMarker(const std::string& signal)
 bool Day06::parseFile(std::ifstream& file)
 {
     std::getline(file, signal);
-    return true;
+    return !signal.empty();
 }
 
 Result Day06::runPart1() const

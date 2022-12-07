@@ -52,9 +52,8 @@ Result Day04::runPart2() const
     // Count the number of overlapping pairs
     int overlapCount = 0;
     for (const auto& pair : pairs) {
-        if (pair.first.overlap(pair.second)) {
+        if (pair.first.overlap(pair.second))
             ++overlapCount;
-        }
     }
 
     return overlapCount;

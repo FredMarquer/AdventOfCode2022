@@ -18,3 +18,4 @@ public:
 	Result runPart1() const override;
 	Result runPart2() const override;
 };
+

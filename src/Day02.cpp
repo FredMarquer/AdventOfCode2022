@@ -54,16 +54,13 @@ bool Day02::parseFile(std::ifstream& file)
     while (std::getline(file, line)) {
         if (line.size() >= 3) {
             int first, second;
-            if (parseLetter(line[0], first) && parseLetter(line[2], second)) {
+            if (parseLetter(line[0], first) && parseLetter(line[2], second))
                 strategyGuide.push_back(std::pair(first, second));
-            }
-            else {
+            else
                 return false;
-            }
         }
-        else {
+        else
             std::cout << "invalid line '" << line << "'" << std::endl;
-        }
     }
 
     return true;
@@ -73,9 +70,8 @@ Result Day02::runPart1() const
 {
     // Sum the score of all pairs
     int score = 0;
-    for (std::pair pair : strategyGuide) {
+    for (std::pair pair : strategyGuide)
         score += computePairScorePart1(pair);
-    }
 
     return score;
 }
@@ -84,9 +80,8 @@ Result Day02::runPart2() const
 {
     // Sum the score of all pairs, using the new scoring rule
     int score = 0;
-    for (std::pair pair : strategyGuide) {
+    for (std::pair pair : strategyGuide)
         score += computePairScorePart2(pair);
-    }
 
     return score;
 }

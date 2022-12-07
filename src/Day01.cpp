@@ -16,9 +16,8 @@ bool Day01::parseFile(std::ifstream& file)
             caloriesPerElves.push_back(calories);
             calories = 0;
         }
-        else {
+        else
             calories += std::stoi(line);
-        }
     }
 
     return true;

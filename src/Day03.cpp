@@ -11,12 +11,10 @@
 
 int itemToPriority(char letter)
 {
-    if (letter >= 'a' && letter <= 'z') {
+    if (letter >= 'a' && letter <= 'z')
         return letter - 'a' + 1;
-    }
-    else if (letter >= 'A' && letter <= 'Z') {
+    else if (letter >= 'A' && letter <= 'Z')
         return letter - 'A' + 27;
-    }
     else {
         std::cout << "invalid item: " << letter << std::endl;
         return 0;
@@ -39,9 +37,8 @@ char findSharedItem(const Rucksack& rucksack)
 
     for (char item : rucksack.secondCompartment) {
         int itemPriority = itemToPriority(item);
-        if ((bitField & ((int64_t)1 << itemPriority)) != 0) {
+        if ((bitField & ((int64_t)1 << itemPriority)) != 0)
             return item;
-        }
     }
 
     std::cout << "shared item not found" << std::endl;
@@ -87,7 +84,7 @@ bool Day03::parseFile(std::ifstream& file)
         rucksack.firstCompartment = std::string(line.begin(), line.begin() + compartmentSize);
         rucksack.secondCompartment = std::string(line.end() - compartmentSize, line.end());
         assert(rucksack.firstCompartment.size() == rucksack.secondCompartment.size());
-        rucksacks.push_back(rucksack);
+        rucksacks.push_back(std::move(rucksack));
     }
 
     return true;
