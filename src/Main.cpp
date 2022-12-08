@@ -7,40 +7,56 @@
 #include "Days.h"
 #include "ScopeProfiler.h"
 
-bool parseCommandLineArguments(int argc, char* argv[], int& outDay, int& outPart)
+bool parseDayOption(size_t argc, char* argv[], size_t& argIndex, int& outDay)
 {
-    for (int i = 1; i < argc; ++i) {
-        std::string arg(argv[i]);
-        if (arg == "--day") {
-            if (i + 1 < argc) {
-                outDay = std::stoi(argv[++i]);
-                if (outDay < 0 || outDay > DayCount) {
-                    std::cout << "invalid day argument '" << argv[i] << "'" << std::endl;
-                    return false;
-                }
-            }
-            else {
-                std::cout << "--day option requires one argument" << std::endl;
-                return false;
-            }
-        }
-        else if (arg == "--part") {
-            if (i + 1 < argc) {
-                outPart = std::stoi(argv[++i]);
-                if (outPart < 0 || outPart > 2) {
-                    std::cout << "invalid part argument '" << argv[i] << "'" << std::endl;
-                    return false;
-                }
-            }
-            else {
-                std::cout << "--part option requires one argument" << std::endl;
-                return false;
-            }
-        }
-        else {
-            std::cout << "invalid option: " << arg << std::endl;
+    if (argIndex + 1 >= argc) {
+        std::cout << "--day option requires one argument" << std::endl;
+        return false;
+    }
+
+    outDay = std::stoi(argv[++argIndex]);
+    if (outDay < 0 || outDay > DayCount) {
+        std::cout << "invalid day argument '" << argv[argIndex] << "'" << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+bool parsePartOption(size_t argc, char* argv[], size_t& argIndex, int& outPart)
+{
+    if (argIndex + 1 >= argc) {
+        std::cout << "--part option requires one argument" << std::endl;
+        return false;
+    }
+
+    outPart = std::stoi(argv[++argIndex]);
+    if (outPart < 0 || outPart > 2) {
+        std::cout << "invalid part argument '" << argv[argIndex] << "'" << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+bool parseCommandLineArguments(const std::string& arg, size_t argc, char* argv[], size_t& argIndex, int& outDay, int& outPart)
+{
+    if (arg == "--day")
+        return parseDayOption(argc, argv, argIndex, outDay);
+
+    if (arg == "--part")
+        return parsePartOption(argc, argv, argIndex, outPart);
+
+    std::cout << "invalid option: " << arg << std::endl;
+    return false;
+}
+
+bool parseCommandLineArguments(size_t argc, char* argv[], int& outDay, int& outPart)
+{
+    for (size_t argIndex = 1; argIndex < argc; ++argIndex) {
+        std::string arg(argv[argIndex]);
+        if (!parseCommandLineArguments(arg, argc, argv, argIndex, outDay, outPart))
             return false;
-        }
     }
 
     return true;
