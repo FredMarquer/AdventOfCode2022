@@ -11,7 +11,6 @@
 
 struct Range
 {
-public:
 	int min;
 	int max;
 

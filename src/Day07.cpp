@@ -112,7 +112,7 @@ bool Day07::parseFile(std::ifstream& file)
                 size_t separator = line.find(' ');
                 std::string_view sizeView = lineView.substr(0, separator);
                 int fileSize = 0;
-                auto fromCharsResult = std::from_chars(sizeView.data(), sizeView.data() + sizeView.size(), fileSize);
+                std::from_chars(sizeView.data(), sizeView.data() + sizeView.size(), fileSize);
                 assert(fileSize > 0);
                 std::string_view fileName = lineView.substr(separator + 1);
                 currentPath.back()->files.push_back(File(fileName, fileSize));

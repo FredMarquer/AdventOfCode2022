@@ -9,7 +9,6 @@
 
 struct Instruction
 {
-public:
 	int numberOfBoxes;
 	int fromStackIndex;
 	int toStackIndex;

@@ -9,7 +9,6 @@
 
 struct Rucksack
 {
-public:
 	std::string firstCompartment;
 	std::string secondCompartment;
 

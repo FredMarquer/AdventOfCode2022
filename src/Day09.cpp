@@ -27,7 +27,7 @@ Int2 charToDirection(char c)
     }
 }
 
-bool tryParseLine(const std::string_view& line, Motion& outMotion)
+bool tryParseMotion(const std::string_view& line, Motion& outMotion)
 {
     // Parse the direction
     Int2 direction = charToDirection(line[0]);
@@ -53,7 +53,7 @@ bool Day09::parseFile(std::ifstream& file)
     std::string line;
     while (std::getline(file, line)) {
         Motion motion;
-        if (tryParseLine(line, motion))
+        if (tryParseMotion(line, motion))
             motions.push_back(motion);
         else
             return false;

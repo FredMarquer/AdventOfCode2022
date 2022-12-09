@@ -9,26 +9,21 @@
 
 struct File
 {
-public:
 	std::string name;
 	int size;
 
-	File(std::string_view name, int size) : name(name), size(size) {}
-	File(File&& other) noexcept
-		: name(std::move(other.name))
-		, size(other.size)
-	{}
+	File(const std::string_view& name, int size) : name(name), size(size) {}
+	File(File&& other) noexcept : name(std::move(other.name)), size(other.size) {}
 };
 
 struct Directory
 {
-public:
 	std::string name;
 	std::vector<Directory> subDirectories;
 	std::vector<File> files;
 	int size;
 
-	Directory(std::string_view name) : name(name), size(0) {}
+	Directory(const std::string_view& name) : name(name), size(0) {}
 	Directory(Directory&& other) noexcept
 		: name(std::move(other.name))
 		, subDirectories(std::move(other.subDirectories))
