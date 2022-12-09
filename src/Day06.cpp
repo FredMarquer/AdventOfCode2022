@@ -15,14 +15,16 @@ int getLetterIndex(char letter)
     return letter - 'a';
 }
 
-template <int N>
-struct LetterTracker
+class LetterTracker
 {
 private:
+    size_t markerLength;
+    size_t uniqueLetterCount;
     int letterCounts[26];
-    int uniqueLetterCount;
 
 public:
+    LetterTracker(size_t markerLength): markerLength(markerLength), uniqueLetterCount(0), letterCounts{0} {}
+
     void addLetter(char letter)
     {
         // Increment the letter count
@@ -56,28 +58,27 @@ public:
 
     bool isMarker()
     {
-        return uniqueLetterCount == N;
+        return uniqueLetterCount == markerLength;
     }
 };
 
-template <int N>
-int findMarker(const std::string& signal)
+int findMarker(const std::string& signal, size_t markerLength)
 {
-    LetterTracker<N> letterTracker = LetterTracker<N>();
+    LetterTracker letterTracker = LetterTracker(markerLength);
 
     // Add the first N-1 letters to the tracker
-    for (size_t i = 0; i < N-1; ++i)
+    for (size_t i = 0; i < markerLength - 1; ++i)
         letterTracker.addLetter(signal[i]);
 
     // Process the remaining letters
     size_t size = signal.size();
-    for (size_t i = N-1; i < size; ++i) {
+    for (size_t i = markerLength - 1; i < size; ++i) {
         letterTracker.addLetter(signal[i]);
 
         if (letterTracker.isMarker())
             return i + 1;
 
-        letterTracker.removeLetter(signal[i - (N-1)]);
+        letterTracker.removeLetter(signal[i - (markerLength - 1)]);
     }
 
     std::cout << "no marker found" << std::endl;
@@ -92,10 +93,10 @@ bool Day06::parseFile(std::ifstream& file)
 
 Result Day06::runPart1() const
 {
-    return findMarker<4>(signal);
+    return findMarker(signal, 4);
 }
 
 Result Day06::runPart2() const
 {
-    return findMarker<14>(signal);
+    return findMarker(signal, 14);
 }
