@@ -30,12 +30,12 @@ Int2 Int2::operator-() const
 
 Int2 Int2::operator+(const Int2& rhs) const
 {
-    return Int2(x + rhs.x, y + rhs.x);
+    return Int2(x + rhs.x, y + rhs.y);
 }
 
 Int2 Int2::operator-(const Int2& rhs) const
 {
-    return Int2(x - rhs.x, y - rhs.x);
+    return Int2(x - rhs.x, y - rhs.y);
 }
 
 Int2 Int2::operator+=(const Int2& rhs)
@@ -50,4 +50,15 @@ Int2 Int2::operator-=(const Int2& rhs)
     x -= rhs.x;
     y -= rhs.y;
     return *this;
+}
+
+std::ostream& operator<<(std::ostream& os, const Int2& lhs)
+{
+    os << '(' << lhs.x << ',' << lhs.y << ')';
+    return os;
+}
+
+size_t std::hash<Int2>::operator()(Int2 const& rhs) const noexcept
+{
+    return ((rhs.x << 5) + rhs.x) + rhs.y;
 }
