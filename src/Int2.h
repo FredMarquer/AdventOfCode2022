@@ -1,7 +1,9 @@
 #pragma once
 
+#include <format>
 #include <functional>
 #include <iostream>
+#include <string>
 
 struct Int2
 {
@@ -32,5 +34,22 @@ std::ostream& operator<<(std::ostream& os, const Int2& lhs);
 template<>
 struct std::hash<Int2>
 {
-	size_t operator()(Int2 const& s) const noexcept;
+	size_t operator()(Int2 const& rhs) const noexcept;
 };
+
+template <>
+struct std::formatter<Int2>
+{
+	template <typename FormatParseContext>
+	auto parse(FormatParseContext& pc)
+	{
+		return pc.end();
+	}
+
+	template<typename FormatContext>
+	auto format(const Int2& rhs, FormatContext& fc)
+	{
+		return std::format_to(fc.out(), "({}, {})", rhs.x, rhs.y);
+	}
+};
+

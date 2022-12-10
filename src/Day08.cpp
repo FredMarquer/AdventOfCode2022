@@ -2,16 +2,17 @@
 
 #include <assert.h>
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <vector>
 
+#include "Result.h"
 #include "Int2.h"
+#include "Log.h"
 
 int charToInt(char c)
 {
     if (c < '0' || c > '9') {
-        std::cout << "invalid char: " << c << std::endl;
+        error("invalid char: {}", c);
         return -1;
     }
 
@@ -23,7 +24,7 @@ bool Day08::parseFile(std::ifstream& file)
     std::string line;
     while (std::getline(file, line)) {
         if (line.empty()) {
-            std::cout << "empty line" << std::endl;
+            error("line is empty");
             return false;
         }
 
@@ -33,7 +34,7 @@ bool Day08::parseFile(std::ifstream& file)
             width = line.size();
 
         if (line.size() != width) {
-            std::cout << "line size (= " << line.size() << ") doesn't match the map width (= " << width << ")" << std::endl;
+            error("line size (= {}) doesn't match the map width (= {})", line.size(), width);
             return false;
         }
 

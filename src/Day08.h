@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Day.h"
+#include "Result.h"
 #include "Int2.h"
 
 class Day08 : public Day

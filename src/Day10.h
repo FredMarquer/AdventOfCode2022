@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Day.h"
+#include "Result.h"
 
 enum class OpCodes
 {

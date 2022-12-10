@@ -6,13 +6,14 @@
 #include <charconv>
 #include <cstdlib>
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <string_view>
 #include <vector>
 #include <unordered_set>
 
+#include "Result.h"
 #include "Int2.h"
+#include "Log.h"
 
 Int2 charToDirection(char c)
 {
@@ -22,7 +23,7 @@ Int2 charToDirection(char c)
     case 'U': return Int2::Up;
     case 'D': return Int2::Down;
     default:
-        std::cout << "invalid letter: " << c << std::endl;
+        error("invalid letter: {}", c);
         return Int2::Zero;
     }
 }
@@ -40,7 +41,7 @@ bool tryParseMotion(const std::string_view& line, Motion& outMotion)
     int distance = 0;
     std::from_chars(distanceView.data(), distanceView.data() + distanceView.size(), distance);
     if (distance <= 0) {
-        std::cout << "invalid distance: " << distanceView << std::endl;
+        error("invalid distance: {}", distanceView);
         return false;
     }
 

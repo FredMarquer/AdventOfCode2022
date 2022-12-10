@@ -1,22 +1,22 @@
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 #include <string>
 
 #include "Day.h"
 #include "Days.h"
+#include "Log.h"
 #include "ScopeProfiler.h"
 
 bool parseDayOption(size_t argc, char* argv[], size_t& argIndex, int& outDay)
 {
     if (argIndex + 1 >= argc) {
-        std::cout << "--day option requires one argument" << std::endl;
+        error("--day option requires one argument");
         return false;
     }
 
     outDay = std::stoi(argv[++argIndex]);
     if (outDay < 0 || outDay > DayCount) {
-        std::cout << "invalid day argument '" << argv[argIndex] << "'" << std::endl;
+        error("invalid day argument: {}", argv[argIndex]);
         return false;
     }
 
@@ -26,13 +26,13 @@ bool parseDayOption(size_t argc, char* argv[], size_t& argIndex, int& outDay)
 bool parsePartOption(size_t argc, char* argv[], size_t& argIndex, int& outPart)
 {
     if (argIndex + 1 >= argc) {
-        std::cout << "--part option requires one argument" << std::endl;
+        error("--part option requires one argument");
         return false;
     }
 
     outPart = std::stoi(argv[++argIndex]);
     if (outPart < 0 || outPart > 2) {
-        std::cout << "invalid part argument '" << argv[argIndex] << "'" << std::endl;
+        error("invalid part argument: {}", argv[argIndex]);
         return false;
     }
 
@@ -47,7 +47,7 @@ bool parseCommandLineArguments(const std::string& arg, size_t argc, char* argv[]
     if (arg == "--part")
         return parsePartOption(argc, argv, argIndex, outPart);
 
-    std::cout << "invalid option: " << arg << std::endl;
+    error("invalid option: ", arg);
     return false;
 }
 
@@ -64,26 +64,26 @@ bool parseCommandLineArguments(size_t argc, char* argv[], int& outDay, int& outP
 
 void runDay(int dayNumber, int part)
 {
-    std::cout << "running day " << dayNumber << std::endl;
+    log("running day {}", dayNumber);
 
     // Create the day instance
     std::unique_ptr<Day> day = createDay(dayNumber);
     if (day == nullptr) {
-        std::cout << "fail to create day " << dayNumber << std::endl;
+        error("fail to create day {}", dayNumber);
         return;
     }
 
     // Get the input path
     std::string input = day->getInputPath();
     if (!std::filesystem::exists(input)) {
-        std::cout << "input file '" << input << "' does not exist" << std::endl;
+        error("input file '{}' does not exist", input);
         return;
     }
 
     // Load the input file
     std::ifstream file(input);
     if (!file.is_open()) {
-        std::cout << "fail to open the input file '" << input << "'" << std::endl;
+        error("fail to open the input file: {}", input);
         return;
     }
 
@@ -91,8 +91,7 @@ void runDay(int dayNumber, int part)
     {
         ScopeProfiler scopeProfiler("file parsing");
         if (!day->parseFile(file)) {
-            std::cout << "fail to parse the input file '" << input << "'" << std::endl;
-            std::cout << "----------" << std::endl;
+            error("fail to parse the input file: {}", input);
             file.close();
             return;
         }
@@ -105,18 +104,18 @@ void runDay(int dayNumber, int part)
     if (runPart1) {
         ScopeProfiler scopeProfiler("part 1");
         Result result = day->runPart1();
-        std::cout << "part 1 result : " << result << std::endl;
+        log("part 1 result: {}", result);
     }
 
     // Run part 2 if requested
     if (runPart2) {
         ScopeProfiler scopeProfiler("part 2");
         Result result = day->runPart2();
-        std::cout << "part 2 result : " << result << std::endl;
+        log("part 2 result: {}", result);
     }
 
     file.close();
-    std::cout << "----------" << std::endl;
+    log("----------");
 }
 
 void runAllDays(int part)
@@ -131,7 +130,7 @@ int main(int argc, char* argv[])
     int day = 0;
     int part = 0;
     if (!parseCommandLineArguments(argc, argv, day, part)) {
-        std::cout << "fail to parse command line arguments" << std::endl;
+        error("fail to parse command line arguments");
         return 1;
     }
 

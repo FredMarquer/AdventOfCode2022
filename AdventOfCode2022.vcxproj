@@ -173,6 +173,7 @@
     <ClInclude Include="src\Day08.h" />
     <ClInclude Include="src\Day07.h" />
     <ClInclude Include="src\Day06.h" />
+    <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\ScopeProfiler.h" />
     <ClInclude Include="src\Result.h" />
     <ClInclude Include="src\Day05.h" />

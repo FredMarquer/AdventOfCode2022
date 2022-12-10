@@ -1,6 +1,8 @@
 #include "Int2.h"
 
 #include <cstdlib>
+#include <functional>
+#include <iostream>
 
 const Int2 Int2::Zero(0, 0);
 const Int2 Int2::Right(1, 0);

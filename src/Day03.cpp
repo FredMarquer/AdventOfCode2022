@@ -2,12 +2,12 @@
 
 #include <assert.h>
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <string_view>
 #include <vector>
 
 #include "Result.h"
+#include "Log.h"
 
 int itemToPriority(char letter)
 {
@@ -16,7 +16,7 @@ int itemToPriority(char letter)
     else if (letter >= 'A' && letter <= 'Z')
         return letter - 'A' + 27;
     else {
-        std::cout << "invalid item: " << letter << std::endl;
+        error("invalid item: {}", letter);
         return 0;
     }
 }
@@ -41,7 +41,7 @@ char findSharedItem(const Rucksack& rucksack)
             return item;
     }
 
-    std::cout << "shared item not found" << std::endl;
+    error("shared item not found");
     return 0;
 }
 
@@ -63,11 +63,11 @@ char findBadgePriority(const Rucksack& rucksack1, const Rucksack& rucksack2, con
     // Find the common bit
     int64_t badgeBit = bitField1 & bitField2 & bitField3;
     if (badgeBit == 0) {
-        std::cout << "badge not found" << std::endl;
+        error("shared item not found");
         return 0;
     }
     else if (((badgeBit - 1) & badgeBit) != 0) {
-        std::cout << "multiple badge found" << std::endl;
+        error("multiple badge found");
         return 0;
     }
 

@@ -2,13 +2,15 @@
 
 #include <assert.h>
 #include <fstream>
-#include <iostream>
 #include <string>
+
+#include "Result.h"
+#include "Log.h"
 
 int getLetterIndex(char letter)
 {
     if (letter < 'a' || letter > 'z') {
-        std::cout << "invalid letter : " << letter << std::endl;
+        error("invalid letter: ", letter);
         return 0;
     }
 
@@ -81,7 +83,7 @@ int findMarker(const std::string& signal, size_t markerLength)
         letterTracker.removeLetter(signal[i - (markerLength - 1)]);
     }
 
-    std::cout << "no marker found" << std::endl;
+    error("marker of length {} not found", markerLength);
     return 0;
 }
 

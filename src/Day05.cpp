@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Result.h"
+#include "Log.h"
 
 void applyInstructionCrateMover9000(const Instruction& instruction, std::vector<std::vector<char>>& stacks)
 {
@@ -81,7 +82,7 @@ bool Day05::parseFile(std::ifstream& file)
             instructions.push_back(Instruction(numberOfBoxes, fromStackIndex, toStackIndex));
         }
         else {
-            std::cout << "no match found for line : " << line << std::endl;
+            error("no match found for line: {}", line);
             return false;
         }
     }

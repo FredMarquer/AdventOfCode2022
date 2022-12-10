@@ -3,9 +3,11 @@
 #include <assert.h>
 #include <charconv>
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <vector>
+
+#include "Result.h"
+#include "Log.h"
 
 bool tryParseInstruction(const std::string_view& line, InstructionD10& outInstruction)
 {
@@ -20,14 +22,14 @@ bool tryParseInstruction(const std::string_view& line, InstructionD10& outInstru
         std::string_view operandView = line.substr(5);
         auto result = std::from_chars(operandView.data(), operandView.data() + operandView.size(), operand);
         if (result.ec != std::errc()) {
-            std::cout << "invalid operand: " << operandView << std::endl;
+            error("invalid operand: {}", operandView);
             return false;
         }
 
         outInstruction = InstructionD10(OpCodes::Addx, operand);
     }
     else {
-        std::cout << "invalid line: " << line << std::endl;
+        error("invalid line: {}", line);
         return false;
     }
 
@@ -114,7 +116,7 @@ void runInstructions(const std::vector<InstructionD10>& instructions, Sampler* s
     int cycle = 0;
     int x = 1;
 
-    int instructionIndex = 0;
+    size_t instructionIndex = 0;
     InstructionD10 currentInstruction = InstructionD10();
     int currentInstructionTimer = 0;
 

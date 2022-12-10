@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 #include "Day.h"
 #include "Day01.h"
 #include "Day02.h"
@@ -13,6 +11,7 @@
 #include "Day08.h"
 #include "Day09.h"
 #include "Day10.h"
+#include "Log.h"
 
 const int DayCount = 10;
 
@@ -32,7 +31,7 @@ std::unique_ptr<Day> createDay(int dayNumber)
 	case 9: dayPtr = new Day09(); break;
 	case 10: dayPtr = new Day10(); break;
 	default:
-		std::cout << "invalid day number: " << dayNumber << std::endl;
+		error("invalid day number: {}", dayNumber);
 		break;
 	}
 

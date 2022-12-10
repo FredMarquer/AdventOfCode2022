@@ -2,12 +2,12 @@
 
 #include <array>
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "Result.h"
+#include "Log.h"
 
 static const int ScoreTablePart1[] = { 3, 0, 6, 6, 3, 0, 0, 6, 3 };
 static const int ScoreTablePart2[] = { 3, 1, 2, 1, 2, 3, 2, 3, 1 };
@@ -30,7 +30,7 @@ bool parseLetter(char letter, int& outShape)
         return true;
     }
 
-    std::cout << "invalid letter '" << letter << "'" << std::endl;
+    error("invalid letter: {}", letter);
     return false;
 }
 
@@ -60,7 +60,7 @@ bool Day02::parseFile(std::ifstream& file)
                 return false;
         }
         else
-            std::cout << "invalid line '" << line << "'" << std::endl;
+            error("invalid line: {}", line);
     }
 
     return true;

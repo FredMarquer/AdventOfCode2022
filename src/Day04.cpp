@@ -2,13 +2,13 @@
 
 #include <assert.h>
 #include <fstream>
-#include <iostream>
 #include <regex>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "Result.h"
+#include "Log.h"
 
 bool Day04::parseFile(std::ifstream& file)
 {
@@ -25,7 +25,7 @@ bool Day04::parseFile(std::ifstream& file)
             pairs.push_back(pair);
         }
         else {
-            std::cout << "no match found for line : " << line << std::endl;
+            error("no match found for line: {}", line);
             return false;
         }
     }

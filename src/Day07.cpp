@@ -3,10 +3,12 @@
 #include <assert.h>
 #include <charconv>
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <string_view>
 #include <vector>
+
+#include "Result.h"
+#include "Log.h"
 
 void sumPart1(const Directory& directory, int& result)
 {
@@ -73,7 +75,7 @@ bool Day07::parseFile(std::ifstream& file)
             }
 
             if (currentPath.empty()) {
-                std::cout << "current path empty" << std::endl;
+                error("current path empty");
                 return false;
             }
 
@@ -91,14 +93,14 @@ bool Day07::parseFile(std::ifstream& file)
                     currentPath.push_back(&subDirectory);
                 }
                 else {
-                    std::cout << "sub directory '" << subDirectoryName << "' not found" << std::endl;
+                    error("sub directory '{}' not found", subDirectoryName);
                     return false;
                 }
             }
         }
         else {
             if (currentPath.empty()) {
-                std::cout << "current path empty" << std::endl;
+                error("current path empty");
                 return false;
             }
 
