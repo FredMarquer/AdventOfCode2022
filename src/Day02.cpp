@@ -6,8 +6,8 @@
 #include <utility>
 #include <vector>
 
-#include "Result.h"
 #include "Log.h"
+#include "Result.h"
 
 static const int ScoreTablePart1[] = { 3, 0, 6, 6, 3, 0, 0, 6, 3 };
 static const int ScoreTablePart2[] = { 3, 1, 2, 1, 2, 3, 2, 3, 1 };

@@ -1,27 +1,23 @@
 #include "Day11.h"
 
 #include <assert.h>
-#include <charconv>
 #include <cmath>
 #include <fstream>
 #include <functional>
 #include <string>
 #include <string_view>
 
-#include "Result.h"
 #include "Log.h"
+#include "Parsing.h"
+#include "Result.h"
 
 bool tryParseItems(const std::string_view& line, std::vector<int64_t>& items)
 {
     size_t separator = line.find_first_of(',');
     if (separator != std::string::npos) {
-        std::string_view itemView = line.substr(0, separator);
         int64_t item;
-        auto result = std::from_chars(itemView.data(), itemView.data() + itemView.size(), item);
-        if (result.ec != std::errc()) {
-            error("can't parse item: {} -> {}", line, itemView);
+        if (!tryParse(line.substr(0, separator), item))
             return false;
-        }
 
         items.push_back(item);
 
@@ -30,11 +26,8 @@ bool tryParseItems(const std::string_view& line, std::vector<int64_t>& items)
     }
     else {
         int64_t item;
-        auto result = std::from_chars(line.data(), line.data() + line.size(), item);
-        if (result.ec != std::errc()) {
-            error("can't parse item: {}", line);
+        if (!tryParse(line, item))
             return false;
-        }
 
         items.push_back(item);
         return true;
@@ -43,26 +36,12 @@ bool tryParseItems(const std::string_view& line, std::vector<int64_t>& items)
 
 bool tryParseIntAtEnd(const std::string_view& line, size_t position, int64_t& outValue)
 {
-    std::string_view lineView = line.substr(position);
-    auto result = std::from_chars(lineView.data(), lineView.data() + lineView.size(), outValue);
-    if (result.ec != std::errc()) {
-        error("can't parse int at end: {} -> {}", line, lineView);
-        return false;
-    }
-
-    return true;
+    return tryParse(line.substr(position), outValue);
 }
 
 bool tryParseIntAtEnd(const std::string_view& line, size_t position, size_t& outValue)
 {
-    std::string_view lineView = line.substr(position);
-    auto result = std::from_chars(lineView.data(), lineView.data() + lineView.size(), outValue);
-    if (result.ec != std::errc()) {
-        error("can't parse int at end: {} -> {}", line, lineView);
-        return false;
-    }
-
-    return true;
+    return tryParse(line.substr(position), outValue);
 }
 
 bool tryParseInspectFunction(const std::string_view& line, ItemModifierFunction& outFunction)

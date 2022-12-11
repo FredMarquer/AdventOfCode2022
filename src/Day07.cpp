@@ -1,14 +1,14 @@
 #include "Day07.h"
 
 #include <assert.h>
-#include <charconv>
 #include <fstream>
 #include <string>
 #include <string_view>
 #include <vector>
 
-#include "Result.h"
 #include "Log.h"
+#include "Parsing.h"
+#include "Result.h"
 
 void sumPart1(const Directory& directory, int& result)
 {
@@ -112,10 +112,16 @@ bool Day07::parseFile(std::ifstream& file)
             else {
                 // Add new file to the current directory
                 size_t separator = line.find(' ');
-                std::string_view sizeView = lineView.substr(0, separator);
+                if (separator == std::string::npos) {
+                    error("separator not found for line: {}", line);
+                    return false;
+                }
+
+                // Parse the file size
                 int fileSize = 0;
-                std::from_chars(sizeView.data(), sizeView.data() + sizeView.size(), fileSize);
-                assert(fileSize > 0);
+                if (!tryParse(lineView.substr(0, separator), fileSize))
+                    return false;
+
                 std::string_view fileName = lineView.substr(separator + 1);
                 currentPath.back()->files.push_back(File(fileName, fileSize));
             }

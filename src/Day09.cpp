@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <array>
 #include <assert.h>
-#include <charconv>
 #include <cstdlib>
 #include <fstream>
 #include <string>
@@ -11,9 +10,10 @@
 #include <vector>
 #include <unordered_set>
 
-#include "Result.h"
 #include "Int2.h"
 #include "Log.h"
+#include "Parsing.h"
+#include "Result.h"
 
 Int2 charToDirection(char c)
 {
@@ -37,13 +37,9 @@ bool tryParseMotion(const std::string_view& line, Motion& outMotion)
     }
 
     // Parse the distance
-    std::string_view distanceView = line.substr(2);
     int distance = 0;
-    std::from_chars(distanceView.data(), distanceView.data() + distanceView.size(), distance);
-    if (distance <= 0) {
-        error("invalid distance: {}", distanceView);
+    if (!tryParse(line.substr(2), distance))
         return false;
-    }
 
     outMotion = Motion(direction, distance);
     return true;

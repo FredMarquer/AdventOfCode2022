@@ -4,8 +4,8 @@
 #include <fstream>
 #include <string>
 
-#include "Result.h"
 #include "Log.h"
+#include "Result.h"
 
 int getLetterIndex(char letter)
 {

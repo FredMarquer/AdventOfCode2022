@@ -7,8 +7,8 @@
 #include <string>
 #include <vector>
 
-#include "Result.h"
 #include "Log.h"
+#include "Result.h"
 
 void applyInstructionCrateMover9000(const Instruction& instruction, std::vector<std::vector<char>>& stacks)
 {

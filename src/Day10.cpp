@@ -1,13 +1,13 @@
 #include "Day10.h"
 
 #include <assert.h>
-#include <charconv>
 #include <fstream>
 #include <string>
 #include <vector>
 
-#include "Result.h"
 #include "Log.h"
+#include "Parsing.h"
+#include "Result.h"
 
 bool tryParseInstruction(const std::string_view& line, InstructionD10& outInstruction)
 {
@@ -19,12 +19,8 @@ bool tryParseInstruction(const std::string_view& line, InstructionD10& outInstru
     else if (opCodeView == "addx") {
         // Parse the operand
         int operand = 0;
-        std::string_view operandView = line.substr(5);
-        auto result = std::from_chars(operandView.data(), operandView.data() + operandView.size(), operand);
-        if (result.ec != std::errc()) {
-            error("invalid operand: {}", operandView);
+        if (!tryParse(line.substr(5), operand))
             return false;
-        }
 
         outInstruction = InstructionD10(OpCodes::Addx, operand);
     }

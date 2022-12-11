@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 
-#include "Result.h"
 #include "Int2.h"
 #include "Log.h"
+#include "Result.h"
 
 int charToInt(char c)
 {

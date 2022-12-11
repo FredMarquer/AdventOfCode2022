@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Parsing.cpp" />
     <ClCompile Include="src\Day11.cpp" />
     <ClCompile Include="src\Day10.cpp" />
     <ClCompile Include="src\Day09.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Parsing.h" />
     <ClInclude Include="src\Day11.h" />
     <ClInclude Include="src\Day10.h" />
     <ClInclude Include="src\Day09.h" />

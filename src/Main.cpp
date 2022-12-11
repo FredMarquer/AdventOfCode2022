@@ -5,6 +5,7 @@
 #include "Day.h"
 #include "Days.h"
 #include "Log.h"
+#include "Result.h"
 #include "ScopeProfiler.h"
 
 bool parseDayOption(size_t argc, char* argv[], size_t& argIndex, int& outDay)
