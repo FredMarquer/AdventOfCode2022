@@ -89,7 +89,7 @@ void runDay(int dayNumber, int part)
 
     // Parse the input file
     {
-        ScopeProfiler scopeProfiler("file parsing");
+        profileScope("file parsing");
         if (!day->parseFile(file)) {
             error("fail to parse the input file: {}", input);
             file.close();
@@ -102,14 +102,14 @@ void runDay(int dayNumber, int part)
 
     // Run part 1 if requested
     if (runPart1) {
-        ScopeProfiler scopeProfiler("part 1");
+        profileScope("part 1");
         Result result = day->runPart1();
         log("part 1 result: {}", result);
     }
 
     // Run part 2 if requested
     if (runPart2) {
-        ScopeProfiler scopeProfiler("part 2");
+        profileScope("part 2");
         Result result = day->runPart2();
         log("part 2 result: {}", result);
     }

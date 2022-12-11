@@ -14,3 +14,9 @@ public:
 	~ScopeProfiler();
 };
 
+#ifdef ENABLE_PROFILING
+	#define profileScope(name) ScopeProfiler scopeProfiler(name);
+#else
+	#define profileScope(name)
+#endif // DEBUG
+
