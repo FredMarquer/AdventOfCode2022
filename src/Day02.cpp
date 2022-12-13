@@ -85,3 +85,15 @@ Result Day02::runPart2() const
 
     return score;
 }
+
+bool Day02::tryGetExpectedResultPart1(Result& outResult) const
+{
+    outResult = 11873;
+    return true;
+}
+
+bool Day02::tryGetExpectedResultPart2(Result& outResult) const
+{
+    outResult = 12014;
+    return true;
+}

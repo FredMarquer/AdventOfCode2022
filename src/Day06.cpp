@@ -102,3 +102,15 @@ Result Day06::runPart2() const
 {
     return findMarker(signal, 14);
 }
+
+bool Day06::tryGetExpectedResultPart1(Result& outResult) const
+{
+    outResult = 1210;
+    return true;
+}
+
+bool Day06::tryGetExpectedResultPart2(Result& outResult) const
+{
+    outResult = 3476;
+    return true;
+}

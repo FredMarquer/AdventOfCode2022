@@ -155,3 +155,21 @@ Result Day10::runPart2() const
     runInstructions(instructions, &sampler);
     return sampler.getResult();
 }
+
+bool Day10::tryGetExpectedResultPart1(Result& outResult) const
+{
+    outResult = 11820;
+    return true;
+}
+
+bool Day10::tryGetExpectedResultPart2(Result& outResult) const
+{
+    outResult =
+        "\n####.###....##.###..###..#..#..##..#..#."
+        "\n#....#..#....#.#..#.#..#.#.#..#..#.#..#."
+        "\n###..#..#....#.###..#..#.##...#..#.####."
+        "\n#....###.....#.#..#.###..#.#..####.#..#."
+        "\n#....#....#..#.#..#.#.#..#.#..#..#.#..#."
+        "\n####.#.....##..###..#..#.#..#.#..#.#..#.";
+    return true;
+}

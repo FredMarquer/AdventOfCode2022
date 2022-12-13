@@ -65,7 +65,8 @@ bool parseCommandLineArguments(size_t argc, char* argv[], int& outDay, int& outP
 
 void runDay(int dayNumber, int part)
 {
-    log("running day {}", dayNumber);
+    log("");
+    log("---------- Day {} ----------", dayNumber);
 
     // Create the day instance
     std::unique_ptr<Day> day = createDay(dayNumber);
@@ -106,6 +107,13 @@ void runDay(int dayNumber, int part)
         profileScope("part 1");
         Result result = day->runPart1();
         log("part 1 result: {}", result);
+        Result expectedResult;
+        if (day->tryGetExpectedResultPart1(expectedResult)) {
+            if (result != expectedResult)
+                error("the result doesn't match the expected result: {}", expectedResult);
+        }
+        else
+            debug("no expected result");
     }
 
     // Run part 2 if requested
@@ -113,10 +121,16 @@ void runDay(int dayNumber, int part)
         profileScope("part 2");
         Result result = day->runPart2();
         log("part 2 result: {}", result);
+        Result expectedResult;
+        if (day->tryGetExpectedResultPart2(expectedResult)) {
+            if (result != expectedResult)
+                error("the result doesn't match the expected result: {}", expectedResult);
+        }
+        else
+            debug("no expected result");
     }
 
     file.close();
-    log("----------");
 }
 
 void runAllDays(int part)

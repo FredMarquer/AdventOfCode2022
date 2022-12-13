@@ -160,3 +160,15 @@ int Day08::computeViewDistance(const Int2& start, const Int2& dir) const
 
     return viewDistance;
 }
+
+bool Day08::tryGetExpectedResultPart1(Result& outResult) const
+{
+    outResult = 1681;
+    return true;
+}
+
+bool Day08::tryGetExpectedResultPart2(Result& outResult) const
+{
+    outResult = 201684;
+    return true;
+}

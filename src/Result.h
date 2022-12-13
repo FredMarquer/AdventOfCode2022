@@ -13,8 +13,13 @@ private:
 	std::string stringValue;
 
 public:
-	Result(int64_t intValue) : intValue(intValue) {}
-	Result(std::string stringValue) : intValue(0), stringValue(stringValue) {}
+	Result() : intValue(0) {}
+	Result(int64_t value) : intValue(value) {}
+	Result(const char* value) : intValue(0), stringValue(value) {}
+	Result(std::string value) : intValue(0), stringValue(value) {}
+
+	bool operator==(const Result& rhs) const;
+	bool operator!=(const Result& rhs) const;
 };
 
 template <>

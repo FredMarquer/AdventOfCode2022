@@ -155,3 +155,15 @@ Result Day07::runPart2() const
     findDirectorySizeToDelete(rootDirectory, minSpaceToDelete, bestDirectorySize);
     return bestDirectorySize;
 }
+
+bool Day07::tryGetExpectedResultPart1(Result& outResult) const
+{
+    outResult = 1582412;
+    return true;
+}
+
+bool Day07::tryGetExpectedResultPart2(Result& outResult) const
+{
+    outResult = 3696336;
+    return true;
+}

@@ -114,3 +114,15 @@ Result Day09::runPart2() const
 {
     return simulate<10>(motions);
 }
+
+bool Day09::tryGetExpectedResultPart1(Result& outResult) const
+{
+    outResult = 6284;
+    return true;
+}
+
+bool Day09::tryGetExpectedResultPart2(Result& outResult) const
+{
+    outResult = 2661;
+    return true;
+}

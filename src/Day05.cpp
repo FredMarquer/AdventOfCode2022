@@ -113,3 +113,15 @@ Result Day05::runPart2() const
 
     return result(workingStacks);
 }
+
+bool Day05::tryGetExpectedResultPart1(Result& outResult) const
+{
+    outResult = "VJSFHWGFT";
+    return true;
+}
+
+bool Day05::tryGetExpectedResultPart2(Result& outResult) const
+{
+    outResult = "LCTQFBVZV";
+    return true;
+}

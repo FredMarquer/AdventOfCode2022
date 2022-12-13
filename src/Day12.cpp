@@ -157,3 +157,15 @@ Result Day12::runPart2() const
     TargetConditionFunction targetFunction = [this](const Int2& currentCoord) { return this->heightMap[currentCoord] == 0; };
     return dijkstra(heightMap, target, transitionFunction, targetFunction);
 }
+
+bool Day12::tryGetExpectedResultPart1(Result& outResult) const
+{
+    outResult = 484;
+    return true;
+}
+
+bool Day12::tryGetExpectedResultPart2(Result& outResult) const
+{
+    outResult = 478;
+    return true;
+}

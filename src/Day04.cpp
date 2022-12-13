@@ -58,3 +58,15 @@ Result Day04::runPart2() const
 
     return overlapCount;
 }
+
+bool Day04::tryGetExpectedResultPart1(Result& outResult) const
+{
+    outResult = 498;
+    return true;
+}
+
+bool Day04::tryGetExpectedResultPart2(Result& outResult) const
+{
+    outResult = 859;
+    return true;
+}

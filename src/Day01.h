@@ -17,5 +17,7 @@ public:
 	bool parseFile(std::ifstream& file) override;
 	Result runPart1() const override;
 	Result runPart2() const override;
+	bool tryGetExpectedResultPart1(Result& outResult) const override;
+	bool tryGetExpectedResultPart2(Result& outResult) const override;
 };
 
