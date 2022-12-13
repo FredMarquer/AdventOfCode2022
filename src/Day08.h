@@ -2,18 +2,16 @@
 
 #include <fstream>
 #include <string>
-#include <vector>
 
+#include "Array2D.h"
 #include "Day.h"
-#include "Result.h"
 #include "Int2.h"
+#include "Result.h"
 
 class Day08 : public Day
 {
 private:
-	int width = 0;
-	int height = 0;
-	std::vector<int> treeMap;
+	Array2D<int> treeMap;
 
 public:
 	std::string getInputPath() const override { return "inputs/08.txt"; }
@@ -22,9 +20,7 @@ public:
 	Result runPart2() const override;
 
 private:
-	size_t getIndex(const Int2& coord) const;
-	bool isInMap(const Int2& coord) const;
-	void updateTreesVisibility(const Int2& start, const Int2& dir, std::vector<bool>& visibilityMap, int& visibilityCount) const;
+	void updateTreesVisibility(const Int2& start, const Int2& dir, Array2D<bool>& visibilityMap, int& visibilityCount) const;
 	int computeScenicScore(const Int2& coord) const;
 	int computeViewDistance(const Int2& start, const Int2& dir) const;
 };
