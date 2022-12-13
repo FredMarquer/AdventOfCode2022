@@ -1,7 +1,6 @@
 #include "Int2.h"
 
 #include <cstdlib>
-#include <functional>
 #include <iostream>
 
 const Int2 Int2::Zero(0, 0);
@@ -60,7 +59,7 @@ std::ostream& operator<<(std::ostream& os, const Int2& lhs)
     return os;
 }
 
-size_t std::hash<Int2>::operator()(Int2 const& rhs) const noexcept
+size_t std::hash<Int2>::operator()(const Int2& rhs) const noexcept
 {
     return ((rhs.x << 5) + rhs.x) + rhs.y;
 }

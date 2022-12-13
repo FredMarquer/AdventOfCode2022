@@ -1,9 +1,7 @@
 #pragma once
 
 #include <format>
-#include <functional>
 #include <iostream>
-#include <string>
 
 struct Int2
 {
@@ -34,7 +32,7 @@ std::ostream& operator<<(std::ostream& os, const Int2& lhs);
 template<>
 struct std::hash<Int2>
 {
-	size_t operator()(Int2 const& rhs) const noexcept;
+	size_t operator()(const Int2& rhs) const noexcept;
 };
 
 template <>
