@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Array2D.h" />
+    <ClInclude Include="src\BinaryHeap.h" />
     <ClInclude Include="src\Parsing.h" />
     <ClInclude Include="src\Day11.h" />
     <ClInclude Include="src\Day10.h" />
