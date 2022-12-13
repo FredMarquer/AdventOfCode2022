@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Day12.cpp" />
     <ClCompile Include="src\Parsing.cpp" />
     <ClCompile Include="src\Day11.cpp" />
     <ClCompile Include="src\Day10.cpp" />
@@ -171,6 +172,7 @@
   <ItemGroup>
     <ClInclude Include="src\Array2D.h" />
     <ClInclude Include="src\BinaryHeap.h" />
+    <ClInclude Include="src\Day12.h" />
     <ClInclude Include="src\Parsing.h" />
     <ClInclude Include="src\Day11.h" />
     <ClInclude Include="src\Day10.h" />

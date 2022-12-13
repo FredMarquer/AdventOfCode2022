@@ -12,9 +12,10 @@
 #include "Day09.h"
 #include "Day10.h"
 #include "Day11.h"
+#include "Day12.h"
 #include "Log.h"
 
-const int DayCount = 11;
+const int DayCount = 12;
 
 std::unique_ptr<Day> createDay(int dayNumber)
 {
@@ -32,6 +33,7 @@ std::unique_ptr<Day> createDay(int dayNumber)
 	case 9: dayPtr = new Day09(); break;
 	case 10: dayPtr = new Day10(); break;
 	case 11: dayPtr = new Day11(); break;
+	case 12: dayPtr = new Day12(); break;
 	default:
 		error("invalid day number: {}", dayNumber);
 		break;
