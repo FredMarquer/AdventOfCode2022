@@ -1,22 +1,23 @@
 #pragma once
 
+#ifdef ENABLE_PROFILING
+
 #include <chrono>
-#include <string>
 
 class ScopeProfiler
 {
 private:
-	std::string name;
+	const char* name;
 	std::chrono::steady_clock::time_point startTime;
 
 public:
-	ScopeProfiler(const std::string& name);
+	ScopeProfiler(const char* name);
 	~ScopeProfiler();
 };
 
-#ifdef ENABLE_PROFILING
-	#define profileScope(name) ScopeProfiler scopeProfiler(name);
+#define profileScope(name) ScopeProfiler scopeProfiler(name);
+
 #else
-	#define profileScope(name)
-#endif // DEBUG
+#define profileScope(name)
+#endif // ENABLE_PROFILING
 

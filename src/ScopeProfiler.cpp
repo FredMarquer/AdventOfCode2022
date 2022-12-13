@@ -1,10 +1,12 @@
 #include "ScopeProfiler.h"
 
+#ifdef ENABLE_PROFILING
+
 #include <chrono>
 
 #include "Log.h"
 
-ScopeProfiler::ScopeProfiler(const std::string& name) : name(name)
+ScopeProfiler::ScopeProfiler(const char* name) : name(name)
 {
 	startTime = std::chrono::high_resolution_clock::now();
 }
@@ -16,3 +18,5 @@ ScopeProfiler::~ScopeProfiler()
 	float timeInMilliSeconds = (float)timeInMicroSeconds * 0.001f;
 	log("{} run in: {} ms", name, timeInMilliSeconds);
 }
+
+#endif // ENABLE_PROFILING
