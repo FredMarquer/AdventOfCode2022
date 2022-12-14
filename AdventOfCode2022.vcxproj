@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Day12.cpp" />
+    <ClCompile Include="src\Days.cpp" />
     <ClCompile Include="src\Parsing.cpp" />
     <ClCompile Include="src\Day11.cpp" />
     <ClCompile Include="src\Day10.cpp" />
