@@ -187,6 +187,7 @@
     <ClInclude Include="Source\Days\Day07.h" />
     <ClInclude Include="Source\Days\Day06.h" />
     <ClInclude Include="Source\Utils\Log.h" />
+    <ClInclude Include="Source\Utils\Range.h" />
     <ClInclude Include="Source\Utils\ScopeProfiler.h" />
     <ClInclude Include="Source\Result.h" />
     <ClInclude Include="Source\Days\Day05.h" />

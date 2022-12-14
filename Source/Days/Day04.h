@@ -8,17 +8,7 @@
 
 #include "Day.h"
 #include "Result.h"
-
-struct Range
-{
-	int min;
-	int max;
-
-	Range(int min, int max) : min(min), max(max) { assert(min <= max); }
-
-	bool contains(const Range& other) const { return other.min >= min && other.max <= max; }
-	bool overlap(const Range& other) const { return other.min <= max && other.max >= min; }
-};
+#include "Utils/Range.h"
 
 class Day04 : public Day
 {

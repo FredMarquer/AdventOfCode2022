@@ -9,6 +9,7 @@
 
 #include "Result.h"
 #include "Utils/Log.h"
+#include "Utils/Range.h"
 
 bool Day04::parseFile(std::ifstream& file)
 {
