@@ -2,21 +2,18 @@
 
 #include <fstream>
 #include <string>
+#include <vector>
 
-#include "Array2D.h"
 #include "Day.h"
-#include "Int2.h"
 #include "Result.h"
 
-class Day12 : public Day
+class Day01 : public Day
 {
 private:
-	Int2 start;
-	Int2 target;
-	Array2D<int> heightMap;
+	std::vector<int> caloriesPerElves;
 
 public:
-	std::string getInputPath() const override { return "inputs/12.txt"; }
+	std::string getInputPath() const override { return "Inputs/01.txt"; }
 	bool parseFile(std::ifstream& file) override;
 	Result runPart1() const override;
 	Result runPart2() const override;

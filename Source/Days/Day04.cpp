@@ -7,8 +7,8 @@
 #include <utility>
 #include <vector>
 
-#include "Log.h"
 #include "Result.h"
+#include "Utils/Log.h"
 
 bool Day04::parseFile(std::ifstream& file)
 {

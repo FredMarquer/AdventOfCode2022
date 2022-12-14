@@ -27,7 +27,7 @@ private:
 	std::vector<Monkey> monkeys;
 
 public:
-	std::string getInputPath() const override { return "inputs/11.txt"; }
+	std::string getInputPath() const override { return "Inputs/11.txt"; }
 	bool parseFile(std::ifstream& file) override;
 	Result runPart1() const override;
 	Result runPart2() const override;

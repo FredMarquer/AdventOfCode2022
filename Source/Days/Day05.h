@@ -27,7 +27,7 @@ private:
 	std::vector<Instruction> instructions;
 
 public:
-	std::string getInputPath() const override { return "inputs/05.txt"; }
+	std::string getInputPath() const override { return "Inputs/05.txt"; }
 	bool parseFile(std::ifstream& file) override;
 	Result runPart1() const override;
 	Result runPart2() const override;

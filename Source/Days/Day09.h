@@ -6,14 +6,24 @@
 
 #include "Day.h"
 #include "Result.h"
+#include "Utils/Int2.h"
 
-class Day01 : public Day
+struct Motion
+{
+	Int2 direction;
+	int distance;
+
+	Motion() : direction(Int2::Zero), distance(0) {}
+	Motion(Int2 direction, int distance) : direction(direction), distance(distance) {}
+};
+
+class Day09 : public Day
 {
 private:
-	std::vector<int> caloriesPerElves;
+	std::vector<Motion> motions;
 
 public:
-	std::string getInputPath() const override { return "inputs/01.txt"; }
+	std::string getInputPath() const override { return "Inputs/09.txt"; }
 	bool parseFile(std::ifstream& file) override;
 	Result runPart1() const override;
 	Result runPart2() const override;

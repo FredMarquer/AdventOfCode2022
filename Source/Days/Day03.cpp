@@ -6,8 +6,8 @@
 #include <string_view>
 #include <vector>
 
-#include "Log.h"
 #include "Result.h"
+#include "Utils/Log.h"
 
 int itemToPriority(char letter)
 {

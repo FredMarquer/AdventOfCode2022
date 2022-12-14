@@ -26,7 +26,7 @@ private:
 	std::vector<std::pair<Range, Range>> pairs;
 
 public:
-	std::string getInputPath() const override { return "inputs/04.txt"; }
+	std::string getInputPath() const override { return "Inputs/04.txt"; }
 	bool parseFile(std::ifstream& file) override;
 	Result runPart1() const override;
 	Result runPart2() const override;

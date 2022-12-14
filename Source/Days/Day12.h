@@ -1,21 +1,22 @@
 #pragma once
 
-#include <array>
 #include <fstream>
 #include <string>
-#include <utility>
-#include <vector>
 
 #include "Day.h"
 #include "Result.h"
+#include "Utils/Array2D.h"
+#include "Utils/Int2.h"
 
-class Day02 : public Day
+class Day12 : public Day
 {
 private:
-	std::vector<std::pair<int, int>> strategyGuide;
+	Int2 start;
+	Int2 target;
+	Array2D<int> heightMap;
 
 public:
-	std::string getInputPath() const override { return "inputs/02.txt"; }
+	std::string getInputPath() const override { return "Inputs/12.txt"; }
 	bool parseFile(std::ifstream& file) override;
 	Result runPart1() const override;
 	Result runPart2() const override;

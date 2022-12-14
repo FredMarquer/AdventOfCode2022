@@ -72,23 +72,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\Binaries\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Intermediates\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\Binaries\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Intermediates\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\Binaries\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Intermediates\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\Binaries\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Intermediates\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -97,6 +97,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;ENABLE_PROFILING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>D:\Projects\Cpp\AdventOfCode2022\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -112,6 +113,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;ENABLE_PROFILING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>D:\Projects\Cpp\AdventOfCode2022\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,6 +129,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;ENABLE_PROFILING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>D:\Projects\Cpp\AdventOfCode2022\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,6 +145,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;ENABLE_PROFILING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>D:\Projects\Cpp\AdventOfCode2022\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,47 +155,47 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Day12.cpp" />
-    <ClCompile Include="src\Days.cpp" />
-    <ClCompile Include="src\Parsing.cpp" />
-    <ClCompile Include="src\Day11.cpp" />
-    <ClCompile Include="src\Day10.cpp" />
-    <ClCompile Include="src\Day09.cpp" />
-    <ClCompile Include="src\Int2.cpp" />
-    <ClCompile Include="src\Day08.cpp" />
-    <ClCompile Include="src\Day07.cpp" />
-    <ClCompile Include="src\Day06.cpp" />
-    <ClCompile Include="src\ScopeProfiler.cpp" />
-    <ClCompile Include="src\Result.cpp" />
-    <ClCompile Include="src\Day05.cpp" />
-    <ClCompile Include="src\Day04.cpp" />
-    <ClCompile Include="src\Day03.cpp" />
-    <ClCompile Include="src\Day02.cpp" />
-    <ClCompile Include="src\Day01.cpp" />
-    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="Source\Days\Day12.cpp" />
+    <ClCompile Include="Source\Days.cpp" />
+    <ClCompile Include="Source\Utils\Parsing.cpp" />
+    <ClCompile Include="Source\Days\Day11.cpp" />
+    <ClCompile Include="Source\Days\Day10.cpp" />
+    <ClCompile Include="Source\Days\Day09.cpp" />
+    <ClCompile Include="Source\Utils\Int2.cpp" />
+    <ClCompile Include="Source\Days\Day08.cpp" />
+    <ClCompile Include="Source\Days\Day07.cpp" />
+    <ClCompile Include="Source\Days\Day06.cpp" />
+    <ClCompile Include="Source\Utils\ScopeProfiler.cpp" />
+    <ClCompile Include="Source\Result.cpp" />
+    <ClCompile Include="Source\Days\Day05.cpp" />
+    <ClCompile Include="Source\Days\Day04.cpp" />
+    <ClCompile Include="Source\Days\Day03.cpp" />
+    <ClCompile Include="Source\Days\Day02.cpp" />
+    <ClCompile Include="Source\Days\Day01.cpp" />
+    <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Array2D.h" />
-    <ClInclude Include="src\BinaryHeap.h" />
-    <ClInclude Include="src\Day12.h" />
-    <ClInclude Include="src\Parsing.h" />
-    <ClInclude Include="src\Day11.h" />
-    <ClInclude Include="src\Day10.h" />
-    <ClInclude Include="src\Day09.h" />
-    <ClInclude Include="src\Int2.h" />
-    <ClInclude Include="src\Day08.h" />
-    <ClInclude Include="src\Day07.h" />
-    <ClInclude Include="src\Day06.h" />
-    <ClInclude Include="src\Log.h" />
-    <ClInclude Include="src\ScopeProfiler.h" />
-    <ClInclude Include="src\Result.h" />
-    <ClInclude Include="src\Day05.h" />
-    <ClInclude Include="src\Day04.h" />
-    <ClInclude Include="src\Day03.h" />
-    <ClInclude Include="src\Day02.h" />
-    <ClInclude Include="src\Day01.h" />
-    <ClInclude Include="src\Day.h" />
-    <ClInclude Include="src\Days.h" />
+    <ClInclude Include="Source\Utils\Array2D.h" />
+    <ClInclude Include="Source\Utils\BinaryHeap.h" />
+    <ClInclude Include="Source\Days\Day12.h" />
+    <ClInclude Include="Source\Utils\Parsing.h" />
+    <ClInclude Include="Source\Days\Day11.h" />
+    <ClInclude Include="Source\Days\Day10.h" />
+    <ClInclude Include="Source\Days\Day09.h" />
+    <ClInclude Include="Source\Utils\Int2.h" />
+    <ClInclude Include="Source\Days\Day08.h" />
+    <ClInclude Include="Source\Days\Day07.h" />
+    <ClInclude Include="Source\Days\Day06.h" />
+    <ClInclude Include="Source\Utils\Log.h" />
+    <ClInclude Include="Source\Utils\ScopeProfiler.h" />
+    <ClInclude Include="Source\Result.h" />
+    <ClInclude Include="Source\Days\Day05.h" />
+    <ClInclude Include="Source\Days\Day04.h" />
+    <ClInclude Include="Source\Days\Day03.h" />
+    <ClInclude Include="Source\Days\Day02.h" />
+    <ClInclude Include="Source\Days\Day01.h" />
+    <ClInclude Include="Source\Day.h" />
+    <ClInclude Include="Source\Days.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

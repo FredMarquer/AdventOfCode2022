@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 
-#include "Log.h"
-#include "Parsing.h"
 #include "Result.h"
+#include "Utils/Log.h"
+#include "Utils/Parsing.h"
 
 bool tryParseInstruction(const std::string_view& line, InstructionD10& outInstruction)
 {

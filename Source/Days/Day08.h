@@ -3,10 +3,10 @@
 #include <fstream>
 #include <string>
 
-#include "Array2D.h"
 #include "Day.h"
-#include "Int2.h"
 #include "Result.h"
+#include "Utils/Array2D.h"
+#include "Utils/Int2.h"
 
 class Day08 : public Day
 {
@@ -14,7 +14,7 @@ private:
 	Array2D<int> treeMap;
 
 public:
-	std::string getInputPath() const override { return "inputs/08.txt"; }
+	std::string getInputPath() const override { return "Inputs/08.txt"; }
 	bool parseFile(std::ifstream& file) override;
 	Result runPart1() const override;
 	Result runPart2() const override;

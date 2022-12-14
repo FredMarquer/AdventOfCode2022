@@ -6,11 +6,11 @@
 #include <string>
 #include <vector>
 
-#include "Array2D.h"
-#include "BinaryHeap.h"
-#include "Int2.h"
-#include "Log.h"
 #include "Result.h"
+#include "Utils/Array2D.h"
+#include "Utils/BinaryHeap.h"
+#include "Utils/Int2.h"
+#include "Utils/Log.h"
 
 bool tryParseChar(char c, int& height, bool& isStart, bool& isTarget)
 {

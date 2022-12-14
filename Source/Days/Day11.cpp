@@ -7,9 +7,9 @@
 #include <string>
 #include <string_view>
 
-#include "Log.h"
-#include "Parsing.h"
 #include "Result.h"
+#include "Utils/Log.h"
+#include "Utils/Parsing.h"
 
 bool tryParseItems(const std::string_view& line, std::vector<int64_t>& items)
 {

@@ -6,9 +6,9 @@
 #include <string_view>
 #include <vector>
 
-#include "Log.h"
-#include "Parsing.h"
 #include "Result.h"
+#include "Utils/Log.h"
+#include "Utils/Parsing.h"
 
 void sumPart1(const Directory& directory, int& result)
 {

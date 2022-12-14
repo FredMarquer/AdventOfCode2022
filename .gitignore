@@ -1,5 +1,6 @@
 /.vs/
-/bin/
+/Binaries/
+/Intermediates/
 
 *.filters
 *.user

@@ -10,10 +10,10 @@
 #include <vector>
 #include <unordered_set>
 
-#include "Int2.h"
-#include "Log.h"
-#include "Parsing.h"
 #include "Result.h"
+#include "Utils/Int2.h"
+#include "Utils/Log.h"
+#include "Utils/Parsing.h"
 
 Int2 charToDirection(char c)
 {
