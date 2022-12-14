@@ -7,21 +7,22 @@
 #include "Day.h"
 #include "Result.h"
 
-struct Instruction
-{
-	int numberOfBoxes;
-	int fromStackIndex;
-	int toStackIndex;
-
-	Instruction(int numberOfBoxes, int fromStackIndex, int toStackIndex)
-		: numberOfBoxes(numberOfBoxes)
-		, fromStackIndex(fromStackIndex)
-		, toStackIndex(toStackIndex)
-	{}
-};
-
 class Day05 : public Day
 {
+public:
+	struct Instruction
+	{
+		int numberOfBoxes;
+		int fromStackIndex;
+		int toStackIndex;
+
+		Instruction(int numberOfBoxes, int fromStackIndex, int toStackIndex)
+			: numberOfBoxes(numberOfBoxes)
+			, fromStackIndex(fromStackIndex)
+			, toStackIndex(toStackIndex)
+		{}
+	};
+
 private:
 	std::vector<std::vector<char>> stacks;
 	std::vector<Instruction> instructions;

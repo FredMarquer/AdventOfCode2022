@@ -9,12 +9,12 @@
 #include "Utils/Log.h"
 #include "Utils/Parsing.h"
 
-bool tryParseInstruction(const std::string_view& line, InstructionD10& outInstruction)
+bool tryParseInstruction(const std::string_view& line, Day10::Instruction& outInstruction)
 {
     // Parse the op code first
     std::string_view opCodeView = line.substr(0, 4);
     if (opCodeView == "noop") {
-        outInstruction = InstructionD10(OpCodes::Noop);
+        outInstruction = Day10::Instruction(Day10::OpCodes::Noop);
     }
     else if (opCodeView == "addx") {
         // Parse the operand
@@ -22,7 +22,7 @@ bool tryParseInstruction(const std::string_view& line, InstructionD10& outInstru
         if (!tryParse(line.substr(5), operand))
             return false;
 
-        outInstruction = InstructionD10(OpCodes::Addx, operand);
+        outInstruction = Day10::Instruction(Day10::OpCodes::Addx, operand);
     }
     else {
         error("invalid line: {}", line);
@@ -36,7 +36,7 @@ bool Day10::parseFile(std::ifstream& file)
 {
     std::string line;
     while (std::getline(file, line)) {
-        InstructionD10 instruction;
+        Day10::Instruction instruction;
         if (tryParseInstruction(line, instruction))
             instructions.push_back(instruction);
         else
@@ -105,7 +105,7 @@ public:
     }
 };
 
-void runInstructions(const std::vector<InstructionD10>& instructions, Sampler* sampler)
+void runInstructions(const std::vector<Day10::Instruction>& instructions, Sampler* sampler)
 {
     assert(sampler != nullptr);
 
@@ -113,7 +113,7 @@ void runInstructions(const std::vector<InstructionD10>& instructions, Sampler* s
     int x = 1;
 
     size_t instructionIndex = 0;
-    InstructionD10 currentInstruction = InstructionD10();
+    Day10::Instruction currentInstruction = Day10::Instruction();
     int currentInstructionTimer = 0;
 
     // Process the instructions
@@ -124,7 +124,7 @@ void runInstructions(const std::vector<InstructionD10>& instructions, Sampler* s
         if (currentInstructionTimer == 0) {
             if (instructionIndex < instructions.size()) {
                 currentInstruction = instructions[instructionIndex++];
-                currentInstructionTimer = currentInstruction.opCode == OpCodes::Addx ? 2 : 1;
+                currentInstructionTimer = currentInstruction.opCode == Day10::OpCodes::Addx ? 2 : 1;
             }
             else
                 break; // Reached end of instructions
@@ -136,7 +136,7 @@ void runInstructions(const std::vector<InstructionD10>& instructions, Sampler* s
 
         // End of cycle
         if (currentInstructionTimer == 0) {
-            if (currentInstruction.opCode == OpCodes::Addx)
+            if (currentInstruction.opCode == Day10::OpCodes::Addx)
                 x += currentInstruction.operand;
         }
     }

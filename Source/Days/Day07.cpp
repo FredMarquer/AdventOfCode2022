@@ -10,18 +10,18 @@
 #include "Utils/Log.h"
 #include "Utils/Parsing.h"
 
-void sumPart1(const Directory& directory, int& result)
+void sumPart1(const Day07::Directory& directory, int& result)
 {
     if (directory.size <= 100000)
         result += directory.size;
 
-    for (const Directory& subDirectory : directory.subDirectories)
+    for (const Day07::Directory& subDirectory : directory.subDirectories)
         sumPart1(subDirectory, result);
 }
 
-void findDirectorySizeToDelete(const Directory& directory, int minSpaceToDelete, int& bestDirectorySize)
+void findDirectorySizeToDelete(const Day07::Directory& directory, int minSpaceToDelete, int& bestDirectorySize)
 {
-    for (const Directory& subDirectory : directory.subDirectories) {
+    for (const Day07::Directory& subDirectory : directory.subDirectories) {
         if (subDirectory.size >= minSpaceToDelete)
             findDirectorySizeToDelete(subDirectory, minSpaceToDelete, bestDirectorySize);
     }
@@ -30,11 +30,11 @@ void findDirectorySizeToDelete(const Directory& directory, int minSpaceToDelete,
         bestDirectorySize = directory.size;
 }
 
-void Directory::initializeSize()
+void Day07::Directory::initializeSize()
 {
     assert(size == 0);
 
-    for (Directory& subDirectory : subDirectories) {
+    for (Day07::Directory& subDirectory : subDirectories) {
         subDirectory.initializeSize(); // Initialize size recursively for all sub directories
         size += subDirectory.size;
     }
@@ -43,7 +43,7 @@ void Directory::initializeSize()
         size += file.size;
 }
 
-bool Directory::tryGetSubDirectoryIndex(const std::string_view& directoryName, size_t& outSubDirectoryIndex) const
+bool Day07::Directory::tryGetSubDirectoryIndex(const std::string_view& directoryName, size_t& outSubDirectoryIndex) const
 {
     for (size_t i = 0; i < subDirectories.size(); ++i) {
         if (subDirectories[i].name == directoryName) {

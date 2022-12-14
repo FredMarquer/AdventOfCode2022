@@ -44,7 +44,7 @@ bool tryParseIntAtEnd(const std::string_view& line, size_t position, size_t& out
     return tryParse(line.substr(position), outValue);
 }
 
-bool tryParseInspectFunction(const std::string_view& line, ItemModifierFunction& outFunction)
+bool tryParseInspectFunction(const std::string_view& line, Day11::ItemModifierFunction& outFunction)
 {
     char operation = line[23];
     if (operation == '+') {
@@ -75,7 +75,7 @@ bool tryParseInspectFunction(const std::string_view& line, ItemModifierFunction&
     return true;
 }
 
-bool tryParseMonkey(std::ifstream& file, Monkey& outMonkey)
+bool tryParseMonkey(std::ifstream& file, Day11::Monkey& outMonkey)
 {
     assert(outMonkey.startingItems.size() == 0);
 
@@ -120,7 +120,7 @@ bool Day11::parseFile(std::ifstream& file)
     return true;
 }
 
-int64_t simulate(const std::vector<Monkey>& monkeys, int numberOfRound, const ItemModifierFunction& worryLevelManagementFunction)
+int64_t simulate(const std::vector<Day11::Monkey>& monkeys, int numberOfRound, const Day11::ItemModifierFunction& worryLevelManagementFunction)
 {
     // Initialize the working data
     size_t monkeyCount = monkeys.size();
@@ -132,7 +132,7 @@ int64_t simulate(const std::vector<Monkey>& monkeys, int numberOfRound, const It
     // Simulate X rounds
     for (int round = 0; round < numberOfRound; ++round) {
         for (size_t monkeyIndex = 0; monkeyIndex < monkeyCount; ++monkeyIndex) {
-            const Monkey& monkey = monkeys[monkeyIndex];
+            const Day11::Monkey& monkey = monkeys[monkeyIndex];
             std::vector<int64_t>& items = itemsPerMonkey[monkeyIndex];
             int64_t& inspectCount = inspectCountPerMonkey[monkeyIndex];
 

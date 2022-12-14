@@ -9,9 +9,6 @@
 #include "Result.h"
 #include "Utils/Log.h"
 
-static const int ScoreTablePart1[] = { 3, 0, 6, 6, 3, 0, 0, 6, 3 };
-static const int ScoreTablePart2[] = { 3, 1, 2, 1, 2, 3, 2, 3, 1 };
-
 bool parseLetter(char letter, int& outShape)
 {
     switch (letter)
@@ -34,12 +31,16 @@ bool parseLetter(char letter, int& outShape)
     return false;
 }
 
+static const int ScoreTablePart1[] = { 3, 0, 6, 6, 3, 0, 0, 6, 3 };
+
 int computePairScorePart1(std::pair<int, int> pair) {
     int shapeScore = pair.second + 1;
     size_t tableIndex = pair.first + pair.second * 3;
     int outcomeScore = ScoreTablePart1[tableIndex];
     return shapeScore + outcomeScore;
 }
+
+static const int ScoreTablePart2[] = { 3, 1, 2, 1, 2, 3, 2, 3, 1 };
 
 int computePairScorePart2(std::pair<int, int> pair) {
     int outcomeScore = pair.second * 3;

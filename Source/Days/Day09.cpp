@@ -28,7 +28,7 @@ Int2 charToDirection(char c)
     }
 }
 
-bool tryParseMotion(const std::string_view& line, Motion& outMotion)
+bool tryParseMotion(const std::string_view& line, Day09::Motion& outMotion)
 {
     // Parse the direction
     Int2 direction = charToDirection(line[0]);
@@ -41,7 +41,7 @@ bool tryParseMotion(const std::string_view& line, Motion& outMotion)
     if (!tryParse(line.substr(2), distance))
         return false;
 
-    outMotion = Motion(direction, distance);
+    outMotion = Day09::Motion(direction, distance);
     return true;
 }
 
@@ -85,7 +85,7 @@ bool move(const Int2& direction, std::array<Int2, N>& rope)
 }
 
 template<size_t N>
-int simulate(const std::vector<Motion>& motions)
+int simulate(const std::vector<Day09::Motion>& motions)
 {
     std::array<Int2, N> rope = { Int2::Zero };
 
@@ -93,7 +93,7 @@ int simulate(const std::vector<Motion>& motions)
     visitedPositions.insert(rope.back());
 
     // Process the motions
-    for (const Motion& motion : motions) {
+    for (const Day09::Motion& motion : motions) {
         for (int i = 0; i < motion.distance; ++i) {
             if (move(motion.direction, rope)) {
                 if (!visitedPositions.contains(rope.back()))

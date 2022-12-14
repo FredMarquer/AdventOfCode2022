@@ -10,7 +10,7 @@
 #include "Result.h"
 #include "Utils/Log.h"
 
-void applyInstructionCrateMover9000(const Instruction& instruction, std::vector<std::vector<char>>& stacks)
+void applyInstructionCrateMover9000(const Day05::Instruction& instruction, std::vector<std::vector<char>>& stacks)
 {
     std::vector<char>& fromStack = stacks[instruction.fromStackIndex];
     std::vector<char>& toStack = stacks[instruction.toStackIndex];
@@ -21,7 +21,7 @@ void applyInstructionCrateMover9000(const Instruction& instruction, std::vector<
     }
 }
 
-void applyInstructionCrateMover9001(const Instruction& instruction, std::vector<std::vector<char>>& stacks)
+void applyInstructionCrateMover9001(const Day05::Instruction& instruction, std::vector<std::vector<char>>& stacks)
 {
     std::vector<char>& fromStack = stacks[instruction.fromStackIndex];
     std::vector<char>& toStack = stacks[instruction.toStackIndex];

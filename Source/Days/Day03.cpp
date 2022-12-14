@@ -30,7 +30,7 @@ void addCompartmentToBitField(std::string_view compartment, uint64_t& bitField)
     }
 }
 
-char findSharedItem(const Rucksack& rucksack)
+char findSharedItem(const Day03::Rucksack& rucksack)
 {
     uint64_t bitField = 0;
     addCompartmentToBitField(rucksack.firstCompartment, bitField);
@@ -45,7 +45,7 @@ char findSharedItem(const Rucksack& rucksack)
     return 0;
 }
 
-char findBadgePriority(const Rucksack& rucksack1, const Rucksack& rucksack2, const Rucksack& rucksack3)
+char findBadgePriority(const Day03::Rucksack& rucksack1, const Day03::Rucksack& rucksack2, const Day03::Rucksack& rucksack3)
 {
     // Create a bit field for each rucksacks contents
     uint64_t bitField1 = 0;

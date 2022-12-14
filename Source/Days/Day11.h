@@ -8,21 +8,22 @@
 #include "Day.h"
 #include "Result.h"
 
-typedef std::function<void(int64_t&)> ItemModifierFunction;
-
-struct Monkey
-{
-	std::vector<int64_t> startingItems;
-	ItemModifierFunction inspectFunction;
-	int64_t testDivisor;
-	size_t monkeyIndexIfTrue;
-	size_t monkeyIndexIfFalse;
-
-	Monkey(): testDivisor(0), monkeyIndexIfTrue(0), monkeyIndexIfFalse(0) {}
-};
-
 class Day11 : public Day
 {
+public:
+	typedef std::function<void(int64_t&)> ItemModifierFunction;
+
+	struct Monkey
+	{
+		std::vector<int64_t> startingItems;
+		ItemModifierFunction inspectFunction;
+		int64_t testDivisor;
+		size_t monkeyIndexIfTrue;
+		size_t monkeyIndexIfFalse;
+
+		Monkey() : testDivisor(0), monkeyIndexIfTrue(0), monkeyIndexIfFalse(0) {}
+	};
+
 private:
 	std::vector<Monkey> monkeys;
 

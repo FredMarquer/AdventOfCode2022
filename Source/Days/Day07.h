@@ -7,36 +7,37 @@
 #include "Day.h"
 #include "Result.h"
 
-struct File
-{
-	std::string name;
-	int size;
-
-	File(const std::string_view& name, int size) : name(name), size(size) {}
-	File(File&& other) noexcept : name(std::move(other.name)), size(other.size) {}
-};
-
-struct Directory
-{
-	std::string name;
-	std::vector<Directory> subDirectories;
-	std::vector<File> files;
-	int size;
-
-	Directory(const std::string_view& name) : name(name), size(0) {}
-	Directory(Directory&& other) noexcept
-		: name(std::move(other.name))
-		, subDirectories(std::move(other.subDirectories))
-		, files(std::move(other.files))
-		, size(other.size)
-	{}
-
-	void initializeSize();
-	bool tryGetSubDirectoryIndex(const std::string_view& directoryName, size_t& outSubDirectoryIndex) const;
-};
-
 class Day07 : public Day
 {
+public:
+	struct File
+	{
+		std::string name;
+		int size;
+
+		File(const std::string_view& name, int size) : name(name), size(size) {}
+		File(File&& other) noexcept : name(std::move(other.name)), size(other.size) {}
+	};
+
+	struct Directory
+	{
+		std::string name;
+		std::vector<Directory> subDirectories;
+		std::vector<File> files;
+		int size;
+
+		Directory(const std::string_view& name) : name(name), size(0) {}
+		Directory(Directory&& other) noexcept
+			: name(std::move(other.name))
+			, subDirectories(std::move(other.subDirectories))
+			, files(std::move(other.files))
+			, size(other.size)
+		{}
+
+		void initializeSize();
+		bool tryGetSubDirectoryIndex(const std::string_view& directoryName, size_t& outSubDirectoryIndex) const;
+	};
+
 private:
 	Directory rootDirectory;
 

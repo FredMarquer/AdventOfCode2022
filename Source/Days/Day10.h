@@ -7,26 +7,28 @@
 #include "Day.h"
 #include "Result.h"
 
-enum class OpCodes
-{
-	Noop,
-	Addx,
-};
-
-struct InstructionD10
-{
-	OpCodes opCode;
-	int operand;
-
-	InstructionD10() : opCode(OpCodes::Noop), operand(0) {}
-	InstructionD10(OpCodes opCode) : opCode(opCode), operand(0) {}
-	InstructionD10(OpCodes opCode, int operand) : opCode(opCode), operand(operand) {}
-};
-
 class Day10 : public Day
 {
+public:
+	enum class OpCodes
+	{
+		Noop,
+		Addx,
+	};
+
+	struct Instruction
+	{
+		OpCodes opCode;
+		int operand;
+
+		Instruction() : opCode(OpCodes::Noop), operand(0) {}
+		Instruction(OpCodes opCode) : opCode(opCode), operand(0) {}
+		Instruction(OpCodes opCode, int operand) : opCode(opCode), operand(operand) {}
+	};
+
+
 private:
-	std::vector<InstructionD10> instructions;
+	std::vector<Instruction> instructions;
 
 public:
 	std::string getInputPath() const override { return "Inputs/10.txt"; }

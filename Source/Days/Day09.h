@@ -8,17 +8,18 @@
 #include "Result.h"
 #include "Utils/Int2.h"
 
-struct Motion
-{
-	Int2 direction;
-	int distance;
-
-	Motion() : direction(Int2::Zero), distance(0) {}
-	Motion(Int2 direction, int distance) : direction(direction), distance(distance) {}
-};
-
 class Day09 : public Day
 {
+public:
+	struct Motion
+	{
+		Int2 direction;
+		int distance;
+
+		Motion() : direction(Int2::Zero), distance(0) {}
+		Motion(Int2 direction, int distance) : direction(direction), distance(distance) {}
+	};
+
 private:
 	std::vector<Motion> motions;
 

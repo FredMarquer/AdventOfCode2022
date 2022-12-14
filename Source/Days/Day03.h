@@ -7,20 +7,21 @@
 #include "Day.h"
 #include "Result.h"
 
-struct Rucksack
-{
-	std::string firstCompartment;
-	std::string secondCompartment;
-
-	Rucksack() {}
-	Rucksack(Rucksack&& other) noexcept
-		: firstCompartment(std::move(other.firstCompartment))
-		, secondCompartment(std::move(other.secondCompartment))
-	{}
-};
-
 class Day03 : public Day
 {
+public:
+	struct Rucksack
+	{
+		std::string firstCompartment;
+		std::string secondCompartment;
+
+		Rucksack() {}
+		Rucksack(Rucksack&& other) noexcept
+			: firstCompartment(std::move(other.firstCompartment))
+			, secondCompartment(std::move(other.secondCompartment))
+		{}
+	};
+
 private:
 	std::vector<Rucksack> rucksacks;
 
