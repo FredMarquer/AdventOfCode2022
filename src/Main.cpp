@@ -31,7 +31,7 @@ bool parsePartOption(size_t argc, char* argv[], size_t& argIndex, int& outPart)
         return false;
     }
 
-    outPart = std::stoi(argv[++argIndex]);
+    outPart = std::atoi(argv[++argIndex]);
     if (outPart < 0 || outPart > 2) {
         error("invalid part argument: {}", argv[argIndex]);
         return false;
@@ -40,7 +40,7 @@ bool parsePartOption(size_t argc, char* argv[], size_t& argIndex, int& outPart)
     return true;
 }
 
-bool parseCommandLineArguments(const std::string& arg, size_t argc, char* argv[], size_t& argIndex, int& outDay, int& outPart)
+bool parseCommandLineArguments(const char* arg, size_t argc, char* argv[], size_t& argIndex, int& outDay, int& outPart)
 {
     if (arg == "--day")
         return parseDayOption(argc, argv, argIndex, outDay);
@@ -55,8 +55,7 @@ bool parseCommandLineArguments(const std::string& arg, size_t argc, char* argv[]
 bool parseCommandLineArguments(size_t argc, char* argv[], int& outDay, int& outPart)
 {
     for (size_t argIndex = 1; argIndex < argc; ++argIndex) {
-        std::string arg(argv[argIndex]);
-        if (!parseCommandLineArguments(arg, argc, argv, argIndex, outDay, outPart))
+        if (!parseCommandLineArguments(argv[argIndex], argc, argv, argIndex, outDay, outPart))
             return false;
     }
 
