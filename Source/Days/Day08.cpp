@@ -62,15 +62,15 @@ Result Day08::runPart1() const
     Array2D<bool> visibilityMap(treeMap.getWidth(), treeMap.getHeight());
     int visibilityCount = 0;
 
-    int width = treeMap.getWidth();
-    int height = treeMap.getHeight();
+    size_t width = treeMap.getWidth();
+    size_t height = treeMap.getHeight();
 
-    for (int x = 0; x < width; ++x) {
+    for (size_t x = 0; x < width; ++x) {
         updateTreesVisibility(Int2(x, 0), Int2::Up, visibilityMap, visibilityCount);
         updateTreesVisibility(Int2(x, height - 1), Int2::Down, visibilityMap, visibilityCount);
     }
 
-    for (int y = 0; y < height; ++y) {
+    for (size_t y = 0; y < height; ++y) {
         updateTreesVisibility(Int2(0, y), Int2::Right, visibilityMap, visibilityCount);
         updateTreesVisibility(Int2(width - 1, y), Int2::Left, visibilityMap, visibilityCount);
     }

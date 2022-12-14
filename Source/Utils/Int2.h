@@ -5,7 +5,7 @@
 
 struct Int2
 {
-	int x, y;
+	int32_t x, y;
 
 	static const Int2 Zero;
 	static const Int2 Right;
@@ -14,7 +14,7 @@ struct Int2
 	static const Int2 Down;
 
 	Int2() : x(0), y(0) {}
-	Int2(int x, int y) : x(x), y(y) {}
+	Int2(int32_t x, int32_t y) : x(x), y(y) {}
 
 	bool isUnit() const;
 

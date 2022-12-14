@@ -14,7 +14,7 @@ private:
 	T* data;
 
 public:
-	Array2D() : width(0), height(0) {}
+	Array2D() : width(0), height(0), data(nullptr){}
 
 	Array2D(size_t width, size_t height)
 		: width(width)
@@ -22,7 +22,7 @@ public:
 	{
 		assert(width > 0);
 		assert(height > 0);
-		int size = width * height;
+		size_t size = width * height;
 		data = new T[size] { T() };
 	}
 

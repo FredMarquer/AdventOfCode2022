@@ -7,7 +7,7 @@
 #include "Result.h"
 #include "Utils/Log.h"
 
-int getLetterIndex(char letter)
+size_t getLetterIndex(char letter)
 {
     if (letter < 'a' || letter > 'z') {
         error("invalid letter: ", letter);
@@ -30,7 +30,7 @@ public:
     void addLetter(char letter)
     {
         // Increment the letter count
-        int letterIndex = getLetterIndex(letter);
+        size_t letterIndex = getLetterIndex(letter);
         ++letterCounts[letterIndex];
 
         // Update the unique letter count if necessary
@@ -45,7 +45,7 @@ public:
     void removeLetter(char letter)
     {
         // Decrement the letter count
-        int letterIndex = getLetterIndex(letter);
+        size_t letterIndex = getLetterIndex(letter);
         --letterCounts[letterIndex];
         assert(letterCounts[letterIndex] >= 0);
 

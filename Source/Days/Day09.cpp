@@ -59,7 +59,7 @@ bool Day09::parseFile(std::ifstream& file)
     return true;
 }
 
-template<int N>
+template<size_t N>
 bool move(const Int2& direction, std::array<Int2, N>& rope)
 {
     assert(direction.isUnit());
@@ -68,7 +68,7 @@ bool move(const Int2& direction, std::array<Int2, N>& rope)
     rope[0] += direction;
 
     // Propagate the move
-    for (int i = 0; i < N - 1; ++i) {
+    for (size_t i = 0; i < N - 1; ++i) {
         Int2 delta = rope[i] - rope[i + 1];
         if (abs(delta.x) <= 1 && abs(delta.y) <= 1)
             return false;
@@ -84,7 +84,7 @@ bool move(const Int2& direction, std::array<Int2, N>& rope)
     return true;
 }
 
-template<int N>
+template<size_t N>
 int simulate(const std::vector<Motion>& motions)
 {
     std::array<Int2, N> rope = { Int2::Zero };

@@ -36,14 +36,14 @@ bool parseLetter(char letter, int& outShape)
 
 int computePairScorePart1(std::pair<int, int> pair) {
     int shapeScore = pair.second + 1;
-    int tableIndex = pair.first + pair.second * 3;
+    size_t tableIndex = pair.first + pair.second * 3;
     int outcomeScore = ScoreTablePart1[tableIndex];
     return shapeScore + outcomeScore;
 }
 
 int computePairScorePart2(std::pair<int, int> pair) {
     int outcomeScore = pair.second * 3;
-    int tableIndex = pair.first + pair.second * 3;
+    size_t tableIndex = pair.first + pair.second * 3;
     int shapeScore = ScoreTablePart2[tableIndex];
     return shapeScore + outcomeScore;
 }
