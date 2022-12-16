@@ -1,6 +1,7 @@
 #pragma once
 
 #include <assert.h>
+#include <iostream>
 #include <vector>
 
 #include "Int2.h"
@@ -153,4 +154,18 @@ public:
 		return isInRange(coord.x, coord.y);
 	}
 };
+
+template<class T>
+std::ostream& operator<<(std::ostream& os, const Array2D<T>& lhs)
+{
+	for (size_t y = 0; y < lhs.getHeight(); ++y) {
+		for (size_t x = 0; x < lhs.getWidth(); ++x) {
+			os << lhs.getElementAt(x, y);
+		}
+
+		os << std::endl;
+	}
+
+	return os;
+}
 
