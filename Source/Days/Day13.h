@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <string>
+#include <variant>
 #include <vector>
 
 #include "Day.h"
@@ -12,12 +13,16 @@ class Day13 : public Day
 public:
 	struct Node
 	{
-		bool isInteger;
-		int integer;
-		std::vector<Node> list;
+		std::variant<int, std::vector<Node>> data;
 
-		Node() : isInteger(false), integer(0) {}
-		Node(int integer) : isInteger(true), integer(integer) {}
+		Node() : data(std::vector<Node>()) {}
+		Node(int integer) : data(integer) {}
+
+		bool isInteger() const { return std::holds_alternative<int>(this->data); }
+		bool isList() const { return std::holds_alternative<std::vector<Day13::Node>>(this->data); }
+		int getInteger() const { return std::get<int>(this->data); }
+		std::vector<Node>& getList() { return std::get<std::vector<Day13::Node>>(this->data); }
+		const std::vector<Node>& getList() const { return std::get<std::vector<Day13::Node>>(this->data); }
 	};
 
 	struct Packet

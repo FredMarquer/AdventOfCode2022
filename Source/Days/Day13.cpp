@@ -13,8 +13,8 @@
 
 bool tryParseListNode(std::string_view& view, Day13::Node& currentNode)
 {
-    assert(!currentNode.isInteger);
-
+    assert(currentNode.isList());
+    
     while (!view.empty()) {
         char c = view[0];
         if (c == '[') {
@@ -23,8 +23,8 @@ bool tryParseListNode(std::string_view& view, Day13::Node& currentNode)
             view = view.substr(1);
             if (!tryParseListNode(view, newNode))
                 return false;
-            assert(!newNode.isInteger);
-            currentNode.list.push_back(std::move(newNode));
+            assert(newNode.isList());
+            currentNode.getList().push_back(std::move(newNode));
         }
         else if (c == ']') {
             // End current list node
@@ -42,7 +42,7 @@ bool tryParseListNode(std::string_view& view, Day13::Node& currentNode)
             size_t separator = std::min(view.find_first_of(','), view.find_first_of(']'));
             if (!tryParse(view.substr(0, separator), integer))
                 return false;
-            currentNode.list.push_back(integer);
+            currentNode.getList().push_back(integer);
             view = view.substr(separator);
         }
     }
@@ -104,13 +104,15 @@ struct List
 
     List(const Day13::Node& node)
     {
-        if (node.isInteger) {
+        if (node.isInteger()) {
             ptr = &node;
             count = 1;
         }
         else {
-            ptr = node.list.data();
-            count = node.list.size();
+            assert(node.isList());
+            const std::vector<Day13::Node>& list = node.getList();
+            ptr = list.data();
+            count = list.size();
         }
     }
 };
@@ -132,8 +134,8 @@ int compareLists(const List& lhs, const List& rhs)
 
 int compareNodes(const Day13::Node& lhs, const Day13::Node& rhs)
 {
-    if (lhs.isInteger && rhs.isInteger)
-        return lhs.integer - rhs.integer;
+    if (lhs.isInteger() && rhs.isInteger())
+        return lhs.getInteger() - rhs.getInteger();
 
     return compareLists(lhs, rhs);
 }
