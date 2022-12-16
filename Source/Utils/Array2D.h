@@ -14,7 +14,11 @@ private:
 	T* data;
 
 public:
-	Array2D() : width(0), height(0), data(nullptr){}
+	Array2D()
+		: width(0)
+		, height(0)
+		, data(nullptr)
+	{}
 
 	Array2D(size_t width, size_t height)
 		: width(width)
@@ -36,6 +40,15 @@ public:
 		assert(width * height == vector.size());
 		data = new T[vector.size()];
 		memcpy(data, vector.data(), vector.size() * sizeof(T));
+	}
+
+	Array2D(const Array2D& other)
+		: width(other.width)
+		, height(other.height)
+	{
+		int size = width * height;
+		data = new T[size];
+		memcpy(data, other.data, size* sizeof(T));
 	}
 
 	Array2D(Array2D&& other)
