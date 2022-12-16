@@ -153,6 +153,24 @@ public:
 	{
 		return isInRange(coord.x, coord.y);
 	}
+
+	void fillColumn(size_t x, const T& value)
+	{
+		int index = getIndex(x, 0);
+		int endIndex = getIndex(x, height - 1);
+		for (; index <= endIndex; index += width) {
+			data[index] = value;
+		}
+	}
+
+	void fillRaw(size_t y, const T& value)
+	{
+		int index = getIndex(0, y);
+		int endIndex = getIndex(width - 1, y);
+		for (; index <= endIndex; ++index) {
+			data[index] = value;
+		}
+	}
 };
 
 template<class T>
