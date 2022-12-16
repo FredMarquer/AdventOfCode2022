@@ -1,3 +1,4 @@
+#include <exception>
 #include <filesystem>
 #include <fstream>
 #include <span>
@@ -90,14 +91,26 @@ void runDay(int dayNumber, int part)
     }
 
     // Parse the input file
+    try
     {
         profileScope("file parsing");
-        if (!day->parseFile(file)) {
-            error("fail to parse the input file: {}", input);
-            file.close();
-            return;
-        }
+        day->parseFile(file);
     }
+    catch (std::exception& e)
+    {
+        error("an exception has occured during file parsing:");
+        error("{}", e.what());
+        file.close();
+        return;
+    }
+    catch (...)
+    {
+        error("an unknow exception has occured during file parsing");
+        file.close();
+        return;
+    }
+
+    file.close();
 
     bool runPart1 = part == 0 || part == 1;
     bool runPart2 = part == 0 || part == 2;
@@ -129,8 +142,6 @@ void runDay(int dayNumber, int part)
         else
             debug("no expected result");
     }
-
-    file.close();
 }
 
 void runAllDays(int part)

@@ -7,7 +7,7 @@
 
 #include "Result.h"
 
-bool Day01::parseFile(std::ifstream& file)
+void Day01::parseFile(std::ifstream& file)
 {
     int calories = 0;
     std::string line;
@@ -19,8 +19,6 @@ bool Day01::parseFile(std::ifstream& file)
         else
             calories += std::stoi(line);
     }
-
-    return true;
 }
 
 Result Day01::runPart1() const

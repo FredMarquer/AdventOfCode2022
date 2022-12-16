@@ -8,7 +8,50 @@
 #include <vector>
 
 #include "Result.h"
-#include "Utils/Log.h"
+#include "Utils/Exception.h"
+
+void Day05::parseFile(std::ifstream& file)
+{
+    stacks.resize(9);
+
+    // Parse the box stacks
+    std::string line;
+    while (std::getline(file, line)) {
+        if (line[1] == '1')
+            break;
+
+        for (size_t i = 0; i < 9; ++i) {
+            size_t pos = i * 4 + 1;
+            char box = line[pos];
+            if (box != ' ') {
+                std::vector<char>& stack = stacks[i];
+                stack.push_back(box);
+            }
+        }
+    }
+
+    // Reverse the box stacks
+    for (size_t i = 0; i < 9; ++i)
+        std::reverse(stacks[i].begin(), stacks[i].end());
+
+    // Skip the blank line
+    std::getline(file, line);
+    assert(line.empty());
+
+    // Parse the instruction
+    std::regex regex("move ([0-9]*) from ([0-9]*) to ([0-9]*)");
+    std::smatch matches;
+    while (std::getline(file, line)) {
+        if (std::regex_search(line, matches, regex)) {
+            int numberOfBoxes = std::stoi(matches[1]);
+            int fromStackIndex = std::stoi(matches[2]) - 1;
+            int toStackIndex = std::stoi(matches[3]) - 1;
+            instructions.push_back(Instruction(numberOfBoxes, fromStackIndex, toStackIndex));
+        }
+        else
+            exception("no match found for line: {}", line);
+    }
+}
 
 void applyInstructionCrateMover9000(const Day05::Instruction& instruction, std::vector<std::vector<char>>& stacks)
 {
@@ -41,53 +84,6 @@ std::string result(const std::vector<std::vector<char>>& stacks)
         result.push_back(stack.back());
 
     return result;
-}
-
-bool Day05::parseFile(std::ifstream& file)
-{
-    stacks.resize(9);
-
-    // Parse the box stacks
-    std::string line;
-    while (std::getline(file, line)) {
-        if (line[1] == '1')
-            break;
-        
-        for (size_t i = 0; i < 9; ++i) {
-            size_t pos = i * 4 + 1;
-            char box = line[pos];
-            if (box != ' ') {
-                std::vector<char>& stack = stacks[i];
-                stack.push_back(box);
-            }
-        }
-    }
-
-    // Reverse the box stacks
-    for (size_t i = 0; i < 9; ++i)
-        std::reverse(stacks[i].begin(), stacks[i].end());
-
-    // Skip the blank line
-    std::getline(file, line);
-    assert(line.empty());
-
-    // Parse the instruction
-    std::regex regex("move ([0-9]*) from ([0-9]*) to ([0-9]*)");
-    std::smatch matches;
-    while (std::getline(file, line)) {
-        if (std::regex_search(line, matches, regex)) {
-            int numberOfBoxes = std::stoi(matches[1]);
-            int fromStackIndex = std::stoi(matches[2]) - 1;
-            int toStackIndex = std::stoi(matches[3]) - 1;
-            instructions.push_back(Instruction(numberOfBoxes, fromStackIndex, toStackIndex));
-        }
-        else {
-            error("no match found for line: {}", line);
-            return false;
-        }
-    }
-
-    return true;
 }
 
 Result Day05::runPart1() const

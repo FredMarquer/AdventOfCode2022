@@ -9,10 +9,11 @@
 #include "Result.h"
 #include "Utils/Array2D.h"
 #include "Utils/BinaryHeap.h"
+#include "Utils/Exception.h"
 #include "Utils/Int2.h"
 #include "Utils/Log.h"
 
-bool tryParseChar(char c, int& height, bool& isStart, bool& isTarget)
+int parseHeight(char c, bool& isStart, bool& isTarget)
 {
     isStart = false;
     isTarget = false;
@@ -25,16 +26,13 @@ bool tryParseChar(char c, int& height, bool& isStart, bool& isTarget)
         isTarget = true;
         c = 'z';
     }
-    else if (c < 'a' || c > 'z') {
-        error("invalid char: {}", c);
-        return false;
-    }
+    else if (c < 'a' || c > 'z')
+        exception("invalid char: {}", c);
 
-    height = c - 'a';
-    return true;
+    return c - 'a';
 }
 
-bool Day12::parseFile(std::ifstream& file)
+void Day12::parseFile(std::ifstream& file)
 {
     size_t mapWidth = 0;
     size_t mapHeight = 0;
@@ -42,21 +40,16 @@ bool Day12::parseFile(std::ifstream& file)
 
     std::string line;
     while (std::getline(file, line)) {
-        if (line.empty()) {
-            error("line is empty");
-            return false;
-        }
+        if (line.empty())
+            exception("line is empty");
 
         // Push the line into the height map
         for (size_t i = 0; i < line.size(); ++i) {
-            int cellHeight;
             bool isStart, isTarget;
-            if (!tryParseChar(line[i], cellHeight, isStart, isTarget))
-                return false;
+            int cellHeight = parseHeight(line[i], isStart, isTarget);
             
             if (isStart)
                 start = Int2(i, mapHeight);
-
             if (isTarget)
                 target = Int2(i, mapHeight);
 
@@ -68,14 +61,11 @@ bool Day12::parseFile(std::ifstream& file)
         if (mapWidth == 0)
             mapWidth = line.size();
 
-        if (line.size() != mapWidth) {
-            error("line size (= {}) doesn't match the map width (= {})", line.size(), mapWidth);
-            return false;
-        }
+        if (line.size() != mapWidth)
+            exception("line size (= {}) doesn't match the map width (= {})", line.size(), mapWidth);
     }
 
     heightMap = Array2D(mapWidth, mapHeight, heightData);
-    return true;
 }
 
 typedef std::function<bool(int, int)> TransitionConditionFunction;

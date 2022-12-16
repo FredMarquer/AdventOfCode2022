@@ -203,6 +203,7 @@
     <ClInclude Include="Source\Days\Day01.h" />
     <ClInclude Include="Source\Day.h" />
     <ClInclude Include="Source\Days.h" />
+    <ClInclude Include="Source\Utils\Exception.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

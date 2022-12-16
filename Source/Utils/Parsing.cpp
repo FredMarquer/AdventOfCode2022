@@ -4,48 +4,33 @@
 #include <string_view>
 
 #include "Log.h"
+#include "Exception.h"
 
-bool tryParse(const std::string_view& view, int32_t& outValue)
+void parse(const std::string_view& view, int32_t& outValue)
 {
     auto result = std::from_chars(view.data(), view.data() + view.size(), outValue);
-    if (result.ec != std::errc()) {
-        error("can't parse string view: {}", view);
-        return false;
-    }
-
-    return true;
+    if (result.ec != std::errc())
+        exception("can't parse string view: {}", view);
 }
 
-bool tryParse(const std::string_view& view, uint32_t& outValue)
+void parse(const std::string_view& view, uint32_t& outValue)
 {
     auto result = std::from_chars(view.data(), view.data() + view.size(), outValue);
-    if (result.ec != std::errc()) {
-        error("can't parse string view: {}", view);
-        return false;
-    }
-
-    return true;
+    if (result.ec != std::errc())
+        exception("can't parse string view: {}", view);
 }
 
-bool tryParse(const std::string_view& view, int64_t& outValue)
+void parse(const std::string_view& view, int64_t& outValue)
 {
     auto result = std::from_chars(view.data(), view.data() + view.size(), outValue);
-    if (result.ec != std::errc()) {
-        error("can't parse string view: {}", view);
-        return false;
-    }
-
-    return true;
+    if (result.ec != std::errc())
+        exception("can't parse string view: {}", view);
 }
 
-bool tryParse(const std::string_view& view, uint64_t& outValue)
+void parse(const std::string_view& view, uint64_t& outValue)
 {
     auto result = std::from_chars(view.data(), view.data() + view.size(), outValue);
-    if (result.ec != std::errc()) {
-        error("can't parse string view: {}", view);
-        return false;
-    }
-
-    return true;
+    if (result.ec != std::errc())
+        exception("can't parse string view: {}", view);
 }
 

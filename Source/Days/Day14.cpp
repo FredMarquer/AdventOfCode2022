@@ -8,8 +8,8 @@
 
 #include "Result.h"
 #include "Utils/Array2D.h"
+#include "Utils/Exception.h"
 #include "Utils/Int2.h"
-#include "Utils/Log.h"
 #include "Utils/Parsing.h"
 #include "Utils/Rect.h"
 
@@ -56,30 +56,26 @@ bool tryParseNextPoint(std::string_view& view, Int2& outPoint)
 
     // Parse x
     size_t comma = view.find_first_of(',');
-    if (!tryParse(view.substr(0, comma), outPoint.x))
-        return false;
+    parse(view.substr(0, comma), outPoint.x);
 
     // Parse y
     view = view.substr(comma + 1);
     size_t space = view.find_first_of(' ');
-    if (!tryParse(view.substr(0, space), outPoint.y))
-        return false;
+    parse(view.substr(0, space), outPoint.y);
 
     view = view.substr(std::min(space + 4, view.size()));
     return true;
 }
 
-bool tryParseLine(const std::string line, std::vector<Line>& lines, Rect& rect)
+void parseLine(const std::string line, std::vector<Line>& lines, Rect& rect)
 {
     std::string_view view = line;
     Int2 start;
     Int2 end;
 
     // Parse the first point
-    if (!tryParseNextPoint(view, start)) {
-        error("fail to parse the first point: {}", line);
-        return false;
-    }
+    if (!tryParseNextPoint(view, start))
+        exception("fail to parse the first point: {}", line);
 
     rect.encapsulate(start);
 
@@ -89,21 +85,17 @@ bool tryParseLine(const std::string line, std::vector<Line>& lines, Rect& rect)
         rect.encapsulate(end);
         start = end;
     }
-
-    return true;
 }
 
-bool Day14::parseFile(std::ifstream& file)
+void Day14::parseFile(std::ifstream& file)
 {
     std::vector<Line> lines;
     Rect rect = Rect::Null;
 
     // Generate the list of lines
     std::string line;
-    while (std::getline(file, line)) {
-        if (!tryParseLine(line, lines, rect))
-            return false;
-    }
+    while (std::getline(file, line))
+        parseLine(line, lines, rect);
 
     // Extend the rect for part 2
     assert(rect.min.y >= 0);
@@ -126,8 +118,6 @@ bool Day14::parseFile(std::ifstream& file)
             coord += line.direction;
         }
     }
-
-    return true;
 }
 
 bool simulateSandUnit(const Int2& source, Array2D<bool>& caveMap)

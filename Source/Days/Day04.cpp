@@ -8,10 +8,10 @@
 #include <vector>
 
 #include "Result.h"
-#include "Utils/Log.h"
+#include "Utils/Exception.h"
 #include "Utils/Range.h"
 
-bool Day04::parseFile(std::ifstream& file)
+void Day04::parseFile(std::ifstream& file)
 {
     std::string line;
     std::regex regex("([0-9]*)-([0-9]*),([0-9]*)-([0-9]*)");
@@ -25,13 +25,9 @@ bool Day04::parseFile(std::ifstream& file)
             std::pair pair(Range(firstMin, firstMax), Range(secondMin, secondMax));
             pairs.push_back(pair);
         }
-        else {
-            error("no match found for line: {}", line);
-            return false;
-        }
+        else
+            exception("no match found for line: {}", line);
     }
-
-    return true;
 }
 
 Result Day04::runPart1() const

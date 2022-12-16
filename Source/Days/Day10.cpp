@@ -6,44 +6,33 @@
 #include <vector>
 
 #include "Result.h"
-#include "Utils/Log.h"
+#include "Utils/Exception.h"
 #include "Utils/Parsing.h"
 
-bool tryParseInstruction(const std::string_view& line, Day10::Instruction& outInstruction)
+Day10::Instruction parseInstruction(const std::string_view& line)
 {
     // Parse the op code first
     std::string_view opCodeView = line.substr(0, 4);
     if (opCodeView == "noop") {
-        outInstruction = Day10::Instruction(Day10::OpCodes::Noop);
+        return Day10::Instruction(Day10::OpCodes::Noop);
     }
     else if (opCodeView == "addx") {
         // Parse the operand
         int operand = 0;
-        if (!tryParse(line.substr(5), operand))
-            return false;
-
-        outInstruction = Day10::Instruction(Day10::OpCodes::Addx, operand);
+        parse(line.substr(5), operand);
+        return Day10::Instruction(Day10::OpCodes::Addx, operand);
     }
-    else {
-        error("invalid line: {}", line);
-        return false;
-    }
-
-    return true;
+    
+    exception("invalid line: {}", line);
 }
 
-bool Day10::parseFile(std::ifstream& file)
+void Day10::parseFile(std::ifstream& file)
 {
     std::string line;
     while (std::getline(file, line)) {
-        Day10::Instruction instruction;
-        if (tryParseInstruction(line, instruction))
-            instructions.push_back(instruction);
-        else
-            return false;
+        Day10::Instruction instruction = parseInstruction(line);
+        instructions.push_back(instruction);
     }
-
-    return true;
 }
 
 class Sampler

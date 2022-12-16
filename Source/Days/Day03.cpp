@@ -9,6 +9,19 @@
 #include "Result.h"
 #include "Utils/Log.h"
 
+void Day03::parseFile(std::ifstream& file)
+{
+    std::string line;
+    while (std::getline(file, line)) {
+        int compartmentSize = line.size() / 2;
+        Rucksack rucksack = Rucksack();
+        rucksack.firstCompartment = std::string(line.begin(), line.begin() + compartmentSize);
+        rucksack.secondCompartment = std::string(line.end() - compartmentSize, line.end());
+        assert(rucksack.firstCompartment.size() == rucksack.secondCompartment.size());
+        rucksacks.push_back(std::move(rucksack));
+    }
+}
+
 int itemToPriority(char letter)
 {
     if (letter >= 'a' && letter <= 'z')
@@ -73,21 +86,6 @@ char findBadgePriority(const Day03::Rucksack& rucksack1, const Day03::Rucksack& 
 
     // Find the position of the bit
     return (char)log2(badgeBit);
-}
-
-bool Day03::parseFile(std::ifstream& file)
-{
-    std::string line;
-    while (std::getline(file, line)) {
-        int compartmentSize = line.size() / 2;
-        Rucksack rucksack = Rucksack();
-        rucksack.firstCompartment = std::string(line.begin(), line.begin() + compartmentSize);
-        rucksack.secondCompartment = std::string(line.end() - compartmentSize, line.end());
-        assert(rucksack.firstCompartment.size() == rucksack.secondCompartment.size());
-        rucksacks.push_back(std::move(rucksack));
-    }
-
-    return true;
 }
 
 Result Day03::runPart1() const

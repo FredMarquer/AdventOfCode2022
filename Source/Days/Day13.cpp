@@ -8,10 +8,11 @@
 #include <vector>
 
 #include "Result.h"
+#include "Utils/Exception.h"
 #include "Utils/Log.h"
 #include "Utils/Parsing.h"
 
-bool tryParseListNode(std::string_view& view, Day13::Node& currentNode)
+void parseListNode(std::string_view& view, Day13::Node& currentNode)
 {
     assert(currentNode.isList());
     
@@ -21,15 +22,14 @@ bool tryParseListNode(std::string_view& view, Day13::Node& currentNode)
             // New list node
             Day13::Node newNode;
             view = view.substr(1);
-            if (!tryParseListNode(view, newNode))
-                return false;
-            assert(newNode.isList());
+            parseListNode(view, newNode);
+            assert(std::holds_alternative<std::vector<Day13::Node>>(newNode.data));
             currentNode.getList().push_back(std::move(newNode));
         }
         else if (c == ']') {
             // End current list node
             view = view.substr(1);
-            return true;
+            return;
         }
         else if (c == ',') {
             // Go to next value
@@ -40,41 +40,37 @@ bool tryParseListNode(std::string_view& view, Day13::Node& currentNode)
             // New integer node
             int integer;
             size_t separator = std::min(view.find_first_of(','), view.find_first_of(']'));
-            if (!tryParse(view.substr(0, separator), integer))
-                return false;
+            parse(view.substr(0, separator), integer);
             currentNode.getList().push_back(integer);
             view = view.substr(separator);
         }
     }
 
-    return false;
+    exception("line ended but the list as not been closed");
 }
 
-bool tryParsePacket(const std::string& line, Day13::Packet& packet)
+Day13::Packet parsePacket(const std::string& line)
 {
     std::string_view view = line;
 
-    if (view[0] != '[') {
-        error("line doesn't start with '[' : {}", view);
-        return false;
-    }
+    if (view[0] != '[')
+        exception("line doesn't start with '[' : {}", view);
 
     // Skip the first '['
     view = view.substr(1);
 
-    if (!tryParseListNode(view, packet.rootNode))
-        return false;
-
-    if (!view.empty()) {
-        error("invalid view at end of line parsing: {}", view);
-        return false;
-    }
-    
+    // Create and parse packet node
+    Day13::Packet packet;
     packet.line = line;
-    return true;
+    parseListNode(view, packet.rootNode);
+
+    if (!view.empty())
+        exception("invalid view at end of line parsing: {}", view);
+    
+    return packet;
 }
 
-bool Day13::parseFile(std::ifstream& file)
+void Day13::parseFile(std::ifstream& file)
 {
     std::string line;
     while (std::getline(file, line)) {
@@ -82,19 +78,12 @@ bool Day13::parseFile(std::ifstream& file)
             continue;
 
         // Parse the packet line
-        Packet packet;
-        if (tryParsePacket(line, packet))
-            packets.push_back(std::move(packet));
-        else
-            return false;
+        Packet packet = parsePacket(line);
+        packets.push_back(std::move(packet));
     }
 
-    if (packets.size() % 2 != 0) {
-        error("odd number of packets (= {}), it should be even", packets.size());
-        return false;
-    }
-
-    return true;
+    if (packets.size() % 2 != 0)
+        exception("odd number of packets (= {}), it should be even", packets.size());
 }
 
 struct List
@@ -169,11 +158,8 @@ Result Day13::runPart2() const
     std::vector<Packet> sortedPackets = packets;
 
     // Add divider packets
-    Packet dividerPacket1;
-    Packet dividerPacket2;
-    if (!tryParsePacket(divider1, dividerPacket1) ||
-        !tryParsePacket(divider2, dividerPacket2))
-        return Result();
+    Packet dividerPacket1 = parsePacket(divider1);
+    Packet dividerPacket2 = parsePacket(divider2);
     sortedPackets.push_back(std::move(dividerPacket1));
     sortedPackets.push_back(std::move(dividerPacket2));
 

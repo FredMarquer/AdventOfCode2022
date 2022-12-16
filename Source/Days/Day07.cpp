@@ -7,28 +7,8 @@
 #include <vector>
 
 #include "Result.h"
-#include "Utils/Log.h"
+#include "Utils/Exception.h"
 #include "Utils/Parsing.h"
-
-void sumPart1(const Day07::Directory& directory, int& result)
-{
-    if (directory.size <= 100000)
-        result += directory.size;
-
-    for (const Day07::Directory& subDirectory : directory.subDirectories)
-        sumPart1(subDirectory, result);
-}
-
-void findDirectorySizeToDelete(const Day07::Directory& directory, int minSpaceToDelete, int& bestDirectorySize)
-{
-    for (const Day07::Directory& subDirectory : directory.subDirectories) {
-        if (subDirectory.size >= minSpaceToDelete)
-            findDirectorySizeToDelete(subDirectory, minSpaceToDelete, bestDirectorySize);
-    }
-
-    if (directory.size < bestDirectorySize)
-        bestDirectorySize = directory.size;
-}
 
 void Day07::Directory::initializeSize()
 {
@@ -55,7 +35,7 @@ bool Day07::Directory::tryGetSubDirectoryIndex(const std::string_view& directory
     return false;
 }
 
-bool Day07::parseFile(std::ifstream& file)
+void Day07::parseFile(std::ifstream& file)
 {
     // Build the file system tree
     std::vector<Directory*> currentPath;
@@ -74,10 +54,8 @@ bool Day07::parseFile(std::ifstream& file)
                 continue;
             }
 
-            if (currentPath.empty()) {
-                error("current path empty");
-                return false;
-            }
+            if (currentPath.empty())
+                exception("current path empty");
 
             if (line[5] == '.') {
                 // Return to the parent directory
@@ -92,17 +70,13 @@ bool Day07::parseFile(std::ifstream& file)
                     Directory& subDirectory = currentDirectory->subDirectories[subDirectoryIndex];
                     currentPath.push_back(&subDirectory);
                 }
-                else {
-                    error("sub directory '{}' not found", subDirectoryName);
-                    return false;
-                }
+                else
+                    exception("sub directory '{}' not found", subDirectoryName);
             }
         }
         else {
-            if (currentPath.empty()) {
-                error("current path empty");
-                return false;
-            }
+            if (currentPath.empty())
+                exception("current path empty");
 
             if (lineView.substr(0, 3) == "dir") {
                 // Add new directory to the current one
@@ -112,15 +86,12 @@ bool Day07::parseFile(std::ifstream& file)
             else {
                 // Add new file to the current directory
                 size_t separator = line.find(' ');
-                if (separator == std::string::npos) {
-                    error("separator not found for line: {}", line);
-                    return false;
-                }
+                if (separator == std::string::npos)
+                    exception("separator not found for line: {}", line);
 
                 // Parse the file size
                 int fileSize = 0;
-                if (!tryParse(lineView.substr(0, separator), fileSize))
-                    return false;
+                parse(lineView.substr(0, separator), fileSize);
 
                 std::string_view fileName = lineView.substr(separator + 1);
                 currentPath.back()->files.push_back(File(fileName, fileSize));
@@ -130,8 +101,26 @@ bool Day07::parseFile(std::ifstream& file)
 
     // Initialize all directories' size
     rootDirectory.initializeSize();
+}
 
-    return true;
+void sumPart1(const Day07::Directory& directory, int& result)
+{
+    if (directory.size <= 100000)
+        result += directory.size;
+
+    for (const Day07::Directory& subDirectory : directory.subDirectories)
+        sumPart1(subDirectory, result);
+}
+
+void findDirectorySizeToDelete(const Day07::Directory& directory, int minSpaceToDelete, int& bestDirectorySize)
+{
+    for (const Day07::Directory& subDirectory : directory.subDirectories) {
+        if (subDirectory.size >= minSpaceToDelete)
+            findDirectorySizeToDelete(subDirectory, minSpaceToDelete, bestDirectorySize);
+    }
+
+    if (directory.size < bestDirectorySize)
+        bestDirectorySize = directory.size;
 }
 
 Result Day07::runPart1() const

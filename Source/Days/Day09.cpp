@@ -11,8 +11,8 @@
 #include <unordered_set>
 
 #include "Result.h"
+#include "Utils/Exception.h"
 #include "Utils/Int2.h"
-#include "Utils/Log.h"
 #include "Utils/Parsing.h"
 
 Int2 charToDirection(char c)
@@ -23,40 +23,29 @@ Int2 charToDirection(char c)
     case 'U': return Int2::Up;
     case 'D': return Int2::Down;
     default:
-        error("invalid letter: {}", c);
-        return Int2::Zero;
+        exception("invalid letter: {}", c);
     }
 }
 
-bool tryParseMotion(const std::string_view& line, Day09::Motion& outMotion)
+Day09::Motion parseMotion(const std::string_view& line)
 {
     // Parse the direction
     Int2 direction = charToDirection(line[0]);
-    if (direction == Int2::Zero) {
-        return false;
-    }
 
     // Parse the distance
     int distance = 0;
-    if (!tryParse(line.substr(2), distance))
-        return false;
+    parse(line.substr(2), distance);
 
-    outMotion = Day09::Motion(direction, distance);
-    return true;
+    return Day09::Motion(direction, distance);
 }
 
-bool Day09::parseFile(std::ifstream& file)
+void Day09::parseFile(std::ifstream& file)
 {
     std::string line;
     while (std::getline(file, line)) {
-        Motion motion;
-        if (tryParseMotion(line, motion))
-            motions.push_back(motion);
-        else
-            return false;
+        Motion motion = parseMotion(line);
+        motions.push_back(motion);
     }
-
-    return true;
 }
 
 template<size_t N>

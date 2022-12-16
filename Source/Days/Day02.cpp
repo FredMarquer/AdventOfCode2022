@@ -7,28 +7,38 @@
 #include <vector>
 
 #include "Result.h"
-#include "Utils/Log.h"
+#include "Utils/Exception.h"
 
-bool parseLetter(char letter, int& outShape)
+int parseLetter(char letter)
 {
     switch (letter)
     {
     case 'A':
     case 'X':
-        outShape = 0;
-        return true;
+        return 0;
     case 'B':
     case 'Y':
-        outShape = 1;
-        return true;
+        return 1;
     case 'C':
     case 'Z':
-        outShape = 2;
-        return true;
+        return 2;
     }
 
-    error("invalid letter: {}", letter);
-    return false;
+    exception("invalid letter: {}", letter);
+}
+
+void Day02::parseFile(std::ifstream& file)
+{
+    std::string line;
+    while (std::getline(file, line)) {
+        if (line.size() >= 3) {
+            int first = parseLetter(line[0]);
+            int second = parseLetter(line[2]);
+            strategyGuide.push_back(std::pair(first, second));
+        }
+        else
+            exception("invalid line: {}", line);
+    }
 }
 
 static const int ScoreTablePart1[] = { 3, 0, 6, 6, 3, 0, 0, 6, 3 };
@@ -47,24 +57,6 @@ int computePairScorePart2(std::pair<int, int> pair) {
     size_t tableIndex = pair.first + pair.second * 3;
     int shapeScore = ScoreTablePart2[tableIndex];
     return shapeScore + outcomeScore;
-}
-
-bool Day02::parseFile(std::ifstream& file)
-{
-    std::string line;
-    while (std::getline(file, line)) {
-        if (line.size() >= 3) {
-            int first, second;
-            if (parseLetter(line[0], first) && parseLetter(line[2], second))
-                strategyGuide.push_back(std::pair(first, second));
-            else
-                return false;
-        }
-        else
-            error("invalid line: {}", line);
-    }
-
-    return true;
 }
 
 Result Day02::runPart1() const

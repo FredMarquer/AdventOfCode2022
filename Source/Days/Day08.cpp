@@ -7,20 +7,18 @@
 
 #include "Result.h"
 #include "Utils/Array2D.h"
+#include "Utils/Exception.h"
 #include "Utils/Int2.h"
-#include "Utils/Log.h"
 
 int charToInt(char c)
 {
-    if (c < '0' || c > '9') {
-        error("invalid char: {}", c);
-        return -1;
-    }
+    if (c < '0' || c > '9')
+        exception("invalid char: {}", c);
 
     return c - '0';
 }
 
-bool Day08::parseFile(std::ifstream& file)
+void Day08::parseFile(std::ifstream& file)
 {
     size_t width = 0;
     size_t height = 0;
@@ -28,33 +26,25 @@ bool Day08::parseFile(std::ifstream& file)
 
     std::string line;
     while (std::getline(file, line)) {
-        if (line.empty()) {
-            error("line is empty");
-            return false;
-        }
+        if (line.empty())
+            exception("line is empty");
 
         // Update map width and height
         ++height;
         if (width == 0)
             width = line.size();
 
-        if (line.size() != width) {
-            error("line size (= {}) doesn't match the map width (= {})", line.size(), width);
-            return false;
-        }
+        if (line.size() != width)
+            exception("line size (= {}) doesn't match the map width (= {})", line.size(), width);
 
         // Push the line into the tree map
         for (size_t i = 0; i < width; ++i) {
             int treeHeight = charToInt(line[i]);
-            if (treeHeight < 0)
-                return false;
-
             treeData.push_back(treeHeight);
         }
     }
 
     treeMap = Array2D(width, height, treeData);
-    return true;
 }
 
 Result Day08::runPart1() const

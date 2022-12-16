@@ -5,7 +5,15 @@
 #include <string>
 
 #include "Result.h"
+#include "Utils/Exception.h"
 #include "Utils/Log.h"
+
+void Day06::parseFile(std::ifstream& file)
+{
+    std::getline(file, signal);
+    if (signal.empty())
+        exception("line is empty");
+}
 
 size_t getLetterIndex(char letter)
 {
@@ -85,12 +93,6 @@ int findMarker(const std::string& signal, size_t markerLength)
 
     error("marker of length {} not found", markerLength);
     return 0;
-}
-
-bool Day06::parseFile(std::ifstream& file)
-{
-    std::getline(file, signal);
-    return !signal.empty();
 }
 
 Result Day06::runPart1() const
