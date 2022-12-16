@@ -182,14 +182,12 @@ Result Day11::runPart2() const
     return simulate(monkeys, 10000, worryLevelManagementFunction);
 }
 
-bool Day11::tryGetExpectedResultPart1(Result& outResult) const
+Result Day11::getExpectedResultPart1() const
 {
-    outResult = 119715;
-    return true;
+    return 119715;
 }
 
-bool Day11::tryGetExpectedResultPart2(Result& outResult) const
+Result Day11::getExpectedResultPart2() const
 {
-    outResult = 18085004878;
-    return true;
+    return 18085004878;
 }

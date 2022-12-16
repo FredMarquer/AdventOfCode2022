@@ -1,15 +1,14 @@
 #include "Result.h"
 
+#include <assert.h>
 #include <iostream>
+#include <variant>
+
+const Result Result::Invalid = Result();
 
 bool Result::operator==(const Result& rhs) const
 {
-	if (!stringValue.empty())
-		return stringValue == rhs.stringValue;
-	else if (!rhs.stringValue.empty())
-		return false;
-	else
-		return intValue == rhs.intValue;
+	return data == rhs.data;
 }
 
 bool Result::operator!=(const Result& rhs) const
@@ -19,11 +18,13 @@ bool Result::operator!=(const Result& rhs) const
 
 std::ostream& operator<<(std::ostream& stream, const Result& result)
 {
-	if (result.stringValue.empty()) {
-		stream << result.intValue;
-	}
+	if (result.isInteger())
+		stream << result.getInteger();
+	else if (result.isString())
+		stream << result.getString();
 	else {
-		stream << result.stringValue;
+		assert(!result.isValid());
+		stream << "Result::Invalid";
 	}
 
 	return stream;

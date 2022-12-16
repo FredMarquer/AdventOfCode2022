@@ -23,7 +23,7 @@ private:
 	void updateTreesVisibility(const Int2& start, const Int2& dir, Array2D<bool>& visibilityMap, int& visibilityCount) const;
 	int computeScenicScore(const Int2& coord) const;
 	int computeViewDistance(const Int2& start, const Int2& dir) const;
-	bool tryGetExpectedResultPart1(Result& outResult) const override;
-	bool tryGetExpectedResultPart2(Result& outResult) const override;
+	Result getExpectedResultPart1() const override;
+	Result getExpectedResultPart2() const override;
 };
 

@@ -1,7 +1,9 @@
 #pragma once
 
+#include <assert.h>
 #include <format>
 #include <string>
+#include <variant>
 
 struct Result
 {
@@ -9,17 +11,27 @@ struct Result
 	friend std::formatter<Result>;
 
 private:
-	int64_t intValue;
-	std::string stringValue;
+	std::variant<std::monostate, int64_t, std::string> data;
 
 public:
-	Result() : intValue(0) {}
-	Result(int64_t value) : intValue(value) {}
-	Result(const char* value) : intValue(0), stringValue(value) {}
-	Result(std::string value) : intValue(0), stringValue(value) {}
+	static const Result Invalid;
+
+	Result() : data(std::monostate()) {}
+	Result(int32_t value) : data((int64_t)value) {}
+	Result(uint32_t value) : data((int64_t)value) {}
+	Result(int64_t value) : data(value) {}
+	Result(uint64_t value) : data((int64_t)value) {}
+	Result(const char* value) : data(std::string(value)) {}
+	Result(std::string value) : data(value) {}
 
 	bool operator==(const Result& rhs) const;
 	bool operator!=(const Result& rhs) const;
+
+	bool isValid() const { return !std::holds_alternative<std::monostate>(this->data); }
+	bool isInteger() const { return std::holds_alternative<int64_t>(this->data); }
+	bool isString() const { return std::holds_alternative<std::string>(this->data); }
+	int64_t getInteger() const { return std::get<int64_t>(this->data); }
+	const std::string& getString() const { return std::get<std::string>(this->data); }
 };
 
 template <>
@@ -34,11 +46,13 @@ struct std::formatter<Result>
 	template<typename FormatContext>
 	auto format(const Result& result, FormatContext& fc)
 	{
-		if (result.stringValue.empty()) {
-			return std::format_to(fc.out(), "{}", result.intValue);
-		}
+		if (result.isInteger())
+			return std::format_to(fc.out(), "{}", result.getInteger());
+		else if (result.isString())
+			return std::format_to(fc.out(), "{}", result.getString());
 		else {
-			return std::format_to(fc.out(), "{}", result.stringValue);
+			assert(!result.isValid());
+			return std::format_to(fc.out(), "Result::Invalid");
 		}
 	}
 };

@@ -145,20 +145,18 @@ Result Day10::runPart2() const
     return sampler.getResult();
 }
 
-bool Day10::tryGetExpectedResultPart1(Result& outResult) const
+Result Day10::getExpectedResultPart1() const
 {
-    outResult = 11820;
-    return true;
+    return 11820;
 }
 
-bool Day10::tryGetExpectedResultPart2(Result& outResult) const
+Result Day10::getExpectedResultPart2() const
 {
-    outResult =
+    return
         "\n####.###....##.###..###..#..#..##..#..#."
         "\n#....#..#....#.#..#.#..#.#.#..#..#.#..#."
         "\n###..#..#....#.###..#..#.##...#..#.####."
         "\n#....###.....#.#..#.###..#.#..####.#..#."
         "\n#....#....#..#.#..#.#.#..#.#..#..#.#..#."
         "\n####.#.....##..###..#..#.#..#.#..#.#..#.";
-    return true;
 }

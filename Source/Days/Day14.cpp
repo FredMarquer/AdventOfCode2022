@@ -200,14 +200,12 @@ Result Day14::runPart2() const
     return simulate(workingCaveMap, caveOffset);
 }
 
-bool Day14::tryGetExpectedResultPart1(Result& outResult) const
+Result Day14::getExpectedResultPart1() const
 {
-    outResult = 873;
-    return true;
+    return 873;
 }
 
-bool Day14::tryGetExpectedResultPart2(Result& outResult) const
+Result Day14::getExpectedResultPart2() const
 {
-    outResult = 24813;
-    return true;
+    return 24813;
 }

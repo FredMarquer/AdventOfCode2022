@@ -145,14 +145,12 @@ Result Day07::runPart2() const
     return bestDirectorySize;
 }
 
-bool Day07::tryGetExpectedResultPart1(Result& outResult) const
+Result Day07::getExpectedResultPart1() const
 {
-    outResult = 1582412;
-    return true;
+    return 1582412;
 }
 
-bool Day07::tryGetExpectedResultPart2(Result& outResult) const
+Result Day07::getExpectedResultPart2() const
 {
-    outResult = 3696336;
-    return true;
+    return 3696336;
 }

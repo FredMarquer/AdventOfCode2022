@@ -174,14 +174,12 @@ Result Day13::runPart2() const
     return dividerIndex1 * dividerIndex2;
 }
 
-bool Day13::tryGetExpectedResultPart1(Result& outResult) const
+Result Day13::getExpectedResultPart1() const
 {
-    outResult = 5292;
-    return true;
+    return 5292;
 }
 
-bool Day13::tryGetExpectedResultPart2(Result& outResult) const
+Result Day13::getExpectedResultPart2() const
 {
-    outResult = 23868;
-    return true;
+    return 23868;
 }

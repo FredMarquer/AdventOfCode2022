@@ -84,7 +84,7 @@ struct OpenNode
     }
 };
 
-int dijkstra(const Array2D<int>& heightMap, const Int2& start, TransitionConditionFunction transitionFunction, TargetConditionFunction targetFunction)
+Result dijkstra(const Array2D<int>& heightMap, const Int2& start, TransitionConditionFunction transitionFunction, TargetConditionFunction targetFunction)
 {
     const Int2 neighbourDirections[4] = { Int2::Right, Int2::Down, Int2::Left, Int2::Up };
 
@@ -131,7 +131,7 @@ int dijkstra(const Array2D<int>& heightMap, const Int2& start, TransitionConditi
     }
 
     error("no path found");
-    return INT_MAX;
+    return Result::Invalid;
 }
 
 Result Day12::runPart1() const
@@ -148,14 +148,12 @@ Result Day12::runPart2() const
     return dijkstra(heightMap, target, transitionFunction, targetFunction);
 }
 
-bool Day12::tryGetExpectedResultPart1(Result& outResult) const
+Result Day12::getExpectedResultPart1() const
 {
-    outResult = 484;
-    return true;
+    return 484;
 }
 
-bool Day12::tryGetExpectedResultPart2(Result& outResult) const
+Result Day12::getExpectedResultPart2() const
 {
-    outResult = 478;
-    return true;
+    return 478;
 }

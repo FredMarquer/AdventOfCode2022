@@ -72,7 +72,7 @@ public:
     }
 };
 
-int findMarker(const std::string& signal, size_t markerLength)
+Result findMarker(const std::string& signal, size_t markerLength)
 {
     LetterTracker letterTracker = LetterTracker(markerLength);
 
@@ -92,7 +92,7 @@ int findMarker(const std::string& signal, size_t markerLength)
     }
 
     error("marker of length {} not found", markerLength);
-    return 0;
+    return Result::Invalid;
 }
 
 Result Day06::runPart1() const
@@ -105,14 +105,12 @@ Result Day06::runPart2() const
     return findMarker(signal, 14);
 }
 
-bool Day06::tryGetExpectedResultPart1(Result& outResult) const
+Result Day06::getExpectedResultPart1() const
 {
-    outResult = 1210;
-    return true;
+    return 1210;
 }
 
-bool Day06::tryGetExpectedResultPart2(Result& outResult) const
+Result Day06::getExpectedResultPart2() const
 {
-    outResult = 3476;
-    return true;
+    return 3476;
 }

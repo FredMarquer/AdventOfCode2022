@@ -56,14 +56,12 @@ Result Day04::runPart2() const
     return overlapCount;
 }
 
-bool Day04::tryGetExpectedResultPart1(Result& outResult) const
+Result Day04::getExpectedResultPart1() const
 {
-    outResult = 498;
-    return true;
+    return 498;
 }
 
-bool Day04::tryGetExpectedResultPart2(Result& outResult) const
+Result Day04::getExpectedResultPart2() const
 {
-    outResult = 859;
-    return true;
+    return 859;
 }

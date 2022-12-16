@@ -110,14 +110,12 @@ Result Day05::runPart2() const
     return result(workingStacks);
 }
 
-bool Day05::tryGetExpectedResultPart1(Result& outResult) const
+Result Day05::getExpectedResultPart1() const
 {
-    outResult = "VJSFHWGFT";
-    return true;
+    return "VJSFHWGFT";
 }
 
-bool Day05::tryGetExpectedResultPart2(Result& outResult) const
+Result Day05::getExpectedResultPart2() const
 {
-    outResult = "LCTQFBVZV";
-    return true;
+    return "LCTQFBVZV";
 }

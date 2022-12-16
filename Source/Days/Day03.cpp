@@ -113,14 +113,12 @@ Result Day03::runPart2() const
     return sum;
 }
 
-bool Day03::tryGetExpectedResultPart1(Result& outResult) const
+Result Day03::getExpectedResultPart1() const
 {
-    outResult = 8252;
-    return true;
+    return 8252;
 }
 
-bool Day03::tryGetExpectedResultPart2(Result& outResult) const
+Result Day03::getExpectedResultPart2() const
 {
-    outResult = 2828;
-    return true;
+    return 2828;
 }

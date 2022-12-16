@@ -118,29 +118,41 @@ void runDay(int dayNumber, int part)
     // Run part 1 if requested
     if (runPart1) {
         profileScope("part 1");
+
         Result result = day->runPart1();
-        log("part 1 result: {}", result);
-        Result expectedResult;
-        if (day->tryGetExpectedResultPart1(expectedResult)) {
-            if (result != expectedResult)
-                error("the result doesn't match the expected result: {}", expectedResult);
+        if (result.isValid()) {
+            log("part 1 result: {}", result);
+
+            Result expectedResult = day->getExpectedResultPart1();
+            if (expectedResult.isValid()) {
+                if (result != expectedResult)
+                    error("the result doesn't match the expected result: {}", expectedResult);
+            }
+            else
+                debug("no expected result");
         }
         else
-            debug("no expected result");
+            error("part 1 returned an invalid result");
     }
 
     // Run part 2 if requested
     if (runPart2) {
         profileScope("part 2");
+
         Result result = day->runPart2();
-        log("part 2 result: {}", result);
-        Result expectedResult;
-        if (day->tryGetExpectedResultPart2(expectedResult)) {
-            if (result != expectedResult)
-                error("the result doesn't match the expected result: {}", expectedResult);
+        if (result.isValid()) {
+            log("part 2 result: {}", result);
+
+            Result expectedResult = day->getExpectedResultPart2();
+            if (expectedResult.isValid()) {
+                if (result != expectedResult)
+                    error("the result doesn't match the expected result: {}", expectedResult);
+            }
+            else
+                debug("no expected result");
         }
         else
-            debug("no expected result");
+            error("part 2 returned an invalid result");
     }
 }
 
