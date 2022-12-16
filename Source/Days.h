@@ -2,7 +2,7 @@
 
 #include "Day.h"
 
-const int DayCount = 13;
+const int DayCount = 14;
 
 std::unique_ptr<Day> createDay(int dayNumber);
 
