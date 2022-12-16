@@ -166,6 +166,7 @@
     <ClCompile Include="Source\Days\Day08.cpp" />
     <ClCompile Include="Source\Days\Day07.cpp" />
     <ClCompile Include="Source\Days\Day06.cpp" />
+    <ClCompile Include="Source\Utils\Rect.cpp" />
     <ClCompile Include="Source\Utils\ScopeProfiler.cpp" />
     <ClCompile Include="Source\Result.cpp" />
     <ClCompile Include="Source\Days\Day05.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Source\Days\Day06.h" />
     <ClInclude Include="Source\Utils\Log.h" />
     <ClInclude Include="Source\Utils\Range.h" />
+    <ClInclude Include="Source\Utils\Rect.h" />
     <ClInclude Include="Source\Utils\ScopeProfiler.h" />
     <ClInclude Include="Source\Result.h" />
     <ClInclude Include="Source\Days\Day05.h" />

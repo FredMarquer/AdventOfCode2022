@@ -14,6 +14,7 @@ struct Int2
 	static const Int2 Down;
 
 	Int2() : x(0), y(0) {}
+	Int2(int32_t value) : x(value), y(value) {}
 	Int2(int32_t x, int32_t y) : x(x), y(y) {}
 
 	bool isUnit() const;
