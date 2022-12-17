@@ -42,14 +42,12 @@ void Day05::parseFile(std::ifstream& file)
     std::regex regex("move ([0-9]*) from ([0-9]*) to ([0-9]*)");
     std::smatch matches;
     while (std::getline(file, line)) {
-        if (std::regex_search(line, matches, regex)) {
-            int numberOfBoxes = std::stoi(matches[1]);
-            int fromStackIndex = std::stoi(matches[2]) - 1;
-            int toStackIndex = std::stoi(matches[3]) - 1;
-            instructions.push_back(Instruction(numberOfBoxes, fromStackIndex, toStackIndex));
-        }
-        else
+        if (!std::regex_search(line, matches, regex))
             exception("no match found for line: {}", line);
+        int numberOfBoxes = std::stoi(matches[1]);
+        int fromStackIndex = std::stoi(matches[2]) - 1;
+        int toStackIndex = std::stoi(matches[3]) - 1;
+        instructions.push_back(Instruction(numberOfBoxes, fromStackIndex, toStackIndex));
     }
 }
 

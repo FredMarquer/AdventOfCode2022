@@ -22,9 +22,9 @@ Int2 charToDirection(char c)
     case 'L': return Int2::Left;
     case 'U': return Int2::Up;
     case 'D': return Int2::Down;
-    default:
-        exception("invalid letter: {}", c);
     }
+
+    exception("invalid letter: {}", c);
 }
 
 Day09::Motion parseMotion(const std::string_view& line)

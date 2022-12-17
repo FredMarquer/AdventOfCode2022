@@ -45,7 +45,8 @@ void Day12::parseFile(std::ifstream& file)
 
         // Push the line into the height map
         for (size_t i = 0; i < line.size(); ++i) {
-            bool isStart, isTarget;
+            bool isStart = false;
+            bool isTarget = false;
             int cellHeight = parseHeight(line[i], isStart, isTarget);
             
             if (isStart)

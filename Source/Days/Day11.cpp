@@ -15,7 +15,7 @@ void parseItems(const std::string_view& line, std::vector<int64_t>& items)
 {
     size_t separator = line.find_first_of(',');
     if (separator != std::string::npos) {
-        int64_t item;
+        int64_t item = 0;
         parse(line.substr(0, separator), item);
         items.push_back(item);
 
@@ -23,7 +23,7 @@ void parseItems(const std::string_view& line, std::vector<int64_t>& items)
         parseItems(line.substr(separator + 2), items);
     }
     else {
-        int64_t item;
+        int64_t item = 0;
         parse(line, item);
         items.push_back(item);
     }
@@ -47,6 +47,7 @@ void parseInspectFunction(const std::string_view& line, Day11::ItemModifierFunct
         int64_t value;
         parseIntAtEnd(line, 25, value);
         outFunction = [value](int64_t& item) { item += value; };
+        return;
     }
     else if (operation == '*') {
         if (line[25] == 'o') {
@@ -59,9 +60,10 @@ void parseInspectFunction(const std::string_view& line, Day11::ItemModifierFunct
             parseIntAtEnd(line, 25, value);
             outFunction = [value](int64_t& item) { item *= value; };
         }
+        return;
     }
-    else
-        exception("invalid operator: {}", operation);
+
+    exception("invalid operator: {}", operation);
 }
 
 bool tryParseMonkey(std::ifstream& file, Day11::Monkey& outMonkey)

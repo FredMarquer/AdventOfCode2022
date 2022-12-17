@@ -38,7 +38,7 @@ void parseListNode(std::string_view& view, Day13::Node& currentNode)
         }
         else {
             // New integer node
-            int integer;
+            int integer = 0;
             size_t separator = std::min(view.find_first_of(','), view.find_first_of(']'));
             parse(view.substr(0, separator), integer);
             currentNode.getList().push_back(integer);

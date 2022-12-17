@@ -21,8 +21,7 @@
 std::unique_ptr<Day> createDay(int dayNumber)
 {
 	Day* dayPtr = nullptr;
-	switch (dayNumber)
-	{
+	switch (dayNumber) {
 	case 1: dayPtr = new Day01(); break;
 	case 2: dayPtr = new Day02(); break;
 	case 3: dayPtr = new Day03(); break;

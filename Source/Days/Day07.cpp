@@ -66,12 +66,10 @@ void Day07::parseFile(std::ifstream& file)
                 Directory* currentDirectory = currentPath.back();
                 std::string_view subDirectoryName = lineView.substr(5);
                 size_t subDirectoryIndex;
-                if (currentPath.back()->tryGetSubDirectoryIndex(subDirectoryName, subDirectoryIndex)) {
-                    Directory& subDirectory = currentDirectory->subDirectories[subDirectoryIndex];
-                    currentPath.push_back(&subDirectory);
-                }
-                else
+                if (!currentPath.back()->tryGetSubDirectoryIndex(subDirectoryName, subDirectoryIndex))
                     exception("sub directory '{}' not found", subDirectoryName);
+                Directory& subDirectory = currentDirectory->subDirectories[subDirectoryIndex];
+                currentPath.push_back(&subDirectory);
             }
         }
         else {

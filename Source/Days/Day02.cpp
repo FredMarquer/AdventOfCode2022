@@ -11,8 +11,7 @@
 
 int parseLetter(char letter)
 {
-    switch (letter)
-    {
+    switch (letter) {
     case 'A':
     case 'X':
         return 0;
@@ -31,13 +30,11 @@ void Day02::parseFile(std::ifstream& file)
 {
     std::string line;
     while (std::getline(file, line)) {
-        if (line.size() >= 3) {
-            int first = parseLetter(line[0]);
-            int second = parseLetter(line[2]);
-            strategyGuide.push_back(std::pair(first, second));
-        }
-        else
+        if (line.size() < 3)
             exception("invalid line: {}", line);
+        int first = parseLetter(line[0]);
+        int second = parseLetter(line[2]);
+        strategyGuide.push_back(std::pair(first, second));
     }
 }
 

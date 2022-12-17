@@ -17,16 +17,14 @@ void Day04::parseFile(std::ifstream& file)
     std::regex regex("([0-9]*)-([0-9]*),([0-9]*)-([0-9]*)");
     std::smatch matches;
     while (std::getline(file, line)) {
-        if (std::regex_search(line, matches, regex)) {
-            int firstMin = std::stoi(matches[1]);
-            int firstMax = std::stoi(matches[2]) + 1;
-            int secondMin = std::stoi(matches[3]);
-            int secondMax = std::stoi(matches[4]) + 1;
-            std::pair pair(Range(firstMin, firstMax), Range(secondMin, secondMax));
-            pairs.push_back(pair);
-        }
-        else
+        if (!std::regex_search(line, matches, regex))
             exception("no match found for line: {}", line);
+        int firstMin = std::stoi(matches[1]);
+        int firstMax = std::stoi(matches[2]) + 1;
+        int secondMin = std::stoi(matches[3]);
+        int secondMax = std::stoi(matches[4]) + 1;
+        std::pair pair(Range(firstMin, firstMax), Range(secondMin, secondMax));
+        pairs.push_back(pair);
     }
 }
 

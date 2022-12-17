@@ -21,16 +21,14 @@ void Day15::parseFile(std::ifstream& file)
     std::regex regex("Sensor at x=(-?[0-9]*), y=(-?[0-9]*): closest beacon is at x=(-?[0-9]*), y=(-?[0-9]*)");
     std::smatch matches;
     while (std::getline(file, line)) {
-        if (std::regex_search(line, matches, regex)) {
-            int sensorX = std::stoi(matches[1]);
-            int sensorY = std::stoi(matches[2]);
-            int beaconX = std::stoi(matches[3]);
-            int beaconY = std::stoi(matches[4]);
-            Report report(Int2(sensorX, sensorY), Int2(beaconX, beaconY));
-            reports.push_back(report);
-        }
-        else
+        if (!std::regex_search(line, matches, regex))
             exception("no match found for line: {}", line);
+        int sensorX = std::stoi(matches[1]);
+        int sensorY = std::stoi(matches[2]);
+        int beaconX = std::stoi(matches[3]);
+        int beaconY = std::stoi(matches[4]);
+        Report report(Int2(sensorX, sensorY), Int2(beaconX, beaconY));
+        reports.push_back(report);
     }
 }
 
@@ -80,7 +78,7 @@ void getRangesAtY(const std::vector<Day15::Report>& reports, int32_t y, bool exc
     // Merge overlapping/touching ranges
     for (size_t i = 0; i < outRanges.size(); ++i) {
         Range& range = outRanges[i];
-        bool hasChanged;
+        bool hasChanged = false;
         do {
             hasChanged = false;
             for (size_t j = outRanges.size() - 1; j > i; --j) {
