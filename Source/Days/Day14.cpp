@@ -101,14 +101,11 @@ void Day14::parseFile(std::ifstream& file)
     assert(rect.min.y >= 0);
     rect.min.y = 0;
     rect.max.y += 2;
-    if (sourceCoord.x - rect.min.x < rect.max.y)
-        rect.min.x = sourceCoord.x - rect.max.y;
-    if (rect.max.x - sourceCoord.x < rect.max.y)
-        rect.max.x = sourceCoord.x + rect.max.y;
+    rect.encapsulateX(Range(sourceCoord.x - rect.max.y, sourceCoord.x + rect.max.y));
 
     // Initialize cave data
     caveOffset = rect.min;
-    caveMap = Array2D<bool>(rect.getWidth() + 1, rect.getHeight() + 1);
+    caveMap = Array2D<bool>(rect.getWidth(), rect.getHeight());
 
     // Add the lines to the map
     for (Line& line : lines) {
