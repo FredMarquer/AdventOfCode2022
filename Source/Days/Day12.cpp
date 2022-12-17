@@ -94,7 +94,7 @@ Result dijkstra(const Array2D<int>& heightMap, const Int2& start, TransitionCond
     // Push the starting node
     openSet.push(OpenNode(start, 0));
 
-    while (!openSet.empty()) {
+    while (!openSet.isEmpty()) {
         OpenNode current = openSet.pop();
 
         // Has the current node already been visited ?
