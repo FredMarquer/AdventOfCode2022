@@ -17,6 +17,7 @@ public:
 	inline bool isEmpty() { return data.empty(); }
 	void push(const T& value);
 	T pop();
+	inline void reserve(size_t newCapacity) { data.reserve(newCapacity); }
 	inline void clear() { data.clear(); }
 };
 

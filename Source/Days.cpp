@@ -16,6 +16,7 @@
 #include "Days/Day13.h"
 #include "Days/Day14.h"
 #include "Days/Day15.h"
+#include "Days/Day16.h"
 #include "Utils/Log.h"
 
 std::unique_ptr<Day> createDay(int dayNumber)
@@ -37,6 +38,7 @@ std::unique_ptr<Day> createDay(int dayNumber)
 	case 13: dayPtr = new Day13(); break;
 	case 14: dayPtr = new Day14(); break;
 	case 15: dayPtr = new Day15(); break;
+	case 16: dayPtr = new Day16(); break;
 	default:
 		error("invalid day number: {}", dayNumber);
 		break;
