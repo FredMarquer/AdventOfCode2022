@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "Day.h"
 
 const int DayCount = 16;

@@ -1,6 +1,7 @@
 #include <exception>
 #include <filesystem>
 #include <fstream>
+#include <memory>
 #include <span>
 #include <string>
 
