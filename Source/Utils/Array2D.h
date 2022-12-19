@@ -92,7 +92,8 @@ Array2D<T>::Array2D(Array2D&& other)
 template<class T>
 Array2D<T>& Array2D<T>::operator=(Array2D&& other) noexcept
 {
-	if (this != &other) {
+	if (this != &other)
+	{
 		width = other.width;
 		height = other.height;
 		data = other.data;
@@ -165,9 +166,8 @@ void Array2D<T>::fillColumn(size_t x, const T& value)
 {
 	int index = getIndex(x, 0);
 	int endIndex = getIndex(x, height - 1);
-	for (; index <= endIndex; index += width) {
+	for (; index <= endIndex; index += width)
 		data[index] = value;
-	}
 }
 
 template<class T>
@@ -175,19 +175,16 @@ void Array2D<T>::fillRaw(size_t y, const T& value)
 {
 	int index = getIndex(0, y);
 	int endIndex = getIndex(width - 1, y);
-	for (; index <= endIndex; ++index) {
+	for (; index <= endIndex; ++index)
 		data[index] = value;
-	}
 }
 
 template<class T>
 std::ostream& operator<<(std::ostream& os, const Array2D<T>& lhs)
 {
 	for (size_t y = 0; y < lhs.getHeight(); ++y) {
-		for (size_t x = 0; x < lhs.getWidth(); ++x) {
+		for (size_t x = 0; x < lhs.getWidth(); ++x)
 			os << lhs.getElementAt(x, y);
-		}
-
 		os << std::endl;
 	}
 
