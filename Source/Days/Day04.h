@@ -1,6 +1,5 @@
 #pragma once
 
-#include <assert.h>
 #include <fstream>
 #include <string>
 #include <utility>
