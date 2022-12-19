@@ -84,16 +84,16 @@ void runDay(int dayNumber, int part)
         return;
     }
 
-    // Load the input file
-    std::ifstream file(input);
-    if (!file.is_open()) {
-        error("fail to open the input file: {}", input);
-        return;
-    }
-
-    // Parse the input file
     try
     {
+        // Load the input file
+        std::ifstream file(input);
+        if (!file.is_open()) {
+            error("fail to open the input file: {}", input);
+            return;
+        }
+
+        // Parse the input file
         profileScope("file parsing");
         day->parseFile(file);
     }
@@ -101,17 +101,13 @@ void runDay(int dayNumber, int part)
     {
         error("an exception has occured during file parsing:");
         error("{}", e.what());
-        file.close();
         return;
     }
     catch (...)
     {
         error("an unknow exception has occured during file parsing");
-        file.close();
         return;
     }
-
-    file.close();
 
     bool runPart1 = part == 0 || part == 1;
     bool runPart2 = part == 0 || part == 2;
