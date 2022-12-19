@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <assert.h>
 #include <cstdint>
 #include <format>
 
@@ -9,16 +10,15 @@ struct Range
 	int32_t min;
 	int32_t max; // Exclusive
 
-	static const Range Null;
-
 	Range() : min(0), max(0) {}
-	Range(int32_t min, int32_t max) : min(min), max(max) {}
+    Range(int32_t value) : min(value), max(value + 1) {}
+    Range(int32_t min, int32_t max) : min(min), max(max) { assert(max >= min); }
 
 	inline int32_t getSize() const { return max - min; }
 
     inline bool contains(int32_t value) const { return value >= min && value < max; }
     inline bool contains(const Range& other) const { return other.min >= min && other.max <= max; }
-    inline bool overlap(const Range& other) const { return other.min < max&& other.max > min; }
+    inline bool overlap(const Range& other) const { return other.min < max && other.max > min; }
     inline bool touch(const Range& other) const { return other.min <= max && other.max >= min; }
 
     inline void encapsulate(int32_t value);

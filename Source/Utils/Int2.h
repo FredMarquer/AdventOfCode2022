@@ -8,6 +8,7 @@ struct Int2
 	int32_t x, y;
 
 	static const Int2 Zero;
+	static const Int2 One;
 	static const Int2 Right;
 	static const Int2 Left;
 	static const Int2 Up;

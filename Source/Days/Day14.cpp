@@ -17,15 +17,14 @@ const Int2 sourceCoord = Int2(500, 0);
 
 struct Line
 {
-    Int2 origin;
+    Int2 start;
+    Int2 end;
     Int2 direction;
     int32_t distance;
 
-    Line(const Int2& start, const Int2& end)
+    Line(const Int2& start, const Int2& end) : start(start), end(end)
     {
         // Convert (start, end) into (orign, direction, distance)
-        origin = start;
-
         Int2 delta = end - start;
         if (delta.x > 0) {
             assert(delta.y == 0);
@@ -67,7 +66,7 @@ bool tryParseNextPoint(std::string_view& view, Int2& outPoint)
     return true;
 }
 
-void parseLine(const std::string line, std::vector<Line>& lines, Rect& rect)
+void parseLine(const std::string line, std::vector<Line>& lines)
 {
     std::string_view view = line;
     Int2 start;
@@ -77,28 +76,30 @@ void parseLine(const std::string line, std::vector<Line>& lines, Rect& rect)
     if (!tryParseNextPoint(view, start))
         exception("fail to parse the first point: {}", line);
 
-    rect.encapsulate(start);
-
     // Parse the next points and add lines
     while (tryParseNextPoint(view, end)) {
         lines.push_back(Line(start, end));
-        rect.encapsulate(end);
         start = end;
     }
 }
 
 void Day14::parseFile(std::ifstream& file)
 {
-    std::vector<Line> lines;
-    Rect rect = Rect::Null;
-
     // Generate the list of lines
     std::string line;
+    std::vector<Line> lines;
     while (std::getline(file, line))
-        parseLine(line, lines, rect);
+        parseLine(line, lines);
+
+    // Compute the bounding rect
+    Rect rect = Rect(lines[0].start);
+    for (const Line& line : lines) {
+        rect.encapsulate(line.start);
+        rect.encapsulate(line.end);
+    }
 
     // Extend the rect for part 2
-    assert(rect.min.y >= 0);
+    assert(caveRect.min.y >= 0);
     rect.min.y = 0;
     rect.max.y += 2;
     rect.encapsulateX(Range(sourceCoord.x - rect.max.y, sourceCoord.x + rect.max.y));
@@ -109,7 +110,7 @@ void Day14::parseFile(std::ifstream& file)
 
     // Add the lines to the map
     for (Line& line : lines) {
-        Int2 coord = line.origin - caveOffset;
+        Int2 coord = line.start - caveOffset;
         for (int32_t i = 0; i <= line.distance; ++i) {
             caveMap[coord] = true;
             coord += line.direction;

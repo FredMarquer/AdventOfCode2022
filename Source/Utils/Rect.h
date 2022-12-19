@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <assert.h>
 #include <cstdint>
 #include <format>
 
@@ -12,10 +13,9 @@ struct Rect
 	Int2 min;
 	Int2 max; // Exclusive
 
-	static const Rect Null;
-
 	Rect() {}
-	Rect(const Int2& min, const Int2& max) : min(min), max(max) {}
+    Rect(const Int2& point) : min(point), max(point + 1) {}
+	Rect(const Int2& min, const Int2& max) : min(min), max(max) { assert(max.x >= min.x); assert(max.y >= min.y); }
 
 	inline int32_t getWidth() const { return max.x - min.x; }
 	inline int32_t getHeight() const { return max.y - min.y; }
@@ -43,7 +43,7 @@ bool Rect::contains(const Int2& point) const
 {
     return
         point.x >= min.x &&
-        point.x < max.x&&
+        point.x < max.x &&
         point.y >= min.y &&
         point.y < max.y;
 }
@@ -60,9 +60,9 @@ bool Rect::contains(const Rect& other) const
 bool Rect::overlap(const Rect& other) const
 {
     return
-        other.min.x < max.x&&
+        other.min.x < max.x &&
         other.max.x > min.x &&
-        other.min.y < max.y&&
+        other.min.y < max.y &&
         other.max.y > min.y;
 }
 

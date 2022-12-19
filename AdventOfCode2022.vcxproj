@@ -169,8 +169,6 @@
     <ClCompile Include="Source\Days\Day08.cpp" />
     <ClCompile Include="Source\Days\Day07.cpp" />
     <ClCompile Include="Source\Days\Day06.cpp" />
-    <ClCompile Include="Source\Utils\Range.cpp" />
-    <ClCompile Include="Source\Utils\Rect.cpp" />
     <ClCompile Include="Source\Utils\ScopeProfiler.cpp" />
     <ClCompile Include="Source\Result.cpp" />
     <ClCompile Include="Source\Days\Day05.cpp" />
