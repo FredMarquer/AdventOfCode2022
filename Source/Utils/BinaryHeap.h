@@ -24,7 +24,7 @@ public:
 template<class T, class Compare>
 BinaryHeap<T, Compare>::BinaryHeap(std::vector<T>&& vector) noexcept
 {
-	data = vector;
+	data = std::move(vector);
 	std::make_heap(data.begin(), data.end(), Compare());
 }
 

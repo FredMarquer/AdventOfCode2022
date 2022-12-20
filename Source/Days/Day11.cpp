@@ -105,7 +105,7 @@ std::optional<Day11::Monkey> tryParseMonkey(std::ifstream& file)
     // Skip empty line
     std::getline(file, line);
 
-    return std::move(monkey);
+    return monkey;
 }
 
 void Day11::parseFile(std::ifstream& file)

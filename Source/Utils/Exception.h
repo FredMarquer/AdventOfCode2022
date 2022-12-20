@@ -11,7 +11,7 @@ private:
     std::string message;
 
 public:
-    Exception(std::string&& message) : message(message) {}
+    Exception(std::string&& message) : message(std::move(message)) {}
 
     const char* what() const noexcept override { return message.data(); }
 };
