@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <fstream>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -48,37 +49,39 @@ struct Line
     }
 };
 
-bool tryParseNextPoint(std::string_view& view, Int2& outPoint)
+std::optional<Int2> tryParseNextPoint(std::string_view& view)
 {
     if (view.empty())
-        return false;
+        return std::nullopt;
+
+    Int2 point;
 
     // Parse x
     size_t comma = view.find_first_of(',');
-    parse(view.substr(0, comma), outPoint.x);
+    parse(view.substr(0, comma), point.x);
 
     // Parse y
     view = view.substr(comma + 1);
     size_t space = view.find_first_of(' ');
-    parse(view.substr(0, space), outPoint.y);
+    parse(view.substr(0, space), point.y);
 
     view = view.substr(std::min(space + 4, view.size()));
-    return true;
+    return point;
 }
 
 void parseLine(const std::string line, std::vector<Line>& lines)
 {
     std::string_view view = line;
-    Int2 start;
-    Int2 end;
 
     // Parse the first point
-    if (!tryParseNextPoint(view, start))
+    std::optional<Int2> start = tryParseNextPoint(view);
+    if (!start.has_value())
         exception("fail to parse the first point: {}", line);
-
+    
     // Parse the next points and add lines
-    while (tryParseNextPoint(view, end)) {
-        lines.push_back(Line(start, end));
+    std::optional<Int2> end;
+    while ((end = tryParseNextPoint(view)).has_value()) {
+        lines.push_back(Line(start.value(), end.value()));
         start = end;
     }
 }

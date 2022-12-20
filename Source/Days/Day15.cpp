@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <assert.h>
 #include <fstream>
+#include <optional>
 #include <regex>
 #include <string>
 #include <string_view>
@@ -32,7 +33,7 @@ void Day15::parseFile(std::ifstream& file)
     }
 }
 
-bool tryGetRangeAtY(const Day15::Report& report, int32_t y, bool excludeBeacon, Range& outRange)
+std::optional<Range> tryGetRangeAtY(const Day15::Report& report, int32_t y, bool excludeBeacon)
 {
     int32_t beaconDistance = std::abs(report.beacon.x - report.sensor.x) + std::abs(report.beacon.y - report.sensor.y);
     int32_t distanceFromY = std::abs(y - report.sensor.y);
@@ -40,28 +41,29 @@ bool tryGetRangeAtY(const Day15::Report& report, int32_t y, bool excludeBeacon, 
     // Check if the report intersect with the raw y
     int32_t delta = beaconDistance - distanceFromY;
     if (delta < 0)
-        return false;
+        return std::nullopt;
 
-    outRange.min = report.sensor.x - delta;
-    outRange.max = report.sensor.x + delta + 1;
-    assert(outRange.getSize() >= 1);
+    Range range;
+    range.min = report.sensor.x - delta;
+    range.max = report.sensor.x + delta + 1;
+    assert(range.getSize() >= 1);
 
     // Remove the beacon position from the range if necessary
     if (excludeBeacon && report.beacon.y == y) {
-        if (outRange.getSize() == 1) {
+        if (range.getSize() == 1) {
             assert(report.beacon.x == outRange.min);
             return false;
         }
 
-        if (report.beacon.x == outRange.min)
-            ++outRange.min;
+        if (report.beacon.x == range.min)
+            ++range.min;
         else {
             assert(report.beacon.x == (outRange.max - 1));
-            --outRange.max;
+            --range.max;
         }
     }
 
-    return true;
+    return range;
 }
 
 void getRangesAtY(const std::vector<Day15::Report>& reports, int32_t y, bool excludeBeaconCoord, std::vector<Range>& outRanges)
@@ -70,9 +72,9 @@ void getRangesAtY(const std::vector<Day15::Report>& reports, int32_t y, bool exc
 
     // Compute the range at y for each reports
     for (const Day15::Report& report : reports) {
-        Range range;
-        if (tryGetRangeAtY(report, y, excludeBeaconCoord, range))
-            outRanges.push_back(range);
+        std::optional<Range> range = tryGetRangeAtY(report, y, excludeBeaconCoord);
+        if (range.has_value())
+            outRanges.push_back(range.value());
     }
 
     // Merge overlapping/touching ranges

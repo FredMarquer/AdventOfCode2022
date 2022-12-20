@@ -4,6 +4,7 @@
 #include <cmath>
 #include <fstream>
 #include <functional>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -66,52 +67,52 @@ void parseInspectFunction(const std::string_view& line, Day11::ItemModifierFunct
     exception("invalid operator: {}", operation);
 }
 
-bool tryParseMonkey(std::ifstream& file, Day11::Monkey& outMonkey)
+std::optional<Day11::Monkey> tryParseMonkey(std::ifstream& file)
 {
-    assert(outMonkey.startingItems.size() == 0);
-
     std::string line;
 
     // Skip the first line
     if (!std::getline(file, line))
-        return false;
+        return std::nullopt;
+
+    Day11::Monkey monkey;
 
     // Parse items
     if (!std::getline(file, line))
         exception("fail to get the 'items' line");
-    parseItems(std::string_view(line).substr(18), outMonkey.startingItems);
+    parseItems(std::string_view(line).substr(18), monkey.startingItems);
 
     // Parse inspectFunction
     if (!std::getline(file, line))
         exception("fail to get the 'inspect function' line");
-    parseInspectFunction(line, outMonkey.inspectFunction);
+    parseInspectFunction(line, monkey.inspectFunction);
 
     // Parse testFunction
     if (!std::getline(file, line))
         exception("fail to get the 'test divider' line");
-    parseIntAtEnd(line, 21, outMonkey.testDivisor);
+    parseIntAtEnd(line, 21, monkey.testDivisor);
 
     // Parse monkeyIndexIfTrue
     if (!std::getline(file, line))
         exception("fail to get the 'index if true' line");
-    parseIntAtEnd(line, 29, outMonkey.monkeyIndexIfTrue);
+    parseIntAtEnd(line, 29, monkey.monkeyIndexIfTrue);
 
     // Parse monkeyIndexIfFalse
     if (!std::getline(file, line))
         exception("fail to get the 'index if false' line");
-    parseIntAtEnd(line, 30, outMonkey.monkeyIndexIfFalse);
+    parseIntAtEnd(line, 30, monkey.monkeyIndexIfFalse);
 
     // Skip empty line
     std::getline(file, line);
 
-    return true;
+    return std::move(monkey);
 }
 
 void Day11::parseFile(std::ifstream& file)
 {
-    Monkey monkey;
-    while (tryParseMonkey(file, monkey))
-        monkeys.push_back(std::move(monkey));
+    std::optional<Day11::Monkey> monkey;
+    while ((monkey = tryParseMonkey(file)).has_value())
+        monkeys.push_back(std::move(monkey.value()));
 }
 
 int64_t simulate(const std::vector<Day11::Monkey>& monkeys, int numberOfRound, const Day11::ItemModifierFunction& worryLevelManagementFunction)

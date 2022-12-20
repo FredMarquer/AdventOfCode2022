@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -35,7 +36,7 @@ public:
 		{}
 
 		void initializeSize();
-		bool tryGetSubDirectoryIndex(const std::string_view& directoryName, size_t& outSubDirectoryIndex) const;
+		std::optional<size_t> tryGetSubDirectoryIndex(const std::string_view& directoryName) const;
 	};
 
 private:

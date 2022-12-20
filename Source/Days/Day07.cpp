@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <fstream>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -23,16 +24,14 @@ void Day07::Directory::initializeSize()
         size += file.size;
 }
 
-bool Day07::Directory::tryGetSubDirectoryIndex(const std::string_view& directoryName, size_t& outSubDirectoryIndex) const
+std::optional<size_t> Day07::Directory::tryGetSubDirectoryIndex(const std::string_view& directoryName) const
 {
     for (size_t i = 0; i < subDirectories.size(); ++i) {
-        if (subDirectories[i].name == directoryName) {
-            outSubDirectoryIndex = i;
-            return true;
-        }
+        if (subDirectories[i].name == directoryName)
+            return i;
     }
 
-    return false;
+    return std::nullopt;
 }
 
 void Day07::parseFile(std::ifstream& file)
@@ -65,10 +64,10 @@ void Day07::parseFile(std::ifstream& file)
                 // Go to a sub directory
                 Directory* currentDirectory = currentPath.back();
                 std::string_view subDirectoryName = lineView.substr(5);
-                size_t subDirectoryIndex;
-                if (!currentPath.back()->tryGetSubDirectoryIndex(subDirectoryName, subDirectoryIndex))
+                std::optional<size_t> subDirectoryIndex = currentPath.back()->tryGetSubDirectoryIndex(subDirectoryName);
+                if (!subDirectoryIndex.has_value())
                     exception("sub directory '{}' not found", subDirectoryName);
-                Directory& subDirectory = currentDirectory->subDirectories[subDirectoryIndex];
+                Directory& subDirectory = currentDirectory->subDirectories[subDirectoryIndex.value()];
                 currentPath.push_back(&subDirectory);
             }
         }
