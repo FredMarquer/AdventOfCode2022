@@ -11,7 +11,7 @@ private:
 
 public:
 	BinaryHeap() {}
-	BinaryHeap(std::vector<T>&& vector);
+	BinaryHeap(std::vector<T>&& vector) noexcept;
 
 	inline size_t getSize() { return data.size(); }
 	inline bool isEmpty() { return data.empty(); }
@@ -22,7 +22,7 @@ public:
 };
 
 template<class T, class Compare>
-BinaryHeap<T, Compare>::BinaryHeap(std::vector<T>&& vector)
+BinaryHeap<T, Compare>::BinaryHeap(std::vector<T>&& vector) noexcept
 {
 	data = vector;
 	std::make_heap(data.begin(), data.end(), Compare());

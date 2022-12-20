@@ -19,8 +19,8 @@ public:
 	Array2D(size_t width, size_t height);
 	Array2D(size_t width, size_t height, const std::vector<T>& vector);
 	Array2D(const Array2D& other);
-	Array2D(Array2D&& other);
-	~Array2D() { delete[] data; }
+	Array2D(Array2D&& other) noexcept;
+	~Array2D() noexcept { delete[] data; }
 
 	Array2D<T>& operator=(Array2D&& other) noexcept;
 
@@ -79,7 +79,7 @@ Array2D<T>::Array2D(const Array2D& other)
 }
 
 template<class T>
-Array2D<T>::Array2D(Array2D&& other)
+Array2D<T>::Array2D(Array2D&& other) noexcept
 	: width(other.width)
 	, height(other.height)
 	, data(other.data)
