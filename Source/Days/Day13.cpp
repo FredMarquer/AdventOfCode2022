@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <assert.h>
 #include <fstream>
+#include <span>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -86,39 +87,29 @@ void Day13::parseFile(std::ifstream& file)
         exception("odd number of packets (= {}), it should be even", packets.size());
 }
 
-struct List
+Day13::Node::operator std::span<const Day13::Node>() const
 {
-    const Day13::Node* ptr;
-    size_t count;
-
-    List(const Day13::Node& node)
-    {
-        if (node.isInteger()) {
-            ptr = &node;
-            count = 1;
-        }
-        else {
-            assert(node.isList());
-            const std::vector<Day13::Node>& list = node.getList();
-            ptr = list.data();
-            count = list.size();
-        }
-    }
-};
+    if (isInteger())
+        return std::span<const Day13::Node>(this, 1);
+    
+    assert(isList());
+    const std::vector<Day13::Node>& list = getList();
+    return std::span<const Day13::Node>(list.data(), list.size());
+}
 
 // Foward declare
 int compareNodes(const Day13::Node& lhs, const Day13::Node& rhs);
 
-int compareLists(const List& lhs, const List& rhs)
+int compareLists(std::span<const Day13::Node> lhs, std::span<const Day13::Node> rhs)
 {
-    size_t count = std::min(lhs.count, rhs.count);
+    size_t count = std::min(lhs.size(), rhs.size());
     for (size_t i = 0; i < count; ++i) {
-        int result = compareNodes(lhs.ptr[i], rhs.ptr[i]);
+        int result = compareNodes(lhs[i], rhs[i]);
         if (result != 0)
             return result;
     }
 
-    return lhs.count - rhs.count;
+    return lhs.size() - rhs.size();
 }
 
 int compareNodes(const Day13::Node& lhs, const Day13::Node& rhs)

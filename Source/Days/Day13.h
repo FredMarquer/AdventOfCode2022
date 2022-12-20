@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <span>
 #include <string>
 #include <variant>
 #include <vector>
@@ -17,6 +18,8 @@ public:
 
 		Node() : data(std::vector<Node>()) {}
 		Node(int integer) : data(integer) {}
+
+		operator std::span<const Node>() const;
 
 		bool isInteger() const { return std::holds_alternative<int>(this->data); }
 		bool isList() const { return std::holds_alternative<std::vector<Day13::Node>>(this->data); }
