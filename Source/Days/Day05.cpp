@@ -1,11 +1,6 @@
-#include "Day05.h"
+#include "StdAfx.h"
 
-#include <assert.h>
-#include <fstream>
-#include <iostream>
-#include <regex>
-#include <string>
-#include <vector>
+#include "Day05.h"
 
 #include "Result.h"
 #include "Utils/Exception.h"

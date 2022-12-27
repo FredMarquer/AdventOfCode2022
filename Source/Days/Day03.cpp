@@ -1,10 +1,6 @@
-#include "Day03.h"
+#include "StdAfx.h"
 
-#include <assert.h>
-#include <fstream>
-#include <string>
-#include <string_view>
-#include <vector>
+#include "Day03.h"
 
 #include "Result.h"
 #include "Utils/Log.h"

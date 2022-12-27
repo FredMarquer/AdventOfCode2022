@@ -1,7 +1,8 @@
+#include "StdAfx.h"
+
 #include "Parsing.h"
 
 #include <charconv>
-#include <string_view>
 
 #include "Log.h"
 #include "Exception.h"

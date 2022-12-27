@@ -1,8 +1,6 @@
-#include "Day06.h"
+#include "StdAfx.h"
 
-#include <assert.h>
-#include <fstream>
-#include <string>
+#include "Day06.h"
 
 #include "Result.h"
 #include "Utils/Exception.h"

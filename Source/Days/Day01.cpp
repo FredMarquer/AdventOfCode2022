@@ -1,9 +1,6 @@
-#include "Day01.h"
+#include "StdAfx.h"
 
-#include <assert.h>
-#include <fstream>
-#include <string>
-#include <vector>
+#include "Day01.h"
 
 #include "Result.h"
 

@@ -1,15 +1,6 @@
-#include "Day16.h"
+#include "StdAfx.h"
 
-#include <array>
-#include <assert.h>
-#include <fstream>
-#include <optional>
-#include <regex>
-#include <string>
-#include <string_view>
-#include <unordered_map>
-#include <unordered_set>
-#include <vector>
+#include "Day16.h"
 
 #include "Result.h"
 #include "Utils/BinaryHeap.h"

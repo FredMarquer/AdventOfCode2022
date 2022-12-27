@@ -1,11 +1,6 @@
-#include "Day07.h"
+#include "StdAfx.h"
 
-#include <assert.h>
-#include <fstream>
-#include <optional>
-#include <string>
-#include <string_view>
-#include <vector>
+#include "Day07.h"
 
 #include "Result.h"
 #include "Utils/Exception.h"

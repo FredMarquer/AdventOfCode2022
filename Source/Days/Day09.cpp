@@ -1,14 +1,6 @@
-#include "Day09.h"
+#include "StdAfx.h"
 
-#include <algorithm>
-#include <array>
-#include <assert.h>
-#include <cstdlib>
-#include <fstream>
-#include <string>
-#include <string_view>
-#include <vector>
-#include <unordered_set>
+#include "Day09.h"
 
 #include "Result.h"
 #include "Utils/Exception.h"

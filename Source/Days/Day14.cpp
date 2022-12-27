@@ -1,11 +1,6 @@
-#include "Day14.h"
+#include "StdAfx.h"
 
-#include <assert.h>
-#include <fstream>
-#include <optional>
-#include <string>
-#include <string_view>
-#include <vector>
+#include "Day14.h"
 
 #include "Result.h"
 #include "Utils/Array2D.h"

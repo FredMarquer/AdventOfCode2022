@@ -1,10 +1,6 @@
-#include "Day02.h"
+#include "StdAfx.h"
 
-#include <array>
-#include <fstream>
-#include <string>
-#include <utility>
-#include <vector>
+#include "Day02.h"
 
 #include "Result.h"
 #include "Utils/Exception.h"

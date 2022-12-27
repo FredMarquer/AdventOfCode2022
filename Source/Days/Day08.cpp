@@ -1,9 +1,6 @@
-#include "Day08.h"
+#include "StdAfx.h"
 
-#include <assert.h>
-#include <fstream>
-#include <string>
-#include <vector>
+#include "Day08.h"
 
 #include "Result.h"
 #include "Utils/Array2D.h"

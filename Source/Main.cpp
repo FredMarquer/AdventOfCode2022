@@ -1,9 +1,6 @@
-#include <exception>
+#include "StdAfx.h"
+
 #include <filesystem>
-#include <fstream>
-#include <memory>
-#include <span>
-#include <string>
 
 #include "Day.h"
 #include "Days.h"

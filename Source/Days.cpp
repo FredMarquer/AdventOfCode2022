@@ -1,6 +1,6 @@
-#include "Days.h"
+#include "StdAfx.h"
 
-#include <memory>
+#include "Days.h"
 
 #include "Day.h"
 #include "Days/Day01.h"

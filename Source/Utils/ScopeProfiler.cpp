@@ -1,3 +1,5 @@
+#include "StdAfx.h"
+
 #include "ScopeProfiler.h"
 
 #ifdef ENABLE_PROFILING

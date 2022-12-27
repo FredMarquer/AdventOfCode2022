@@ -1,12 +1,6 @@
-#include "Day11.h"
+#include "StdAfx.h"
 
-#include <assert.h>
-#include <cmath>
-#include <fstream>
-#include <functional>
-#include <optional>
-#include <string>
-#include <string_view>
+#include "Day11.h"
 
 #include "Result.h"
 #include "Utils/Exception.h"

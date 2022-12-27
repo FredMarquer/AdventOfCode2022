@@ -1,3 +1,5 @@
+#include "StdAfx.h"
+
 #include "Int2.h"
 
 const Int2 Int2::Zero(0);

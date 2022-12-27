@@ -1,13 +1,6 @@
-#include "Day15.h"
+#include "StdAfx.h"
 
-#include <algorithm>
-#include <assert.h>
-#include <fstream>
-#include <optional>
-#include <regex>
-#include <string>
-#include <string_view>
-#include <vector>
+#include "Day15.h"
 
 #include "Result.h"
 #include "Utils/Exception.h"
