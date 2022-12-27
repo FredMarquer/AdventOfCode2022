@@ -185,7 +185,7 @@ std::ostream& operator<<(std::ostream& os, const Array2D<T>& lhs)
 	for (size_t y = 0; y < lhs.getHeight(); ++y) {
 		for (size_t x = 0; x < lhs.getWidth(); ++x)
 			os << lhs.getElementAt(x, y);
-		os << std::endl;
+		os << '\n';
 	}
 
 	return os;
