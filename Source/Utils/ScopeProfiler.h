@@ -9,6 +9,7 @@ class ScopeProfiler
 private:
 	const char* name;
 	std::chrono::steady_clock::time_point startTime;
+	uint64_t startAllocationCount;
 
 public:
 	ScopeProfiler(const char* name);
