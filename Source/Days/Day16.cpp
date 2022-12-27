@@ -111,7 +111,7 @@ void Day16::parseFile(std::ifstream& file)
         exception("too many vavles: {}", valves.size());
 }
 
-template<const size_t CharacterCount>
+template<size_t CharacterCount>
 struct State
 {
     int32_t timeLeft;
@@ -144,7 +144,7 @@ struct State
     MoveIterator availableMoves(const std::vector<Day16::Valve>& valves) const { return MoveIterator(valves, *this); }
 };
 
-template<const size_t CharacterCount>
+template<size_t CharacterCount>
 State<CharacterCount>::State(size_t valveIndex, int32_t timeLeft, int32_t remainingFlowRate)
     : timeLeft(timeLeft)
     , remainingFlowRate(remainingFlowRate)
@@ -154,7 +154,7 @@ State<CharacterCount>::State(size_t valveIndex, int32_t timeLeft, int32_t remain
     characterValveIndices.fill(valveIndex);
 }
 
-template<const size_t CharacterCount>
+template<size_t CharacterCount>
 State<CharacterCount>::MoveIterator::MoveIterator(const std::vector<Day16::Valve>& valves, const State<CharacterCount>& state)
     : valves(valves)
     , previousState(state)
@@ -164,7 +164,7 @@ State<CharacterCount>::MoveIterator::MoveIterator(const std::vector<Day16::Valve
     characterMoveIndices.fill(-1);
 }
 
-template<const size_t CharacterCount>
+template<size_t CharacterCount>
 std::optional<const State<CharacterCount>*> State<CharacterCount>::MoveIterator::next()
 {
     // Return the first move combination if valid
@@ -183,7 +183,7 @@ std::optional<const State<CharacterCount>*> State<CharacterCount>::MoveIterator:
     return std::nullopt;
 }
 
-template<const size_t CharacterCount>
+template<size_t CharacterCount>
 bool State<CharacterCount>::MoveIterator::nextMoveCombination()
 {
     for (size_t characterIndex = 0; characterIndex < CharacterCount; ++characterIndex)
@@ -202,7 +202,7 @@ bool State<CharacterCount>::MoveIterator::nextMoveCombination()
     return false;
 }
 
-template<const size_t CharacterCount>
+template<size_t CharacterCount>
 bool State<CharacterCount>::MoveIterator::applyNextState()
 {
     nextState = previousState;
@@ -228,7 +228,7 @@ bool State<CharacterCount>::MoveIterator::applyNextState()
     return true;
 }
 
-template<const size_t CharacterCount>
+template<size_t CharacterCount>
 struct OpenNode
 {
     State<CharacterCount> state;
@@ -239,13 +239,13 @@ struct OpenNode
     inline bool operator<(const OpenNode& other) const;
 };
 
-template<const size_t CharacterCount>
+template<size_t CharacterCount>
 OpenNode<CharacterCount>::OpenNode(const State<CharacterCount>& state) : state(state)
 {
     heuristic = state.pressureReleased + (state.remainingFlowRate * state.timeLeft);
 }
 
-template<const size_t CharacterCount>
+template<size_t CharacterCount>
 bool OpenNode<CharacterCount>::operator<(const OpenNode& other) const
 {
     return heuristic < other.heuristic;
@@ -256,13 +256,13 @@ struct CloseNode
     uint64_t characterValveBits; // This bit field works only for 1 or 2 characters.
     uint64_t openValveBits;
 
-    template<const size_t CharacterCount>
+    template<size_t CharacterCount>
     CloseNode(const State<CharacterCount>& state);
 
     inline bool operator==(const CloseNode& other) const;
 };
 
-template<const size_t CharacterCount>
+template<size_t CharacterCount>
 CloseNode::CloseNode(const State<CharacterCount>& state)
     : characterValveBits(0)
     , openValveBits(state.openValveBits)
@@ -289,7 +289,7 @@ struct std::hash<CloseNode>
     }
 };
 
-template<const size_t CharacterCount>
+template<size_t CharacterCount>
 Result aStar(const std::vector<Day16::Valve>& valves, const State<CharacterCount>& initialState)
 {
     // Initialize the open set

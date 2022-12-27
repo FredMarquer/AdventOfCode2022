@@ -51,14 +51,14 @@ std::optional<Range> tryGetRangeAtY(const Day15::Report& report, int32_t y, bool
     // Remove the beacon position from the range if necessary
     if (excludeBeacon && report.beacon.y == y) {
         if (range.getSize() == 1) {
-            assert(report.beacon.x == outRange.min);
+            assert(report.beacon.x == range.min);
             return false;
         }
 
         if (report.beacon.x == range.min)
             ++range.min;
         else {
-            assert(report.beacon.x == (outRange.max - 1));
+            assert(report.beacon.x == (range.max - 1));
             --range.max;
         }
     }
@@ -68,7 +68,7 @@ std::optional<Range> tryGetRangeAtY(const Day15::Report& report, int32_t y, bool
 
 void getRangesAtY(const std::vector<Day15::Report>& reports, int32_t y, bool excludeBeaconCoord, std::vector<Range>& outRanges)
 {
-    outRanges.clear();
+    assert(outRanges.empty());
 
     // Compute the range at y for each reports
     for (const Day15::Report& report : reports) {
@@ -114,7 +114,8 @@ Result Day15::runPart2() const
     const Range bounds = Range(0, coordMax + 1);
 
     std::vector<Range> ranges;
-    for (int32_t y = 0; y <= coordMax; ++y) {
+    for (int32_t y = 0; y <= coordMax; ++y)
+    {
         getRangesAtY(reports, y, false, ranges);
 
         // Clamp ranges between 0 and max
@@ -122,8 +123,10 @@ Result Day15::runPart2() const
             Range& range = ranges[i];
             if (range.overlap(bounds))
                 range.clamp(bounds);
-            else
-                ranges.erase(ranges.begin() + i);
+            else {
+                std::swap(ranges[i], ranges[ranges.size() - 1]);
+                ranges.pop_back();
+            }
         }
 
         assert(ranges.size() == 1 || ranges.size() == 2);
@@ -148,6 +151,8 @@ Result Day15::runPart2() const
 
             return ((int64_t)x * coordMax) + y;
         }
+
+        ranges.clear();
     }
 
     error("solution not found");

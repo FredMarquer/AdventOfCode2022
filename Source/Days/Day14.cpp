@@ -69,14 +69,14 @@ std::optional<Int2> tryParseNextPoint(std::string_view& view)
     return point;
 }
 
-void parseLine(const std::string line, std::vector<Line>& lines)
+void parseLine(const std::string& strLine, std::vector<Line>& lines)
 {
-    std::string_view view = line;
+    std::string_view view = strLine;
 
     // Parse the first point
     std::optional<Int2> start = tryParseNextPoint(view);
     if (!start.has_value())
-        exception("fail to parse the first point: {}", line);
+        exception("fail to parse the first point: {}", view);
     
     // Parse the next points and add lines
     std::optional<Int2> end;
@@ -89,10 +89,10 @@ void parseLine(const std::string line, std::vector<Line>& lines)
 void Day14::parseFile(std::ifstream& file)
 {
     // Generate the list of lines
-    std::string line;
+    std::string lineStr;
     std::vector<Line> lines;
-    while (std::getline(file, line))
-        parseLine(line, lines);
+    while (std::getline(file, lineStr))
+        parseLine(lineStr, lines);
 
     // Compute the bounding rect
     Rect rect = Rect(lines[0].start);
@@ -102,7 +102,7 @@ void Day14::parseFile(std::ifstream& file)
     }
 
     // Extend the rect for part 2
-    assert(caveRect.min.y >= 0);
+    assert(rect.min.y >= 0);
     rect.min.y = 0;
     rect.max.y += 2;
     rect.encapsulateX(Range(sourceCoord.x - rect.max.y, sourceCoord.x + rect.max.y));

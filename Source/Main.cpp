@@ -11,14 +11,14 @@
 #include "Utils/Log.h"
 #include "Utils/ScopeProfiler.h"
 
-bool parseDayOption(std::span<char*> args, size_t& argIndex, int& outDay)
+bool parseDayOption(std::span<char*> args, size_t& argIndex, int32_t& outDay)
 {
     if (argIndex + 1 >= args.size()) {
         error("--day option requires one argument");
         return false;
     }
 
-    outDay = std::stoi(args[++argIndex]);
+    outDay = (int32_t)std::atoi(args[++argIndex]);
     if (outDay < 0 || outDay > DayCount) {
         error("invalid day argument: {}", args[argIndex]);
         return false;
@@ -27,14 +27,14 @@ bool parseDayOption(std::span<char*> args, size_t& argIndex, int& outDay)
     return true;
 }
 
-bool parsePartOption(std::span<char*> args, size_t& argIndex, int& outPart)
+bool parsePartOption(std::span<char*> args, size_t& argIndex, int32_t& outPart)
 {
     if (argIndex + 1 >= args.size()) {
         error("--part option requires one argument");
         return false;
     }
 
-    outPart = std::atoi(args[++argIndex]);
+    outPart = (int32_t)std::atoi(args[++argIndex]);
     if (outPart < 0 || outPart > 2) {
         error("invalid part argument: {}", args[argIndex]);
         return false;
@@ -43,19 +43,19 @@ bool parsePartOption(std::span<char*> args, size_t& argIndex, int& outPart)
     return true;
 }
 
-bool parseCommandLineArguments(const char* arg, std::span<char*> args, size_t& argIndex, int& outDay, int& outPart)
+bool parseCommandLineArguments(const char* arg, std::span<char*> args, size_t& argIndex, int32_t& outDay, int32_t& outPart)
 {
-    if (arg == "--day")
+    if (strcmp(arg, "--day") == 0)
         return parseDayOption(args, argIndex, outDay);
 
-    if (arg == "--part")
+    if (strcmp(arg, "--part") == 0)
         return parsePartOption(args, argIndex, outPart);
 
     error("invalid option: ", arg);
     return false;
 }
 
-bool parseCommandLineArguments(std::span<char*> args, int& outDay, int& outPart)
+bool parseCommandLineArguments(std::span<char*> args, int32_t& outDay, int32_t& outPart)
 {
     for (size_t argIndex = 1; argIndex < args.size(); ++argIndex) {
         if (!parseCommandLineArguments(args[argIndex], args, argIndex, outDay, outPart))
@@ -65,7 +65,7 @@ bool parseCommandLineArguments(std::span<char*> args, int& outDay, int& outPart)
     return true;
 }
 
-bool runDay(int dayNumber, int part)
+bool runDay(int32_t dayNumber, int32_t part)
 {
     log("");
     log("---------- Day {} ----------", dayNumber);
@@ -167,12 +167,12 @@ bool runDay(int dayNumber, int part)
     return part1Valid && part2Valid;
 }
 
-bool runAllDays(int part)
+bool runAllDays(int32_t part)
 {
     int32_t validDayCount = 0;
 
     // Run all days
-    for (int i = 1; i <= DayCount; ++i) {
+    for (int32_t i = 1; i <= DayCount; ++i) {
         if (runDay(i, part))
             ++validDayCount;
     }
@@ -190,8 +190,8 @@ bool runAllDays(int part)
 
 int main(int argc, char** argv)
 {
-    int day = 0;
-    int part = 0;
+    int32_t day = 0;
+    int32_t part = 0;
     std::span<char*> args = std::span<char*>(argv, argc);
     if (!parseCommandLineArguments(args, day, part)) {
         error("fail to parse command line arguments");

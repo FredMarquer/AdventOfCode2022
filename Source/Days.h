@@ -4,7 +4,7 @@
 
 #include "Day.h"
 
-const int DayCount = 17;
+const int32_t DayCount = 17;
 
-std::unique_ptr<Day> createDay(int dayNumber);
+std::unique_ptr<Day> createDay(int32_t dayNumber);
 

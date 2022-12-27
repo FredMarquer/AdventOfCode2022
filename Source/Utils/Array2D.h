@@ -22,6 +22,7 @@ public:
 	Array2D(Array2D&& other) noexcept;
 	~Array2D() noexcept { delete[] data; }
 
+	Array2D<T>& operator=(const Array2D& other);
 	Array2D<T>& operator=(Array2D&& other) noexcept;
 
 	inline T& operator[](size_t index) { return data[index]; }
@@ -87,6 +88,25 @@ Array2D<T>::Array2D(Array2D&& other) noexcept
 	other.width = 0;
 	other.height = 0;
 	other.data = nullptr;
+}
+
+template<class T>
+Array2D<T>& Array2D<T>::operator=(const Array2D& other)
+{
+	int previousSize = getSize();
+	int newSize = other.getSize();
+
+	width = other.width;
+	height = other.height;
+
+	if (newSize != previousSize) {
+		delete[] data;
+		if (newSize > 0)
+			data = new T[newSize];
+	}
+
+	if (newSize > 0)
+		memcpy(data, other.data, newSize * sizeof(T));
 }
 
 template<class T>

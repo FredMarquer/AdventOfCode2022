@@ -53,7 +53,9 @@ struct std::hash<Int2>
 {
 	inline size_t operator()(const Int2& rhs) const noexcept
 	{
-		return ((rhs.x << 5) + rhs.x) + rhs.y;
+		size_t hash = std::hash<int32_t>()(rhs.x);
+		hash = ((hash << 5) + hash) + std::hash<int32_t>()(rhs.y);
+		return hash;
 	}
 };
 

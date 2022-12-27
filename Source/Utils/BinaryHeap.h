@@ -13,8 +13,8 @@ public:
 	BinaryHeap() {}
 	BinaryHeap(std::vector<T>&& vector) noexcept;
 
-	inline size_t getSize() { return data.size(); }
-	inline bool isEmpty() { return data.empty(); }
+	inline size_t getSize() const { return data.size(); }
+	inline bool isEmpty() const { return data.empty(); }
 	void push(const T& value);
 	T pop();
 	inline void reserve(size_t newCapacity) { data.reserve(newCapacity); }

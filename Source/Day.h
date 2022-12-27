@@ -8,6 +8,8 @@
 class Day
 {
 public:
+	virtual ~Day() {}
+
 	virtual std::string getInputPath() const = 0;
 	virtual void parseFile(std::ifstream& file) = 0;
 	virtual Result runPart1() const = 0;

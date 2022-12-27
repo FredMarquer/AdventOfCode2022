@@ -22,7 +22,7 @@
 #include "Days/Day17.h"
 #include "Utils/Log.h"
 
-std::unique_ptr<Day> createDay(int dayNumber)
+std::unique_ptr<Day> createDay(int32_t dayNumber)
 {
 	std::unique_ptr<Day> day;
 	switch (dayNumber) {
