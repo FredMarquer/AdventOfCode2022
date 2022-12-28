@@ -81,6 +81,14 @@ void Day13::parseFile(std::ifstream& file)
         exception("odd number of packets (= {}), it should be even", packets.size());
 }
 
+Day13::Node::Node()
+    : data(std::vector<Node>())
+{}
+
+Day13::Node::Node(int integer)
+    : data(integer)
+{}
+
 Day13::Node::operator std::span<const Day13::Node>() const
 {
     if (isInteger())
@@ -89,6 +97,31 @@ Day13::Node::operator std::span<const Day13::Node>() const
     assert(isList());
     const std::vector<Day13::Node>& list = getList();
     return std::span<const Day13::Node>(list.data(), list.size());
+}
+
+bool Day13::Node::isInteger() const
+{
+    return std::holds_alternative<int>(this->data);
+}
+
+bool Day13::Node::isList() const
+{
+    return std::holds_alternative<std::vector<Day13::Node>>(this->data);
+}
+
+int Day13::Node::getInteger() const
+{
+    return std::get<int>(this->data);
+}
+
+std::vector<Day13::Node>& Day13::Node::getList()
+{
+    return std::get<std::vector<Day13::Node>>(this->data);
+}
+
+const std::vector<Day13::Node>& Day13::Node::getList() const
+{
+    return std::get<std::vector<Day13::Node>>(this->data);
 }
 
 // Foward declare
@@ -112,6 +145,11 @@ int compareNodes(const Day13::Node& lhs, const Day13::Node& rhs)
         return lhs.getInteger() - rhs.getInteger();
 
     return compareLists(lhs, rhs);
+}
+
+bool Day13::Packet::operator==(const std::string& value) const
+{
+    return line == value;
 }
 
 bool Day13::Packet::operator<(const Day13::Packet& rhs) const

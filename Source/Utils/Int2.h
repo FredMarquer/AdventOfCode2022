@@ -20,13 +20,13 @@ struct Int2
 
 	inline bool isUnit() const;
 
-	inline bool operator==(const Int2& rhs) const { return x == rhs.x && y == rhs.y; }
-	inline bool operator!=(const Int2& rhs) const { return !(*this == rhs); }
+	inline bool operator==(Int2 other) const { return x == other.x && y == other.y; }
+	inline bool operator!=(Int2 other) const { return !(*this == other); }
 	inline Int2 operator-() const { return Int2(-x, -y); }
-	inline Int2 operator+(const Int2& rhs) const { return Int2(x + rhs.x, y + rhs.y); }
-	inline Int2 operator-(const Int2& rhs) const { return Int2(x - rhs.x, y - rhs.y); }
-	inline Int2 operator+=(const Int2& rhs);
-	inline Int2 operator-=(const Int2& rhs);
+	inline Int2 operator+(Int2 other) const { return Int2(x + other.x, y + other.y); }
+	inline Int2 operator-(Int2 other) const { return Int2(x - other.x, y - other.y); }
+	inline Int2 operator+=(Int2 other);
+	inline Int2 operator-=(Int2 other);
 };
 
 bool Int2::isUnit() const
@@ -34,27 +34,27 @@ bool Int2::isUnit() const
 	return (y == 0 && abs(x) == 1) || (x == 0 && abs(y) == 1);
 }
 
-Int2 Int2::operator+=(const Int2& rhs)
+Int2 Int2::operator+=(Int2 other)
 {
-	x += rhs.x;
-	y += rhs.y;
+	x += other.x;
+	y += other.y;
 	return *this;
 }
 
-Int2 Int2::operator-=(const Int2& rhs)
+Int2 Int2::operator-=(Int2 other)
 {
-	x -= rhs.x;
-	y -= rhs.y;
+	x -= other.x;
+	y -= other.y;
 	return *this;
 }
 
 template<>
 struct std::hash<Int2>
 {
-	inline size_t operator()(const Int2& rhs) const noexcept
+	inline size_t operator()(Int2 value) const noexcept
 	{
-		size_t hash1 = std::hash<int32_t>()(rhs.x);
-		size_t hash2 = std::hash<int32_t>()(rhs.y);
+		size_t hash1 = std::hash<int32_t>()(value.x);
+		size_t hash2 = std::hash<int32_t>()(value.y);
 		return hash2 + 0x9e3779b9 + (hash1 << 6) + (hash1 >> 2);
 	}
 };
@@ -69,7 +69,7 @@ struct std::formatter<Int2>
 	}
 
 	template<typename FormatContext>
-	auto format(const Int2& value, FormatContext& fc)
+	auto format(Int2 value, FormatContext& fc)
 	{
 		return std::format_to(fc.out(), "({},{})", value.x, value.y);
 	}

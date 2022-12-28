@@ -16,8 +16,8 @@ public:
 		std::string name;
 		int size;
 
-		File(const std::string_view& name, int size) : name(name), size(size) {}
-		File(File&& other) noexcept : name(std::move(other.name)), size(other.size) {}
+		File(std::string_view name, int size);
+		File(File&& other) noexcept;
 	};
 
 	struct Directory
@@ -27,16 +27,11 @@ public:
 		std::vector<File> files;
 		int size;
 
-		Directory(const std::string_view& name) : name(name), size(0) {}
-		Directory(Directory&& other) noexcept
-			: name(std::move(other.name))
-			, subDirectories(std::move(other.subDirectories))
-			, files(std::move(other.files))
-			, size(other.size)
-		{}
+		Directory(std::string_view name) : name(name), size(0) {}
+		Directory(Directory&& other) noexcept;
 
 		void initializeSize();
-		std::optional<size_t> tryGetSubDirectoryIndex(const std::string_view& directoryName) const;
+		std::optional<size_t> tryGetSubDirectoryIndex(std::string_view directoryName) const;
 	};
 
 private:

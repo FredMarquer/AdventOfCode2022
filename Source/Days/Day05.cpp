@@ -5,6 +5,12 @@
 #include "Result.h"
 #include "Utils/Exception.h"
 
+Day05::Instruction::Instruction(int numberOfBoxes, int fromStackIndex, int toStackIndex)
+    : numberOfBoxes(numberOfBoxes)
+    , fromStackIndex(fromStackIndex)
+    , toStackIndex(toStackIndex)
+{}
+
 void Day05::parseFile(std::ifstream& file)
 {
     stacks.resize(9);
@@ -46,7 +52,7 @@ void Day05::parseFile(std::ifstream& file)
     }
 }
 
-void applyInstructionCrateMover9000(const Day05::Instruction& instruction, std::vector<std::vector<char>>& stacks)
+void applyInstructionCrateMover9000(Day05::Instruction instruction, std::vector<std::vector<char>>& stacks)
 {
     std::vector<char>& fromStack = stacks[instruction.fromStackIndex];
     std::vector<char>& toStack = stacks[instruction.toStackIndex];
@@ -57,7 +63,7 @@ void applyInstructionCrateMover9000(const Day05::Instruction& instruction, std::
     }
 }
 
-void applyInstructionCrateMover9001(const Day05::Instruction& instruction, std::vector<std::vector<char>>& stacks)
+void applyInstructionCrateMover9001(Day05::Instruction instruction, std::vector<std::vector<char>>& stacks)
 {
     std::vector<char>& fromStack = stacks[instruction.fromStackIndex];
     std::vector<char>& toStack = stacks[instruction.toStackIndex];

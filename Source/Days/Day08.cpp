@@ -82,7 +82,7 @@ Result Day08::runPart2() const
     return bestScenicScore;
 }
 
-void Day08::updateTreesVisibility(const Int2& start, const Int2& dir, Array2D<bool>& visibilityMap, int& visibilityCount) const
+void Day08::updateTreesVisibility(Int2 start, Int2 dir, Array2D<bool>& visibilityMap, int& visibilityCount) const
 {
     assert(treeMap.isInRange(start));
     assert(dir.isUnit());
@@ -108,7 +108,7 @@ void Day08::updateTreesVisibility(const Int2& start, const Int2& dir, Array2D<bo
     } while (treeMap.isInRange(coord));
 }
 
-int Day08::computeScenicScore(const Int2& coord) const
+int Day08::computeScenicScore(Int2 coord) const
 {
     assert(treeMap.isInRange(coord));
 
@@ -122,7 +122,7 @@ int Day08::computeScenicScore(const Int2& coord) const
     return distanceRight * distanceLeft * distanceUp * distanceDown;
 }
 
-int Day08::computeViewDistance(const Int2& start, const Int2& dir) const
+int Day08::computeViewDistance(Int2 start, Int2 dir) const
 {
     assert(treeMap.isInRange(start));
     assert(dir.isUnit());

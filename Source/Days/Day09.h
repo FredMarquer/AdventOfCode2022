@@ -16,8 +16,8 @@ public:
 		Int2 direction;
 		int distance;
 
-		Motion() : direction(Int2::Zero), distance(0) {}
-		Motion(Int2 direction, int distance) : direction(direction), distance(distance) {}
+		Motion();
+		Motion(Int2 direction, int distance);
 	};
 
 private:

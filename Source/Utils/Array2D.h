@@ -27,8 +27,8 @@ public:
 
 	inline T& operator[](size_t index) { return data[index]; }
 	inline const T& operator[](size_t index) const { return data[index]; }
-	inline T& operator[](const Int2& coord);
-	inline const T& operator[](const Int2& coord) const;
+	inline T& operator[](Int2 coord);
+	inline const T& operator[](Int2 coord) const;
 	inline T& getElementAt(size_t x, size_t y);
 	inline const T& getElementAt(size_t x, size_t y) const;
 
@@ -37,9 +37,9 @@ public:
 	inline size_t getSize() const { return width * height; }
 
 	inline size_t getIndex(size_t x, size_t y) const;
-	inline size_t getIndex(const Int2& coord) const;
+	inline size_t getIndex(Int2 coord) const;
 	inline bool isInRange(size_t x, size_t y) const;
-	inline bool isInRange(const Int2& coord) const;
+	inline bool isInRange(Int2 coord) const;
 
 	void fillColumn(size_t x, const T& value);
 	void fillRaw(size_t y, const T& value);
@@ -127,14 +127,14 @@ Array2D<T>& Array2D<T>::operator=(Array2D&& other) noexcept
 }
 
 template<class T>
-T& Array2D<T>::operator[](const Int2& coord)
+T& Array2D<T>::operator[](Int2 coord)
 {
 	size_t index = getIndex(coord);
 	return data[index];
 }
 
 template<class T>
-const T& Array2D<T>::operator[](const Int2& coord) const
+const T& Array2D<T>::operator[](Int2 coord) const
 {
 	size_t index = getIndex(coord);
 	return data[index];
@@ -162,7 +162,7 @@ size_t Array2D<T>::getIndex(size_t x, size_t y) const
 }
 
 template<class T>
-size_t Array2D<T>::getIndex(const Int2& coord) const
+size_t Array2D<T>::getIndex(Int2 coord) const
 {
 	return getIndex(coord.x, coord.y);
 }
@@ -176,7 +176,7 @@ bool Array2D<T>::isInRange(size_t x, size_t y) const
 }
 
 template<class T>
-bool Array2D<T>::isInRange(const Int2& coord) const
+bool Array2D<T>::isInRange(Int2 coord) const
 {
 	return isInRange(coord.x, coord.y);
 }

@@ -20,8 +20,8 @@ public:
 
 		Rock(std::initializer_list<Int2> b);
 
-		std::array<Int2, 5>::const_iterator begin() const { return blocks.begin(); }
-		std::array<Int2, 5>::const_iterator end() const { return blocks.begin() + size; }
+		std::array<Int2, 5>::const_iterator begin() const;
+		std::array<Int2, 5>::const_iterator end() const;
 	};
 
 private:

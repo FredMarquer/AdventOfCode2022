@@ -14,10 +14,8 @@ public:
 	{
 		std::string name;
 		size_t index;
-		int32_t cost;
 
-		ConnectedValve(std::string name) : name(name), index(0), cost(1) {}
-		ConnectedValve(std::string name, size_t index, int32_t cost) : name(name), index(index), cost(cost) {}
+		ConnectedValve(std::string&& name);
 	};
 
 	struct Valve
@@ -28,7 +26,7 @@ public:
 		int32_t flowRate;
 		std::vector<ConnectedValve> connectedValves;
 
-		Valve(std::string&& name, int flowRate) : name(std::move(name)), index(0), bit(0), flowRate(flowRate) {}
+		Valve(std::string&& name, int flowRate);
 
 		bool operator<(const Valve& other) const;
 	};

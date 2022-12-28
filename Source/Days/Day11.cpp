@@ -6,7 +6,13 @@
 #include "Utils/Exception.h"
 #include "Utils/Parsing.h"
 
-void parseItems(const std::string_view& line, std::vector<int64_t>& items)
+Day11::Monkey::Monkey()
+    : testDivisor(0)
+    , monkeyIndexIfTrue(0)
+    , monkeyIndexIfFalse(0)
+{}
+
+void parseItems(std::string_view line, std::vector<int64_t>& items)
 {
     size_t separator = line.find_first_of(',');
     if (separator != std::string::npos) {
@@ -24,17 +30,17 @@ void parseItems(const std::string_view& line, std::vector<int64_t>& items)
     }
 }
 
-void parseIntAtEnd(const std::string_view& line, size_t position, int64_t& outValue)
+void parseIntAtEnd(std::string_view line, size_t position, int64_t& outValue)
 {
     parse(line.substr(position), outValue);
 }
 
-void parseIntAtEnd(const std::string_view& line, size_t position, size_t& outValue)
+void parseIntAtEnd(std::string_view line, size_t position, size_t& outValue)
 {
     parse(line.substr(position), outValue);
 }
 
-void parseInspectFunction(const std::string_view& line, Day11::ItemModifierFunction& outFunction)
+void parseInspectFunction(std::string_view line, Day11::ItemModifierFunction& outFunction)
 {
     char operation = line[23];
     if (operation == '+') {

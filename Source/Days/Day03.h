@@ -16,10 +16,7 @@ public:
 		std::string secondCompartment;
 
 		Rucksack() {}
-		Rucksack(Rucksack&& other) noexcept
-			: firstCompartment(std::move(other.firstCompartment))
-			, secondCompartment(std::move(other.secondCompartment))
-		{}
+		Rucksack(Rucksack&& other) noexcept;
 	};
 
 private:

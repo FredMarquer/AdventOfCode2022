@@ -16,11 +16,7 @@ public:
 		int fromStackIndex;
 		int toStackIndex;
 
-		Instruction(int numberOfBoxes, int fromStackIndex, int toStackIndex)
-			: numberOfBoxes(numberOfBoxes)
-			, fromStackIndex(fromStackIndex)
-			, toStackIndex(toStackIndex)
-		{}
+		Instruction(int numberOfBoxes, int fromStackIndex, int toStackIndex);
 	};
 
 private:

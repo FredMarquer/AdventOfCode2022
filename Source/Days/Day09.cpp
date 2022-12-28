@@ -7,6 +7,16 @@
 #include "Utils/Int2.h"
 #include "Utils/Parsing.h"
 
+Day09::Motion::Motion()
+    : direction(Int2::Zero)
+    , distance(0)
+{}
+
+Day09::Motion::Motion(Int2 direction, int distance)
+    : direction(direction)
+    , distance(distance)
+{}
+
 Int2 charToDirection(char c)
 {
     switch (c) {
@@ -19,7 +29,7 @@ Int2 charToDirection(char c)
     exception("invalid letter: {}", c);
 }
 
-Day09::Motion parseMotion(const std::string_view& line)
+Day09::Motion parseMotion(std::string_view line)
 {
     // Parse the direction
     Int2 direction = charToDirection(line[0]);
@@ -41,7 +51,7 @@ void Day09::parseFile(std::ifstream& file)
 }
 
 template<size_t N>
-bool move(const Int2& direction, std::array<Int2, N>& rope)
+bool move(Int2 direction, std::array<Int2, N>& rope)
 {
     assert(direction.isUnit());
     

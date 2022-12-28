@@ -21,7 +21,7 @@ public:
 		size_t monkeyIndexIfTrue;
 		size_t monkeyIndexIfFalse;
 
-		Monkey() : testDivisor(0), monkeyIndexIfTrue(0), monkeyIndexIfFalse(0) {}
+		Monkey();
 	};
 
 private:

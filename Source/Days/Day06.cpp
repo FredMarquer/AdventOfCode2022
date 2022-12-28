@@ -31,7 +31,11 @@ private:
     int letterCounts[26];
 
 public:
-    LetterTracker(size_t markerLength): markerLength(markerLength), uniqueLetterCount(0), letterCounts{0} {}
+    LetterTracker(size_t markerLength)
+        : markerLength(markerLength)
+        , uniqueLetterCount(0)
+        , letterCounts{0}
+    {}
 
     void addLetter(char letter)
     {
@@ -70,7 +74,7 @@ public:
     }
 };
 
-Result findMarker(const std::string& signal, size_t markerLength)
+Result findMarker(std::string_view signal, size_t markerLength)
 {
     LetterTracker letterTracker = LetterTracker(markerLength);
 

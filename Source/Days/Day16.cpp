@@ -7,12 +7,24 @@
 #include "Utils/Exception.h"
 #include "Utils/Log.h"
 
+Day16::ConnectedValve::ConnectedValve(std::string&& name)
+    : name(std::move(name))
+    , index(0)
+{}
+
+Day16::Valve::Valve(std::string&& name, int flowRate)
+    : name(std::move(name))
+    , index(0)
+    , bit(0)
+    , flowRate(flowRate)
+{}
+
 bool Day16::Valve::operator<(const Valve& other) const
 {
     return flowRate > other.flowRate;
 }
 
-void parseConnectedValves(const std::string_view& view, std::vector<Day16::ConnectedValve>& connectedValves)
+void parseConnectedValves(std::string_view view, std::vector<Day16::ConnectedValve>& connectedValves)
 {
     size_t separator = view.find_first_of(',');
     if (separator == std::string::npos) {
@@ -107,7 +119,7 @@ struct State
         bool applyNextState();
     };
 
-    MoveIterator availableMoves(const std::vector<Day16::Valve>& valves) const { return MoveIterator(valves, *this); }
+    MoveIterator availableMoves(const std::vector<Day16::Valve>& valves) const;
 };
 
 template<size_t CharacterCount>
@@ -118,6 +130,12 @@ State<CharacterCount>::State(size_t valveIndex, int32_t timeLeft, int32_t remain
     , openValveBits(0)
 {
     characterValveIndices.fill(valveIndex);
+}
+
+template<size_t CharacterCount>
+State<CharacterCount>::MoveIterator State<CharacterCount>::availableMoves(const std::vector<Day16::Valve>& valves) const
+{
+    return MoveIterator(valves, *this);
 }
 
 template<size_t CharacterCount>

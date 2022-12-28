@@ -18,7 +18,9 @@ struct Line
     Int2 direction;
     int32_t distance;
 
-    Line(const Int2& start, const Int2& end) : start(start), end(end)
+    Line(Int2 start, Int2 end)
+        : start(start)
+        , end(end)
     {
         // Convert (start, end) into (orign, direction, distance)
         Int2 delta = end - start;
@@ -116,7 +118,7 @@ void Day14::parseFile(std::ifstream& file)
     }
 }
 
-bool simulateSandUnit(const Int2& source, Array2D<bool>& caveMap)
+bool simulateSandUnit(Int2 source, Array2D<bool>& caveMap)
 {
     assert(caveMap.isInRange(source));
 
@@ -165,7 +167,7 @@ bool simulateSandUnit(const Int2& source, Array2D<bool>& caveMap)
     return false;
 }
 
-int32_t simulate(Array2D<bool>& caveMap, const Int2& caveOffset)
+int32_t simulate(Array2D<bool>& caveMap, Int2 caveOffset)
 {
     // Apply offset to source
     Int2 source = sourceCoord;

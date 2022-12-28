@@ -5,6 +5,11 @@
 #include "Result.h"
 #include "Utils/Log.h"
 
+Day03::Rucksack::Rucksack(Rucksack&& other) noexcept
+    : firstCompartment(std::move(other.firstCompartment))
+    , secondCompartment(std::move(other.secondCompartment))
+{}
+
 void Day03::parseFile(std::ifstream& file)
 {
     std::string line;

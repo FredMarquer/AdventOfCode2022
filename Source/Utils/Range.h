@@ -17,13 +17,13 @@ struct Range
 	inline int32_t getSize() const { return max - min; }
 
     inline bool contains(int32_t value) const { return value >= min && value < max; }
-    inline bool contains(const Range& other) const { return other.min >= min && other.max <= max; }
-    inline bool overlap(const Range& other) const { return other.min < max && other.max > min; }
-    inline bool touch(const Range& other) const { return other.min <= max && other.max >= min; }
+    inline bool contains(Range other) const { return other.min >= min && other.max <= max; }
+    inline bool overlap(Range other) const { return other.min < max && other.max > min; }
+    inline bool touch(Range other) const { return other.min <= max && other.max >= min; }
 
     inline void encapsulate(int32_t value);
-    inline void encapsulate(const Range& other);
-    inline void clamp(const Range& bounds);
+    inline void encapsulate(Range other);
+    inline void clamp(Range bounds);
 };
 
 void Range::encapsulate(int32_t value)
@@ -34,7 +34,7 @@ void Range::encapsulate(int32_t value)
         max = value + 1;
 }
 
-void Range::encapsulate(const Range& other)
+void Range::encapsulate(Range other)
 {
     if (other.min < min)
         min = other.min;
@@ -42,7 +42,7 @@ void Range::encapsulate(const Range& other)
         max = other.max;
 }
 
-void Range::clamp(const Range& bounds)
+void Range::clamp(Range bounds)
 {
     min = std::clamp(min, bounds.min, bounds.max - 1);
     max = std::clamp(max, bounds.min, bounds.max);
@@ -58,7 +58,7 @@ struct std::formatter<Range>
     }
 
     template<typename FormatContext>
-    auto format(const Range& range, FormatContext& fc)
+    auto format(Range range, FormatContext& fc)
     {
         return std::format_to(fc.out(), "[{},{}[", range.min, range.max);
     }

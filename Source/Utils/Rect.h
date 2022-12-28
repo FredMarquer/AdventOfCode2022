@@ -14,8 +14,8 @@ struct Rect
 	Int2 max; // Exclusive
 
 	Rect() {}
-    Rect(const Int2& point) : min(point), max(point + 1) {}
-	Rect(const Int2& min, const Int2& max) : min(min), max(max) { assert(max.x >= min.x); assert(max.y >= min.y); }
+    Rect(Int2 point) : min(point), max(point + 1) {}
+	Rect(Int2 min, Int2 max) : min(min), max(max) { assert(max.x >= min.x); assert(max.y >= min.y); }
 
 	inline int32_t getWidth() const { return max.x - min.x; }
 	inline int32_t getHeight() const { return max.y - min.y; }
@@ -23,23 +23,23 @@ struct Rect
 	inline Range getRangeX() const { return Range(min.x, max.x); }
 	inline Range getRangeY() const { return Range(min.y, max.y); }
 
-    inline bool contains(const Int2& point) const;
+    inline bool contains(Int2 point) const;
     inline bool contains(const Rect& other) const;
     inline bool overlap(const Rect& other) const;
     inline bool touch(const Rect& other) const;
 
-    inline void encapsulate(const Int2& point);
+    inline void encapsulate(Int2 point);
     inline void encapsulate(const Rect& other);
     inline void encapsulateX(int32_t value);
-    inline void encapsulateX(const Range& range);
+    inline void encapsulateX(Range range);
     inline void encapsulateY(int32_t value);
-    inline void encapsulateY(const Range& range);
+    inline void encapsulateY(Range range);
     inline void clamp(const Rect& bounds);
-    inline void clampX(const Range& bounds);
-    inline void clampY(const Range& bounds);
+    inline void clampX(Range bounds);
+    inline void clampY(Range bounds);
 };
 
-bool Rect::contains(const Int2& point) const
+bool Rect::contains(Int2 point) const
 {
     return
         point.x >= min.x &&
@@ -75,7 +75,7 @@ bool Rect::touch(const Rect& other) const
         other.max.y >= min.y;
 }
 
-void Rect::encapsulate(const Int2& point)
+void Rect::encapsulate(Int2 point)
 {
     if (point.x < min.x)
         min.x = point.x;
@@ -102,7 +102,7 @@ void Rect::encapsulateX(int32_t value)
         max.x = value + 1;
 }
 
-void Rect::encapsulateX(const Range& range)
+void Rect::encapsulateX(Range range)
 {
     if (range.min < min.x)
         min.x = range.min;
@@ -118,7 +118,7 @@ void Rect::encapsulateY(int32_t value)
         max.y = value + 1;
 }
 
-void Rect::encapsulateY(const Range& range)
+void Rect::encapsulateY(Range range)
 {
     if (range.min < min.y)
         min.y = range.min;
@@ -132,13 +132,13 @@ void Rect::clamp(const Rect& bounds)
     clampY(bounds.getRangeY());
 }
 
-void Rect::clampX(const Range& bounds)
+void Rect::clampX(Range bounds)
 {
     min.x = std::clamp(min.x, bounds.min, bounds.max - 1);
     max.x = std::clamp(max.x, bounds.min, bounds.max);
 }
 
-void Rect::clampY(const Range& bounds)
+void Rect::clampY(Range bounds)
 {
     min.y = std::clamp(min.y, bounds.min, bounds.max - 1);
     max.y = std::clamp(max.y, bounds.min, bounds.max);

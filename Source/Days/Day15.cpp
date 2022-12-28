@@ -9,6 +9,11 @@
 #include "Utils/Parsing.h"
 #include "Utils/Range.h"
 
+Day15::Report::Report(Int2 sensor, Int2 beacon)
+    : sensor(sensor)
+    , beacon(beacon)
+{}
+
 void Day15::parseFile(std::ifstream& file)
 {
     std::string line;

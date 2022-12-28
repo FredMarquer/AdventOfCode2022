@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <format>
 #include <string>
+#include <string_view>
 #include <variant>
 
 struct Result
@@ -21,7 +22,7 @@ public:
 	Result(int64_t value) : data(value) {}
 	Result(uint64_t value) : data((int64_t)value) {}
 	Result(const char* value) : data(std::string(value)) {}
-	Result(std::string value) : data(value) {}
+	Result(std::string&& value) : data(std::move(value)) {}
 
 	inline bool operator==(const Result& rhs) const { return data == rhs.data; }
 	inline bool operator!=(const Result& rhs) const { return !(*this == rhs); }
@@ -30,7 +31,7 @@ public:
 	inline bool isInteger() const { return std::holds_alternative<int64_t>(this->data); }
 	inline bool isString() const { return std::holds_alternative<std::string>(this->data); }
 	inline int64_t getInteger() const { return std::get<int64_t>(this->data); }
-	inline const std::string& getString() const { return std::get<std::string>(this->data); }
+	inline const std::string_view getString() const { return std::get<std::string>(this->data); }
 };
 
 template <>

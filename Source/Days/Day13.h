@@ -16,16 +16,16 @@ public:
 	{
 		std::variant<int, std::vector<Node>> data;
 
-		Node() : data(std::vector<Node>()) {}
-		Node(int integer) : data(integer) {}
+		Node();
+		Node(int integer);
 
 		operator std::span<const Node>() const;
 
-		bool isInteger() const { return std::holds_alternative<int>(this->data); }
-		bool isList() const { return std::holds_alternative<std::vector<Day13::Node>>(this->data); }
-		int getInteger() const { return std::get<int>(this->data); }
-		std::vector<Node>& getList() { return std::get<std::vector<Day13::Node>>(this->data); }
-		const std::vector<Node>& getList() const { return std::get<std::vector<Day13::Node>>(this->data); }
+		bool isInteger() const;
+		bool isList() const;
+		int getInteger() const;
+		std::vector<Node>& getList();
+		const std::vector<Node>& getList() const;
 	};
 
 	struct Packet
@@ -33,7 +33,7 @@ public:
 		std::string line;
 		Node rootNode;
 
-		bool operator==(const std::string& value) const { return line == value; }
+		bool operator==(const std::string& value) const;
 		bool operator<(const Packet& rhs) const;
 	};
 

@@ -6,7 +6,22 @@
 #include "Utils/Exception.h"
 #include "Utils/Parsing.h"
 
-Day10::Instruction parseInstruction(const std::string_view& line)
+Day10::Instruction::Instruction()
+    : opCode(OpCodes::Noop)
+    , operand(0)
+{}
+
+Day10::Instruction::Instruction(OpCodes opCode)
+    : opCode(opCode)
+    , operand(0)
+{}
+
+Day10::Instruction::Instruction(OpCodes opCode, int operand)
+    : opCode(opCode)
+    , operand(operand)
+{}
+
+Day10::Instruction parseInstruction(std::string_view line)
 {
     // Parse the op code first
     std::string_view opCodeView = line.substr(0, 4);

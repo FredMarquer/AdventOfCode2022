@@ -21,9 +21,9 @@ public:
 		OpCodes opCode;
 		int operand;
 
-		Instruction() : opCode(OpCodes::Noop), operand(0) {}
-		Instruction(OpCodes opCode) : opCode(opCode), operand(0) {}
-		Instruction(OpCodes opCode, int operand) : opCode(opCode), operand(operand) {}
+		Instruction();
+		Instruction(OpCodes opCode);
+		Instruction(OpCodes opCode, int operand);
 	};
 
 

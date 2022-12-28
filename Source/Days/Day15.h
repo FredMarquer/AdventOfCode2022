@@ -16,7 +16,7 @@ public:
 		Int2 sensor;
 		Int2 beacon;
 
-		Report(const Int2& sensor, const Int2& beacon) : sensor(sensor), beacon(beacon) {}
+		Report(Int2 sensor, Int2 beacon);
 	};
 
 private:

@@ -6,6 +6,23 @@
 #include "Utils/Exception.h"
 #include "Utils/Parsing.h"
 
+Day07::File::File(std::string_view name, int size)
+    : name(name)
+    , size(size)
+{}
+
+Day07::File::File(File&& other) noexcept
+    : name(std::move(other.name))
+    , size(other.size)
+{}
+
+Day07::Directory::Directory(Directory&& other) noexcept
+    : name(std::move(other.name))
+    , subDirectories(std::move(other.subDirectories))
+    , files(std::move(other.files))
+    , size(other.size)
+{}
+
 void Day07::Directory::initializeSize()
 {
     assert(size == 0);
@@ -19,7 +36,7 @@ void Day07::Directory::initializeSize()
         size += file.size;
 }
 
-std::optional<size_t> Day07::Directory::tryGetSubDirectoryIndex(const std::string_view& directoryName) const
+std::optional<size_t> Day07::Directory::tryGetSubDirectoryIndex(std::string_view directoryName) const
 {
     for (size_t i = 0; i < subDirectories.size(); ++i) {
         if (subDirectories[i].name == directoryName)

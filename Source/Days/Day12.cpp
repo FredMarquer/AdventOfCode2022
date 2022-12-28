@@ -66,14 +66,17 @@ void Day12::parseFile(std::ifstream& file)
 }
 
 typedef std::function<bool(int, int)> TransitionConditionFunction;
-typedef std::function<bool(const Int2&)> TargetConditionFunction;
+typedef std::function<bool(Int2)> TargetConditionFunction;
 
 struct OpenNode
 {
     Int2 coord;
     int distance;
 
-    OpenNode(Int2 coord, int distance) : coord(coord), distance(distance) {}
+    OpenNode(Int2 coord, int distance)
+        : coord(coord)
+        , distance(distance)
+    {}
 
     bool operator>(const OpenNode& other)
     {
@@ -81,7 +84,7 @@ struct OpenNode
     }
 };
 
-Result dijkstra(const Array2D<int>& heightMap, const Int2& start, TransitionConditionFunction transitionFunction, TargetConditionFunction targetFunction)
+Result dijkstra(const Array2D<int>& heightMap, Int2 start, TransitionConditionFunction transitionFunction, TargetConditionFunction targetFunction)
 {
     const Int2 neighbourDirections[4] = { Int2::Right, Int2::Down, Int2::Left, Int2::Up };
 
@@ -134,14 +137,14 @@ Result dijkstra(const Array2D<int>& heightMap, const Int2& start, TransitionCond
 Result Day12::runPart1() const
 {
     TransitionConditionFunction transitionFunction = [](int currentHeight, int neighbourHeight) { return neighbourHeight <= currentHeight + 1; };
-    TargetConditionFunction targetFunction = [this](const Int2& currentCoord) { return currentCoord == this->target; };
+    TargetConditionFunction targetFunction = [this](Int2 currentCoord) { return currentCoord == this->target; };
     return dijkstra(heightMap, start, transitionFunction, targetFunction);
 }
 
 Result Day12::runPart2() const
 {
     TransitionConditionFunction transitionFunction = [](int currentHeight, int neighbourHeight) { return neighbourHeight >= currentHeight - 1; };
-    TargetConditionFunction targetFunction = [this](const Int2& currentCoord) { return this->heightMap[currentCoord] == 0; };
+    TargetConditionFunction targetFunction = [this](Int2 currentCoord) { return this->heightMap[currentCoord] == 0; };
     return dijkstra(heightMap, target, transitionFunction, targetFunction);
 }
 

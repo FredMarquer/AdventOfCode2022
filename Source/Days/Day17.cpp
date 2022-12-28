@@ -8,18 +8,30 @@
 #include "Utils/Int2.h"
 #include "Utils/Log.h"
 
-Day17::Rock::Rock(std::initializer_list<Int2> b)
+Day17::Rock::Rock(std::initializer_list<Int2> list)
+    : height(0)
 {
-    assert(b.size() <= blocks.size());
-    size = b.size();
-    height = 0;
-    for (size_t i = 0; i < size; ++i) {
-        blocks[i] = *(b.begin() + i);
-        assert(blocks[i].x >= 0);
-        assert(blocks[i].y >= 0);
-        if (blocks[i].y >= height)
-            height = blocks[i].y + 1;
+    size_t i = 0;
+    for (Int2 block : list) {
+        assert(block.x >= 0);
+        assert(block.y >= 0);
+        blocks[i] = block;
+        if (block.y >= height)
+            height = block.y + 1;
+        ++i;
     }
+
+    size = i;
+}
+
+std::array<Int2, 5>::const_iterator Day17::Rock::begin() const
+{
+    return blocks.begin();
+}
+
+std::array<Int2, 5>::const_iterator Day17::Rock::end() const
+{
+    return blocks.begin() + size;
 }
 
 void Day17::parseFile(std::ifstream& file)
@@ -55,10 +67,15 @@ struct Sequence
     int32_t height;
     std::vector<int32_t> heightDiffSequence;
 
-    Sequence() : startIndex(0), startHeight(0), length(0), height(0) {}
+    Sequence()
+        : startIndex(0)
+        , startHeight(0)
+        , length(0)
+        , height(0)
+    {}
 };
 
-bool move(const Array2D<bool>& tower, const Day17::Rock& rock, Int2& position, const Int2& direction)
+bool move(const Array2D<bool>& tower, const Day17::Rock& rock, Int2& position, Int2 direction)
 {
     for (Int2 block : rock) {
         block += position;
