@@ -7,6 +7,11 @@
 #include "Utils/Exception.h"
 #include "Utils/Log.h"
 
+bool Day16::Valve::operator<(const Valve& other) const
+{
+    return flowRate > other.flowRate;
+}
+
 void parseConnectedValves(const std::string_view& view, std::vector<Day16::ConnectedValve>& connectedValves)
 {
     size_t separator = view.find_first_of(',');
@@ -19,37 +24,6 @@ void parseConnectedValves(const std::string_view& view, std::vector<Day16::Conne
 
     // Parse the next connected valve recursively
     parseConnectedValves(view.substr(separator + 2), connectedValves);
-}
-
-void simplifyConnectionsInternal(const std::vector<Day16::Valve>& valves, size_t valveIndex, int32_t cost, uint64_t visitedValves, bool isStart, std::vector<Day16::ConnectedValve>& newConnectedValves)
-{
-    const Day16::Valve& valve = valves[valveIndex];
-    visitedValves |= valve.bit;
-    if (valve.flowRate == 0 || isStart) {
-        for (const Day16::ConnectedValve& connectedValve : valve.connectedValves) {
-            if ((visitedValves & valves[connectedValve.index].bit) == 0)
-                simplifyConnectionsInternal(valves, connectedValve.index, cost + connectedValve.cost, visitedValves, false, newConnectedValves);
-        }
-    }
-    else {
-        // Update cost if already exists
-        for (Day16::ConnectedValve& newConnectedValve : newConnectedValves) {
-            if (newConnectedValve.index == valve.index) {
-                if (cost < newConnectedValve.cost)
-                    newConnectedValve.cost = cost;
-                return;
-            }
-        }
-        // Else add new conncted valve
-        newConnectedValves.push_back(Day16::ConnectedValve(valve.name, valve.index, cost));
-    }
-}
-
-void simplifyConnections(const std::vector<Day16::Valve>& valves, Day16::Valve& valve)
-{
-    std::vector<Day16::ConnectedValve> newConnectedValves;
-    simplifyConnectionsInternal(valves, valve.index, 0, 0, true, newConnectedValves);
-    valve.connectedValves = newConnectedValves;
 }
 
 void Day16::parseFile(std::ifstream& file)
@@ -72,16 +46,23 @@ void Day16::parseFile(std::ifstream& file)
         std::string connectedValves = matches[3];
 
         // Create the valve
-        size_t index = valves.size();
-        Valve valve(std::move(name), index, flowRate);
+        Valve valve(std::move(name), flowRate);
         parseConnectedValves(connectedValves, valve.connectedValves);
-
-        // Add the valve
-        valveNameToIndex.insert({valve.name, index});
         valves.push_back(std::move(valve));
 
         // Update the total flow rate
         totalFlowRate += flowRate;
+    }
+
+    // Sort the valve to help compute the A* heuristic faster
+    std::sort(valves.begin(), valves.end());
+
+    // Set valve indices
+    for (size_t valveIndex = 0; valveIndex < valves.size(); ++valveIndex) {
+        Valve& valve = valves[valveIndex];
+        valve.index = valveIndex;
+        valve.bit = (uint64_t)1 << valveIndex;
+        valveNameToIndex.insert({ valve.name, valveIndex });
     }
 
     // Retrieve connected valve indices
@@ -91,12 +72,6 @@ void Day16::parseFile(std::ifstream& file)
     }
 
     startingValveIndex = valveNameToIndex.at(startingValveName);
-
-    // Simplify the graph
-    /*for (Valve& valve : valves) {
-        if (valve.flowRate > 0 || valve.index == startingValveIndex)
-            simplifyConnections(valves, valve);
-    }*/
 
     if (valves.size() > 64)
         exception("too many vavles: {}", valves.size());
@@ -204,9 +179,12 @@ bool State<CharacterCount>::MoveIterator::applyNextState()
         size_t valveIndex = nextState.characterValveIndices[characterIndex];
         const Day16::Valve& valve = valves[valveIndex];
         int32_t moveIndex = characterMoveIndices[characterIndex];
-        if (moveIndex >= 0)
+        if (moveIndex >= 0) {
+            // Move to the next valve
             nextState.characterValveIndices[characterIndex] = valve.connectedValves[moveIndex].index;
+        }
         else {
+            // Try open the valve
             bool canOpenValve = valve.flowRate > 0 && (nextState.openValveBits & valve.bit) == 0;
             if (!canOpenValve)
                 return false;
@@ -225,15 +203,36 @@ struct OpenNode
     State<CharacterCount> state;
     int32_t heuristic;
 
-    OpenNode(const State<CharacterCount>& state);
+    OpenNode(const std::vector<Day16::Valve>& valves, const State<CharacterCount>& state);
 
     inline bool operator<(const OpenNode& other) const;
 };
 
 template<size_t CharacterCount>
-OpenNode<CharacterCount>::OpenNode(const State<CharacterCount>& state) : state(state)
+OpenNode<CharacterCount>::OpenNode(const std::vector<Day16::Valve>& valves, const State<CharacterCount>& state) : state(state)
 {
-    heuristic = state.pressureReleased + (state.remainingFlowRate * state.timeLeft);
+    heuristic = state.pressureReleased;
+
+    if (state.remainingFlowRate == 0)
+        return;
+
+    // Open the remaining valves in the best possible order and in the shortest time possible (assuming only 1 move between valves)
+    size_t valveIndex = 0;
+    int32_t timeLeft = state.timeLeft - 1;
+    while (timeLeft > 0)
+    {
+        for (size_t characterIndex = 0; characterIndex < CharacterCount; ++characterIndex) {
+            while ((state.openValveBits & ((uint64_t)1 << valveIndex)) != 0)
+                ++valveIndex;
+            const Day16::Valve& valve = valves[valveIndex];
+            if (valve.flowRate == 0)
+                return;
+            heuristic += valve.flowRate * timeLeft;
+            ++valveIndex;
+        }
+
+        timeLeft -= 2;
+    }
 }
 
 template<size_t CharacterCount>
@@ -274,9 +273,9 @@ struct std::hash<CloseNode>
 {
     inline size_t operator()(const CloseNode& node) const noexcept
     {
-        size_t hash = std::hash<uint64_t>()(node.characterValveBits);
-        hash = ((hash << 5) + hash) + std::hash<uint64_t>()(node.openValveBits);
-        return hash;
+        size_t hash1 = std::hash<uint64_t>()(node.characterValveBits);
+        size_t hash2 = std::hash<uint64_t>()(node.openValveBits);
+        return hash2 + 0x9e3779b9 + (hash1 << 6) + (hash1 >> 2);
     }
 };
 
@@ -284,15 +283,13 @@ template<size_t CharacterCount>
 Result aStar(const std::vector<Day16::Valve>& valves, const State<CharacterCount>& initialState)
 {
     // Initialize the open set
-    BinaryHeap<OpenNode<CharacterCount>, std::less<>> openSet;
-    openSet.reserve(8000000);
-    openSet.push(initialState);
+    BinaryHeap<OpenNode<CharacterCount>, std::less<>> openSet(2500000);
+    openSet.push(OpenNode<CharacterCount>(valves, initialState));
 
     // Initialize the close set
-    std::unordered_set<CloseNode> closeSet;
-    closeSet.reserve(6000000);
+    std::unordered_set<CloseNode> closeSet(2500000);
 
-    // A star loop
+    // A* loop
     while (!openSet.isEmpty())
     {
         State<CharacterCount> currentState = openSet.pop().state;
@@ -315,7 +312,7 @@ Result aStar(const std::vector<Day16::Valve>& valves, const State<CharacterCount
             if (closeSet.contains(newState))
                 continue;
 
-            openSet.push(newState);
+            openSet.push(OpenNode<CharacterCount>(valves, newState));
         }
 
         closeSet.insert(currentState);

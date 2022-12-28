@@ -70,7 +70,7 @@ int simulate(const std::vector<Day09::Motion>& motions)
 {
     std::array<Int2, N> rope = { Int2::Zero };
 
-    std::unordered_set<Int2> visitedPositions;
+    std::unordered_set<Int2> visitedPositions(10000);
     visitedPositions.insert(rope.back());
 
     // Process the motions

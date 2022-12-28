@@ -11,6 +11,7 @@ private:
 
 public:
 	BinaryHeap() {}
+	BinaryHeap(size_t capacity) { reserve(capacity); }
 	BinaryHeap(std::vector<T>&& vector) noexcept;
 
 	inline size_t getSize() const { return data.size(); }

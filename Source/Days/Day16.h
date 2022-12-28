@@ -28,7 +28,9 @@ public:
 		int32_t flowRate;
 		std::vector<ConnectedValve> connectedValves;
 
-		Valve(std::string&& name, size_t index, int flowRate) : name(std::move(name)), index(index), bit((uint64_t)1 << index), flowRate(flowRate) {}
+		Valve(std::string&& name, int flowRate) : name(std::move(name)), index(0), bit(0), flowRate(flowRate) {}
+
+		bool operator<(const Valve& other) const;
 	};
 
 private:
