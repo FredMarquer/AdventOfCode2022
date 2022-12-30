@@ -6,10 +6,10 @@
 #include <variant>
 #include <vector>
 
-#include "Day.h"
 #include "Result.h"
+#include "Solver.h"
 
-class Day13 : public Day
+class Day13 : public Solver
 {
 public:
 	struct Node

@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 
-#include "Day.h"
 #include "Result.h"
+#include "Solver.h"
 
-class Day16 : public Day
+class Day16 : public Solver
 {
 public:
 	struct ConnectedValve

@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 
-#include "Day.h"
 #include "Result.h"
+#include "Solver.h"
 
-class Day01 : public Day
+class Day01 : public Solver
 {
 private:
 	std::vector<int> caloriesPerElves;

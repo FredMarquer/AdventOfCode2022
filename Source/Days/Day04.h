@@ -5,11 +5,11 @@
 #include <utility>
 #include <vector>
 
-#include "Day.h"
 #include "Result.h"
+#include "Solver.h"
 #include "Utils/Range.h"
 
-class Day04 : public Day
+class Day04 : public Solver
 {
 private:
 	std::vector<std::pair<Range, Range>> pairs;

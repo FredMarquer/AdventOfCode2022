@@ -5,10 +5,10 @@
 #include <string>
 #include <vector>
 
-#include "Day.h"
 #include "Result.h"
+#include "Solver.h"
 
-class Day11 : public Day
+class Day11 : public Solver
 {
 public:
 	typedef std::function<void(int64_t&)> ItemModifierFunction;

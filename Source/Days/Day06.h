@@ -3,10 +3,10 @@
 #include <fstream>
 #include <string>
 
-#include "Day.h"
 #include "Result.h"
+#include "Solver.h"
 
-class Day06 : public Day
+class Day06 : public Solver
 {
 private:
 	std::string signal;

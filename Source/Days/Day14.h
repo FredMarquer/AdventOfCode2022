@@ -3,12 +3,12 @@
 #include <fstream>
 #include <string>
 
-#include "Day.h"
 #include "Result.h"
+#include "Solver.h"
 #include "Utils/Array2D.h"
 #include "Utils/Int2.h"
 
-class Day14 : public Day
+class Day14 : public Solver
 {
 private:
 	Array2D<bool> caveMap;

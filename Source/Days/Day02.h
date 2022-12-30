@@ -6,10 +6,10 @@
 #include <utility>
 #include <vector>
 
-#include "Day.h"
 #include "Result.h"
+#include "Solver.h"
 
-class Day02 : public Day
+class Day02 : public Solver
 {
 private:
 	std::vector<std::pair<int, int>> strategyGuide;

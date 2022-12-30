@@ -2,9 +2,9 @@
 
 #include <filesystem>
 
-#include "Day.h"
 #include "Days.h"
 #include "Result.h"
+#include "Solver.h"
 #include "Utils/Log.h"
 #include "Utils/ScopeProfiler.h"
 
@@ -68,7 +68,7 @@ bool runDay(int32_t dayNumber, int32_t part)
     log("---------- Day {} ----------", dayNumber);
 
     // Create the day instance
-    std::unique_ptr<Day> day = createDay(dayNumber);
+    std::unique_ptr<Solver> day = createDay(dayNumber);
     if (day == nullptr) {
         error("fail to create day {}", dayNumber);
         return false;

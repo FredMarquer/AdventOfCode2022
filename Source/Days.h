@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include "Day.h"
+#include "Solver.h"
 
 const int32_t DayCount = 17;
 
-std::unique_ptr<Day> createDay(int32_t dayNumber);
+std::unique_ptr<Solver> createDay(int32_t dayNumber);
 

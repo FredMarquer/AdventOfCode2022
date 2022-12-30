@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 
-#include "Day.h"
 #include "Result.h"
+#include "Solver.h"
 
-class Day10 : public Day
+class Day10 : public Solver
 {
 public:
 	enum class OpCodes

@@ -5,11 +5,11 @@
 #include <string>
 #include <vector>
 
-#include "Day.h"
 #include "Result.h"
+#include "Solver.h"
 #include "Utils/Int2.h"
 
-class Day17 : public Day
+class Day17 : public Solver
 {
 public:
 	struct Rock

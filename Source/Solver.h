@@ -5,10 +5,10 @@
 
 #include "Result.h"
 
-class Day
+class Solver
 {
 public:
-	virtual ~Day() {}
+	virtual ~Solver() {}
 
 	virtual std::string getInputPath() const = 0;
 	virtual void parseFile(std::ifstream& file) = 0;
