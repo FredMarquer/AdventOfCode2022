@@ -42,10 +42,12 @@ bool parsePartOption(std::span<char*> args, size_t& argIndex, int32_t& outPart)
 
 bool parseCommandLineArguments(const char* arg, std::span<char*> args, size_t& argIndex, int32_t& outDay, int32_t& outPart)
 {
-    if (strcmp(arg, "--day") == 0)
+    if (strcmp(arg, "--day") == 0 ||
+        strcmp(arg, "--d") == 0)
         return parseDayOption(args, argIndex, outDay);
 
-    if (strcmp(arg, "--part") == 0)
+    if (strcmp(arg, "--part") == 0 ||
+        strcmp(arg, "--p") == 0)
         return parsePartOption(args, argIndex, outPart);
 
     error("invalid option: ", arg);
