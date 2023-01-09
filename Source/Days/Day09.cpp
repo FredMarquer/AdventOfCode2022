@@ -76,7 +76,7 @@ bool move(Int2 direction, std::array<Int2, N>& rope)
 }
 
 template<size_t N>
-int simulate(const std::vector<Day09::Motion>& motions)
+int32_t simulate(const std::vector<Day09::Motion>& motions)
 {
     std::array<Int2, N> rope = { Int2::Zero };
 
@@ -93,7 +93,7 @@ int simulate(const std::vector<Day09::Motion>& motions)
         }
     }
 
-    return visitedPositions.size();
+    return (int32_t)visitedPositions.size();
 }
 
 Result Day09::runPart1() const

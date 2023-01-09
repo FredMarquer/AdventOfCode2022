@@ -125,21 +125,21 @@ const std::vector<Day13::Node>& Day13::Node::getList() const
 }
 
 // Foward declare
-int compareNodes(const Day13::Node& lhs, const Day13::Node& rhs);
+int32_t compareNodes(const Day13::Node& lhs, const Day13::Node& rhs);
 
-int compareLists(std::span<const Day13::Node> lhs, std::span<const Day13::Node> rhs)
+int32_t compareLists(std::span<const Day13::Node> lhs, std::span<const Day13::Node> rhs)
 {
     size_t count = std::min(lhs.size(), rhs.size());
     for (size_t i = 0; i < count; ++i) {
-        int result = compareNodes(lhs[i], rhs[i]);
+        int32_t result = compareNodes(lhs[i], rhs[i]);
         if (result != 0)
             return result;
     }
 
-    return lhs.size() - rhs.size();
+    return (int32_t)lhs.size() - (int32_t)rhs.size();
 }
 
-int compareNodes(const Day13::Node& lhs, const Day13::Node& rhs)
+int32_t compareNodes(const Day13::Node& lhs, const Day13::Node& rhs)
 {
     if (lhs.isInteger() && rhs.isInteger())
         return lhs.getInteger() - rhs.getInteger();

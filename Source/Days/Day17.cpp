@@ -90,7 +90,7 @@ bool move(const Array2D<bool>& tower, const Day17::Rock& rock, Int2& position, I
 
 std::optional<Sequence> tryFindRepeatingSequenceInHistory(const std::vector<int32_t>& heightHistory, const std::vector<int32_t>& heightDiffHistory, int32_t sampleLength)
 {
-    int32_t historySize = heightDiffHistory.size();
+    int32_t historySize = (int32_t)heightDiffHistory.size();
     int32_t doubleSampleLength = sampleLength * 2;
     if (historySize >= doubleSampleLength) {
         for (int32_t index = 0; index < historySize - doubleSampleLength; ++index)
@@ -195,7 +195,8 @@ Result simulate(const std::vector<Day17::Rock>& rocks, const std::vector<Int2>& 
     int64_t remaingRockCount = rockCount - sequence.startIndex - (sequenceCount * sequence.length);
     assert(remaingRockCount < sequence.length);
     int64_t height = (int64_t)sequence.startHeight + sequenceCount * sequence.height;
-    for (size_t i = 0; i < remaingRockCount; ++i) {
+    size_t length = (size_t)remaingRockCount;
+    for (size_t i = 0; i < length; ++i) {
         if (sequence.heightDiffSequence[i] > 0)
             height += sequence.heightDiffSequence[i];
     }

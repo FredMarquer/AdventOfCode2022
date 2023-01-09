@@ -49,15 +49,15 @@ Result Day08::runPart1() const
     Array2D<bool> visibilityMap(treeMap.getWidth(), treeMap.getHeight());
     int visibilityCount = 0;
 
-    size_t width = treeMap.getWidth();
-    size_t height = treeMap.getHeight();
+    int32_t width = (int32_t)treeMap.getWidth();
+    int32_t height = (int32_t)treeMap.getHeight();
 
-    for (size_t x = 0; x < width; ++x) {
+    for (int32_t x = 0; x < width; ++x) {
         updateTreesVisibility(Int2(x, 0), Int2::Up, visibilityMap, visibilityCount);
         updateTreesVisibility(Int2(x, height - 1), Int2::Down, visibilityMap, visibilityCount);
     }
 
-    for (size_t y = 0; y < height; ++y) {
+    for (int32_t y = 0; y < height; ++y) {
         updateTreesVisibility(Int2(0, y), Int2::Right, visibilityMap, visibilityCount);
         updateTreesVisibility(Int2(width - 1, y), Int2::Left, visibilityMap, visibilityCount);
     }
@@ -69,10 +69,10 @@ Result Day08::runPart2() const
 {
     // Find the best scenic score
     int bestScenicScore = 0;
-    int width = treeMap.getWidth();
-    int height = treeMap.getHeight();
-    for (int x = 0; x < width; ++x) {
-        for (int y = 0; y < height; ++y) {
+    int32_t width = (int32_t)treeMap.getWidth();
+    int32_t height = (int32_t)treeMap.getHeight();
+    for (int32_t x = 0; x < width; ++x) {
+        for (int32_t y = 0; y < height; ++y) {
             int scenicScore = computeScenicScore(Int2(x, y));
             if (scenicScore > bestScenicScore)
                 bestScenicScore = scenicScore;
@@ -92,7 +92,7 @@ void Day08::updateTreesVisibility(Int2 start, Int2 dir, Array2D<bool>& visibilit
     Int2 coord = start;
     do {
         // Is this tree higher than the previous highest visible tree ?
-        int index = treeMap.getIndex(coord);
+        size_t index = treeMap.getIndex(coord);
         int treeHeight = treeMap[index];
         if (treeHeight > visibilityHeight) {
             visibilityHeight = treeHeight;

@@ -74,7 +74,7 @@ Array2D<T>::Array2D(const Array2D& other)
 	: width(other.width)
 	, height(other.height)
 {
-	int size = width * height;
+	size_t size = width * height;
 	data = new T[size];
 	memcpy(data, other.data, size * sizeof(T));
 }
@@ -193,8 +193,8 @@ void Array2D<T>::fillColumn(size_t x, const T& value)
 template<class T>
 void Array2D<T>::fillRaw(size_t y, const T& value)
 {
-	int index = getIndex(0, y);
-	int endIndex = getIndex(width - 1, y);
+	size_t index = getIndex(0, y);
+	size_t endIndex = getIndex(width - 1, y);
 	for (; index <= endIndex; ++index)
 		data[index] = value;
 }

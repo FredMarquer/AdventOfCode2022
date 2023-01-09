@@ -30,8 +30,8 @@ int parseHeight(char c, bool& isStart, bool& isTarget)
 
 void Day12::parseFile(std::ifstream& file)
 {
-    size_t mapWidth = 0;
-    size_t mapHeight = 0;
+    int32_t mapWidth = 0;
+    int32_t mapHeight = 0;
     std::vector<int> heightData;
 
     std::string line;
@@ -40,7 +40,8 @@ void Day12::parseFile(std::ifstream& file)
             exception("line is empty");
 
         // Push the line into the height map
-        for (size_t i = 0; i < line.size(); ++i) {
+        int32_t lineSize = (int32_t)line.size();
+        for (int32_t i = 0; i < lineSize; ++i) {
             bool isStart = false;
             bool isTarget = false;
             int cellHeight = parseHeight(line[i], isStart, isTarget);
@@ -56,9 +57,9 @@ void Day12::parseFile(std::ifstream& file)
         // Update map width and height
         ++mapHeight;
         if (mapWidth == 0)
-            mapWidth = line.size();
+            mapWidth = (int32_t)line.size();
 
-        if (line.size() != mapWidth)
+        if (lineSize != mapWidth)
             exception("line size (= {}) doesn't match the map width (= {})", line.size(), mapWidth);
     }
 

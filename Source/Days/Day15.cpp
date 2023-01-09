@@ -117,12 +117,12 @@ Result Day15::runPart2() const
         getRangesAtY(reports, y, false, ranges);
 
         // Clamp ranges between 0 and max
-        for (int i = ranges.size() - 1; i >= 0; --i) {
+        for (int32_t i = (int32_t)ranges.size() - 1; i >= 0; --i) {
             Range& range = ranges[i];
             if (range.overlap(bounds))
                 range.clamp(bounds);
             else {
-                std::swap(ranges[i], ranges[ranges.size() - 1]);
+                std::swap(range, ranges[ranges.size() - 1]);
                 ranges.pop_back();
             }
         }

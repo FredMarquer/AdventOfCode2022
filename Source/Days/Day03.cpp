@@ -14,7 +14,7 @@ void Day03::parseFile(std::ifstream& file)
 {
     std::string line;
     while (std::getline(file, line)) {
-        int compartmentSize = line.size() / 2;
+        size_t compartmentSize = line.size() / 2;
         Rucksack rucksack = Rucksack();
         rucksack.firstCompartment = std::string(line.begin(), line.begin() + compartmentSize);
         rucksack.secondCompartment = std::string(line.end() - compartmentSize, line.end());
