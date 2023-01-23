@@ -13,8 +13,10 @@
 #include <iostream>
 #include <memory>
 #include <optional>
+#include <queue>
 #include <regex>
 #include <span>
+#include <stack>
 #include <string>
 #include <string_view>
 #include <unordered_map>
