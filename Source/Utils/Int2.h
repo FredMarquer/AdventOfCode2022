@@ -31,7 +31,7 @@ struct Int2
 
 bool Int2::isUnit() const
 {
-	return (y == 0 && abs(x) == 1) || (x == 0 && abs(y) == 1);
+	return (abs(x) + abs(y)) == 1;
 }
 
 Int2 Int2::operator+=(Int2 other)
