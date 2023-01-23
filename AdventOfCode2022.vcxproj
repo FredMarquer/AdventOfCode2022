@@ -203,6 +203,7 @@
     <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Utils\Array3D.h" />
     <ClInclude Include="Source\Utils\Int3.h" />
     <ClInclude Include="Source\Days\Day17.h" />
     <ClInclude Include="Source\Days\Day16.h" />
