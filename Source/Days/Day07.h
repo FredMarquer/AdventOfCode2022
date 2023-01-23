@@ -40,7 +40,7 @@ private:
 public:
 	Day07() : rootDirectory(Directory("root")) {}
 
-	std::string getInputPath() const override { return "Inputs/07.txt"; }
+	const char* getInputPath() const override { return "Inputs/07.txt"; }
 	void parseFile(std::ifstream& file) override;
 	Result runPart1() const override;
 	Result runPart2() const override;

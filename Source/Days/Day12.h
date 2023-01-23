@@ -1,7 +1,6 @@
 #pragma once
 
 #include <fstream>
-#include <string>
 
 #include "Result.h"
 #include "Solver.h"
@@ -16,7 +15,7 @@ private:
 	Array2D<int> heightMap;
 
 public:
-	std::string getInputPath() const override { return "Inputs/12.txt"; }
+	const char* getInputPath() const override { return "Inputs/12.txt"; }
 	void parseFile(std::ifstream& file) override;
 	Result runPart1() const override;
 	Result runPart2() const override;

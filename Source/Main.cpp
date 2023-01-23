@@ -77,7 +77,7 @@ bool runDay(int32_t dayNumber, int32_t part)
     }
 
     // Get the input path
-    std::string input = day->getInputPath();
+    const char* input = day->getInputPath();
     if (!std::filesystem::exists(input)) {
         error("input file '{}' does not exist", input);
         return false;

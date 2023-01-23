@@ -23,7 +23,7 @@ private:
 	std::vector<Rucksack> rucksacks;
 
 public:
-	std::string getInputPath() const override { return "Inputs/03.txt"; }
+	const char* getInputPath() const override { return "Inputs/03.txt"; }
 	void parseFile(std::ifstream& file) override;
 	Result runPart1() const override;
 	Result runPart2() const override;

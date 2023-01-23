@@ -32,12 +32,12 @@ public:
 	};
 
 private:
-	size_t startingValveIndex;
+	size_t startingValveIndex = 0;
 	std::vector<Valve> valves;
-	int32_t totalFlowRate;
+	int32_t totalFlowRate = 0;
 
 public:
-	std::string getInputPath() const override { return "Inputs/16.txt"; }
+	const char* getInputPath() const override { return "Inputs/16.txt"; }
 	void parseFile(std::ifstream& file) override;
 	Result runPart1() const override;
 	Result runPart2() const override;
