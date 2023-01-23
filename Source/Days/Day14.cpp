@@ -120,7 +120,7 @@ void Day14::parseFile(std::ifstream& file)
 
 bool simulateSandUnit(Int2 source, Array2D<bool>& caveMap)
 {
-    assert(caveMap.isInRange(source));
+    assert(caveMap.isInBounds(source));
 
     if (caveMap[source])
     {
@@ -133,7 +133,7 @@ bool simulateSandUnit(Int2 source, Array2D<bool>& caveMap)
     {
         // Try to fall down
         Int2 coordDown = coord + Int2::Up; // The map is inverted on the Y axis.
-        if (!caveMap.isInRange(coordDown))
+        if (!caveMap.isInBounds(coordDown))
             return false;
         if (!caveMap[coordDown]) {
             coord = coordDown;
@@ -142,7 +142,7 @@ bool simulateSandUnit(Int2 source, Array2D<bool>& caveMap)
 
         // Try to fall down left
         Int2 coordLeft = coordDown + Int2::Left;
-        if (!caveMap.isInRange(coordLeft))
+        if (!caveMap.isInBounds(coordLeft))
             return false;
         if (!caveMap[coordLeft]) {
             coord = coordLeft;
@@ -151,7 +151,7 @@ bool simulateSandUnit(Int2 source, Array2D<bool>& caveMap)
 
         // Try to fall down right
         Int2 coordRight = coordDown + Int2::Right;
-        if (!caveMap.isInRange(coordRight))
+        if (!caveMap.isInBounds(coordRight))
             return false;
         if (!caveMap[coordRight]) {
             coord = coordRight;
@@ -172,7 +172,7 @@ int32_t simulate(Array2D<bool>& caveMap, Int2 caveOffset)
     // Apply offset to source
     Int2 source = sourceCoord;
     source.x -= caveOffset.x;
-    assert(caveMap.isInRange(source));
+    assert(caveMap.isInBounds(source));
 
     // Simulate sand units until the state is stable
     int32_t sandUnitCount = 0;

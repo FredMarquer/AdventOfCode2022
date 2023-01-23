@@ -80,7 +80,7 @@ bool move(const Array2D<bool>& tower, const Day17::Rock& rock, Int2& position, I
     for (Int2 block : rock) {
         block += position;
         block += direction;
-        if (!tower.isInRange(block) || tower[block])
+        if (!tower.isInBounds(block) || tower[block])
             return false; // Can't move
     }
 
@@ -155,7 +155,7 @@ std::optional<Sequence> findRepeatingSequenceInSimulation(const std::vector<Day1
                 // Write the rock in the tower
                 for (Int2 block : rock) {
                     block += rockPosition;
-                    assert(tower.isInRange(block));
+                    assert(tower.isInBounds(block));
                     assert(!tower[block]);
                     tower[block] = true;
                 }

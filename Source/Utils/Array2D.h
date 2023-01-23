@@ -29,8 +29,8 @@ public:
 	inline const T& operator[](size_t index) const { return data[index]; }
 	inline T& operator[](Int2 coord);
 	inline const T& operator[](Int2 coord) const;
-	inline T& getElementAt(size_t x, size_t y);
-	inline const T& getElementAt(size_t x, size_t y) const;
+	inline T& at(size_t x, size_t y);
+	inline const T& at(size_t x, size_t y) const;
 
 	inline size_t getWidth() const { return width; }
 	inline size_t getHeight() const { return height; }
@@ -38,8 +38,8 @@ public:
 
 	inline size_t getIndex(size_t x, size_t y) const;
 	inline size_t getIndex(Int2 coord) const;
-	inline bool isInRange(size_t x, size_t y) const;
-	inline bool isInRange(Int2 coord) const;
+	inline bool isInBounds(size_t x, size_t y) const;
+	inline bool isInBounds(Int2 coord) const;
 
 	void fillColumn(size_t x, const T& value);
 	void fillRaw(size_t y, const T& value);
@@ -141,14 +141,14 @@ const T& Array2D<T>::operator[](Int2 coord) const
 }
 
 template<class T>
-T& Array2D<T>::getElementAt(size_t x, size_t y)
+T& Array2D<T>::at(size_t x, size_t y)
 {
 	size_t index = getIndex(x, y);
 	return data[index];
 }
 
 template<class T>
-const T& Array2D<T>::getElementAt(size_t x, size_t y) const
+const T& Array2D<T>::at(size_t x, size_t y) const
 {
 	size_t index = getIndex(x, y);
 	return data[index];
@@ -157,7 +157,7 @@ const T& Array2D<T>::getElementAt(size_t x, size_t y) const
 template<class T>
 size_t Array2D<T>::getIndex(size_t x, size_t y) const
 {
-	assert(isInRange(x, y));
+	assert(isInBounds(x, y));
 	return x + y * width;
 }
 
@@ -168,7 +168,7 @@ size_t Array2D<T>::getIndex(Int2 coord) const
 }
 
 template<class T>
-bool Array2D<T>::isInRange(size_t x, size_t y) const
+bool Array2D<T>::isInBounds(size_t x, size_t y) const
 {
 	return
 		x >= 0 && x < width&&
@@ -176,9 +176,9 @@ bool Array2D<T>::isInRange(size_t x, size_t y) const
 }
 
 template<class T>
-bool Array2D<T>::isInRange(Int2 coord) const
+bool Array2D<T>::isInBounds(Int2 coord) const
 {
-	return isInRange(coord.x, coord.y);
+	return isInBounds(coord.x, coord.y);
 }
 
 template<class T>
@@ -204,7 +204,7 @@ std::ostream& operator<<(std::ostream& os, const Array2D<T>& lhs)
 {
 	for (size_t y = 0; y < lhs.getHeight(); ++y) {
 		for (size_t x = 0; x < lhs.getWidth(); ++x)
-			os << lhs.getElementAt(x, y);
+			os << lhs.at(x, y);
 		os << '\n';
 	}
 

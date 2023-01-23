@@ -84,7 +84,7 @@ Result Day08::runPart2() const
 
 void Day08::updateTreesVisibility(Int2 start, Int2 dir, Array2D<bool>& visibilityMap, int& visibilityCount) const
 {
-    assert(treeMap.isInRange(start));
+    assert(treeMap.isInBounds(start));
     assert(dir.isUnit());
 
     // Find all visible trees in this raw/column until we reach the border
@@ -105,12 +105,12 @@ void Day08::updateTreesVisibility(Int2 start, Int2 dir, Array2D<bool>& visibilit
         }
 
         coord += dir;
-    } while (treeMap.isInRange(coord));
+    } while (treeMap.isInBounds(coord));
 }
 
 int Day08::computeScenicScore(Int2 coord) const
 {
-    assert(treeMap.isInRange(coord));
+    assert(treeMap.isInBounds(coord));
 
     // Compute the distance in the 4 directions
     int distanceRight = computeViewDistance(coord, Int2::Right);
@@ -124,7 +124,7 @@ int Day08::computeScenicScore(Int2 coord) const
 
 int Day08::computeViewDistance(Int2 start, Int2 dir) const
 {
-    assert(treeMap.isInRange(start));
+    assert(treeMap.isInBounds(start));
     assert(dir.isUnit());
 
     // Compute the view distance
@@ -135,7 +135,7 @@ int Day08::computeViewDistance(Int2 start, Int2 dir) const
         coord += dir;
 
         // Do we reach the border of the map ?
-        if (!treeMap.isInRange(coord))
+        if (!treeMap.isInBounds(coord))
             break;
 
         ++viewDistance;

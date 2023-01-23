@@ -112,7 +112,7 @@ Result dijkstra(const Array2D<int>& heightMap, Int2 start, TransitionConditionFu
             Int2 neighbourCoord = current.coord + dir;
 
             // Is the neihbour in range
-            if (!heightMap.isInRange(neighbourCoord))
+            if (!heightMap.isInBounds(neighbourCoord))
                 continue;
 
             // Has the neihbour already been visited ?
