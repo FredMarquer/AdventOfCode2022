@@ -15,7 +15,7 @@ public:
 		std::string name;
 		size_t index;
 
-		ConnectedValve(std::string&& name);
+		ConnectedValve(std::string_view name);
 	};
 
 	struct Valve

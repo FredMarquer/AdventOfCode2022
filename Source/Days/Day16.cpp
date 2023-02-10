@@ -7,8 +7,8 @@
 #include "Utils/Exception.h"
 #include "Utils/Log.h"
 
-Day16::ConnectedValve::ConnectedValve(std::string&& name)
-    : name(std::move(name))
+Day16::ConnectedValve::ConnectedValve(std::string_view name)
+    : name(std::string(name))
     , index(0)
 {}
 
@@ -26,16 +26,10 @@ bool Day16::Valve::operator<(const Valve& other) const
 
 void parseConnectedValves(std::string_view view, std::vector<Day16::ConnectedValve>& connectedValves)
 {
-    size_t separator = view.find_first_of(',');
-    if (separator == std::string::npos) {
-        connectedValves.push_back(Day16::ConnectedValve(std::string(view)));
-        return;
-    }
+    constexpr std::string_view delim{ ", " };
 
-    connectedValves.push_back(Day16::ConnectedValve(std::string(view.substr(0, separator))));
-
-    // Parse the next connected valve recursively
-    parseConnectedValves(view.substr(separator + 2), connectedValves);
+    for (const auto range : std::views::split(view, delim))
+        connectedValves.push_back(Day16::ConnectedValve(std::string_view{ range.begin(), range.end() }));
 }
 
 void Day16::parseFile(std::ifstream& file)

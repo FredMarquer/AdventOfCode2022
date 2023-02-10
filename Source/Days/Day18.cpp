@@ -6,30 +6,23 @@
 #include "Utils/Array3D.h"
 #include "Utils/Exception.h"
 #include "Utils/Int3.h"
-#include "Utils/Log.h"
 #include "Utils/Parsing.h"
 
-Int3 parsePosition(const std::string& line)
+Int3 parsePosition(std::string_view line)
 {
+    auto split_view = std::views::split(line, ',');
+    auto it = split_view.begin();
+    auto xRange = *it++;
+    auto yRange = *it++;
+    auto zRange = *it++;
+
+    if (it != split_view.end())
+        exception("invalid line: {}", line);
+
     Int3 pos;
-    std::string_view lineView = line;
-
-    // Parse x
-    size_t separator = lineView.find(',');
-    if (separator == std::string::npos)
-        exception("first separator not found for line: {}", line);
-    parse(lineView.substr(0, separator), pos.x);
-
-    // Parse y
-    lineView = lineView.substr(separator + 1);
-    separator = lineView.find(',');
-    if (separator == std::string::npos)
-        exception("second separator not found for line: {}", line);
-    parse(lineView.substr(0, separator), pos.y);
-
-    // Parse z
-    lineView = lineView.substr(separator + 1);
-    parse(lineView, pos.z);
+    parse(std::string_view{ xRange.begin(), xRange.end() }, pos.x);
+    parse(std::string_view{ yRange.begin(), yRange.end() }, pos.y);
+    parse(std::string_view{ zRange.begin(), zRange.end() }, pos.z);
 
     return pos;
 }

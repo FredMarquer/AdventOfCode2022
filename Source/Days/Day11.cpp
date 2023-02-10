@@ -14,18 +14,11 @@ Day11::Monkey::Monkey()
 
 void parseItems(std::string_view line, std::vector<int64_t>& items)
 {
-    size_t separator = line.find_first_of(',');
-    if (separator != std::string::npos) {
-        int64_t item = 0;
-        parse(line.substr(0, separator), item);
-        items.push_back(item);
+    constexpr std::string_view delim{ ", " };
 
-        // Parse the next item recursively
-        parseItems(line.substr(separator + 2), items);
-    }
-    else {
+    for (const auto range : std::views::split(line, delim)) {
         int64_t item = 0;
-        parse(line, item);
+        parse(std::string_view{ range.begin(), range.end() }, item);
         items.push_back(item);
     }
 }
