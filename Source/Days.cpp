@@ -21,6 +21,7 @@
 #include "Days/Day18.h"
 #include "Days/Day19.h"
 #include "Days/Day20.h"
+#include "Days/Day21.h"
 #include "Days.h"
 #include "Utils/Log.h"
 
@@ -28,15 +29,15 @@ std::unique_ptr<Solver> createDay(int32_t dayNumber)
 {
 	std::unique_ptr<Solver> solver;
 	switch (dayNumber) {
-	case 1: solver = std::make_unique<Day01>(); break;
-	case 2: solver = std::make_unique<Day02>(); break;
-	case 3: solver = std::make_unique<Day03>(); break;
-	case 4: solver = std::make_unique<Day04>(); break;
-	case 5: solver = std::make_unique<Day05>(); break;
-	case 6: solver = std::make_unique<Day06>(); break;
-	case 7: solver = std::make_unique<Day07>(); break;
-	case 8: solver = std::make_unique<Day08>(); break;
-	case 9: solver = std::make_unique<Day09>(); break;
+	case  1: solver = std::make_unique<Day01>(); break;
+	case  2: solver = std::make_unique<Day02>(); break;
+	case  3: solver = std::make_unique<Day03>(); break;
+	case  4: solver = std::make_unique<Day04>(); break;
+	case  5: solver = std::make_unique<Day05>(); break;
+	case  6: solver = std::make_unique<Day06>(); break;
+	case  7: solver = std::make_unique<Day07>(); break;
+	case  8: solver = std::make_unique<Day08>(); break;
+	case  9: solver = std::make_unique<Day09>(); break;
 	case 10: solver = std::make_unique<Day10>(); break;
 	case 11: solver = std::make_unique<Day11>(); break;
 	case 12: solver = std::make_unique<Day12>(); break;
@@ -48,6 +49,7 @@ std::unique_ptr<Solver> createDay(int32_t dayNumber)
 	case 18: solver = std::make_unique<Day18>(); break;
 	case 19: solver = std::make_unique<Day19>(); break;
 	case 20: solver = std::make_unique<Day20>(); break;
+	case 21: solver = std::make_unique<Day21>(); break;
 	default:
 		error("invalid day number: {}", dayNumber);
 		solver = nullptr;
