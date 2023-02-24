@@ -167,6 +167,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Days\Day22.cpp" />
     <ClCompile Include="Source\Days\Day21.cpp" />
     <ClCompile Include="Source\Days\Day20.cpp" />
     <ClCompile Include="Source\Days\Day19.cpp" />
@@ -207,6 +208,7 @@
     <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Days\Day22.h" />
     <ClInclude Include="Source\Days\Day21.h" />
     <ClInclude Include="Source\Days\Day20.h" />
     <ClInclude Include="Source\Days\Day19.h" />
