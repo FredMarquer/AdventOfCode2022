@@ -4,7 +4,7 @@
 
 #include "Solver.h"
 
-const int32_t DayCount = 22;
+const int32_t DayCount = 23;
 
 std::unique_ptr<Solver> createDay(int32_t dayNumber);
 
