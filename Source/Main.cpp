@@ -64,6 +64,28 @@ bool parseCommandLineArguments(std::span<char*> args, int32_t& outDay, int32_t& 
     return true;
 }
 
+bool processResult(Result result, Result expectedResult)
+{
+    if (!result.isValid()) {
+        error("part 1 returned an invalid result");
+        return false;
+    }
+
+    log("part 1 result: {}", result);
+
+    if (!expectedResult.isValid()) {
+        debug("no expected result");
+        return true;
+    }
+
+    if (result != expectedResult) {
+        error("the result doesn't match the expected result: {}", expectedResult);
+        return false;
+    }
+
+    return true;
+}
+
 bool runDay(int32_t dayNumber, int32_t part)
 {
     log("");
@@ -116,25 +138,9 @@ bool runDay(int32_t dayNumber, int32_t part)
     if (runPart1)
     {
         profileScope("part 1");
-
         Result result = day->runPart1();
-        if (result.isValid()) {
-            log("part 1 result: {}", result);
-
-            Result expectedResult = day->getExpectedResultPart1();
-            if (expectedResult.isValid()) {
-                if (result != expectedResult) {
-                    error("the result doesn't match the expected result: {}", expectedResult);
-                    part1Valid = false;
-                }
-            }
-            else
-                debug("no expected result");
-        }
-        else {
-            error("part 1 returned an invalid result");
-            part1Valid = false;
-        }
+        Result expectedResult = day->getExpectedResultPart1();
+        part1Valid = processResult(result, expectedResult);
     }
 
     // Run part 2 if requested
@@ -142,25 +148,9 @@ bool runDay(int32_t dayNumber, int32_t part)
     if (runPart2)
     {
         profileScope("part 2");
-
         Result result = day->runPart2();
-        if (result.isValid()) {
-            log("part 2 result: {}", result);
-
-            Result expectedResult = day->getExpectedResultPart2();
-            if (expectedResult.isValid()) {
-                if (result != expectedResult) {
-                    error("the result doesn't match the expected result: {}", expectedResult);
-                    part2Valid = false;
-                }
-            }
-            else
-                debug("no expected result");
-        }
-        else {
-            error("part 2 returned an invalid result");
-            part2Valid = false;
-        }
+        Result expectedResult = day->getExpectedResultPart2();
+        part2Valid = processResult(result, expectedResult);
     }
 
     return part1Valid && part2Valid;
