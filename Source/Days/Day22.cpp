@@ -10,7 +10,7 @@
 
 const Int2 directions[4] = { Int2(1, 0), Int2(0, 1), Int2(-1, 0), Int2(0, -1) };
 
-const size_t regionSize = 4;
+const size_t regionSize = 50;
 
 Day22::Tiles charToTile(char c)
 {
