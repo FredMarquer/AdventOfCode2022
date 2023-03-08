@@ -25,6 +25,7 @@
 #include "Days/Day22.h"
 #include "Days/Day23.h"
 #include "Days/Day24.h"
+#include "Days/Day25.h"
 #include "Days.h"
 #include "Utils/Log.h"
 
@@ -56,6 +57,7 @@ std::unique_ptr<Solver> createDay(int32_t dayNumber)
 	case 22: solver = std::make_unique<Day22>(); break;
 	case 23: solver = std::make_unique<Day23>(); break;
 	case 24: solver = std::make_unique<Day24>(); break;
+	case 25: solver = std::make_unique<Day25>(); break;
 	default:
 		error("invalid day number: {}", dayNumber);
 		solver = nullptr;
