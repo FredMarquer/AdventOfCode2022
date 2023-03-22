@@ -18,8 +18,7 @@ void Day04::parseFile(std::ifstream& file)
         int firstMax = std::stoi(matches[2]) + 1;
         int secondMin = std::stoi(matches[3]);
         int secondMax = std::stoi(matches[4]) + 1;
-        std::pair pair(Range(firstMin, firstMax), Range(secondMin, secondMax));
-        pairs.push_back(pair);
+        pairs.emplace_back(Range(firstMin, firstMax), Range(secondMin, secondMax));
     }
 }
 
@@ -29,9 +28,8 @@ Result Day04::runPart1() const
     int containsCount = 0;
     for (const auto& pair : pairs) {
         if (pair.first.contains(pair.second) ||
-            pair.second.contains(pair.first)) {
+            pair.second.contains(pair.first))
             ++containsCount;
-        }
     }
 
     return containsCount;

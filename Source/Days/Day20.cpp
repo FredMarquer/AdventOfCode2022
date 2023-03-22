@@ -21,7 +21,7 @@ namespace
         std::vector<Entry> sequence;
         sequence.reserve(originalSequence.size());
 
-        for (int i = 0; i < originalSequence.size(); ++i) {
+        for (int i = 0; i < (int)originalSequence.size(); ++i) {
             sequence.emplace_back(originalSequence[i], i - 1, i + 1);
         }
 
@@ -33,7 +33,7 @@ namespace
 
     void mix(std::vector<Entry>& sequence)
     {
-        for (int current = 0; current < sequence.size(); ++current)
+        for (size_t current = 0; current < sequence.size(); ++current)
         {
             Entry& entry = sequence[current];
 
@@ -65,16 +65,16 @@ namespace
 
             entry.prev = after;
             entry.next = sequence[after].next;
-            sequence[entry.prev].next = current;
-            sequence[entry.next].prev = current;
+            sequence[entry.prev].next = (int)current;
+            sequence[entry.next].prev = (int)current;
         }
     }
 
     std::optional<int> findZero(const std::vector<Entry>& sequence)
     {
-        for (int i = 0; i < sequence.size(); ++i) {
+        for (size_t i = 0; i < sequence.size(); ++i) {
             if (sequence[i].value == 0)
-                return i;
+                return (int)i;
         }
 
         return std::nullopt;

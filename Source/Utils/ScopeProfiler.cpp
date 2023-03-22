@@ -37,8 +37,8 @@ ScopeProfiler::~ScopeProfiler()
 	auto timeInMicroSeconds = (endTime - startTime) / std::chrono::microseconds(1);
 	float timeInMilliSeconds = (float)timeInMicroSeconds * 0.001f;
 
-	log("{} run in: {} ms", name, timeInMilliSeconds);
-	log("{} allocation count: {}", name, allocationCount);
+	info("{} run in: {} ms", name, timeInMilliSeconds);
+	info("{} allocation count: {}", name, allocationCount);
 }
 
 #endif // ENABLE_PROFILING

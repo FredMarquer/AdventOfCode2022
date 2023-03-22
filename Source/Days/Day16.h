@@ -26,7 +26,7 @@ public:
 		int32_t flowRate;
 		std::vector<ConnectedValve> connectedValves;
 
-		Valve(std::string&& name, int flowRate);
+		Valve(std::string name, int flowRate);
 	};
 
 private:

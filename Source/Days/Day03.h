@@ -14,9 +14,6 @@ public:
 	{
 		std::string firstCompartment;
 		std::string secondCompartment;
-
-		Rucksack() {}
-		Rucksack(Rucksack&& other) noexcept;
 	};
 
 private:

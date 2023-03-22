@@ -19,8 +19,6 @@ public:
 		int64_t testDivisor;
 		size_t monkeyIndexIfTrue;
 		size_t monkeyIndexIfFalse;
-
-		Monkey();
 	};
 
 private:

@@ -24,21 +24,23 @@ namespace
         exception("invalid letter: {}", letter);
     }
 
-    static const int ScoreTablePart1[] = { 3, 0, 6, 6, 3, 0, 0, 6, 3 };
+    int computePairScorePart1(std::pair<int, int> pair)
+    {
+        static constexpr int ScoreTable[] = { 3, 0, 6, 6, 3, 0, 0, 6, 3 };
 
-    int computePairScorePart1(std::pair<int, int> pair) {
         int shapeScore = pair.second + 1;
-        size_t tableIndex = pair.first + pair.second * 3;
-        int outcomeScore = ScoreTablePart1[tableIndex];
+        int tableIndex = pair.first + pair.second * 3;
+        int outcomeScore = ScoreTable[tableIndex];
         return shapeScore + outcomeScore;
     }
 
-    static const int ScoreTablePart2[] = { 3, 1, 2, 1, 2, 3, 2, 3, 1 };
+    int computePairScorePart2(std::pair<int, int> pair)
+    {
+        static constexpr int ScoreTable[] = { 3, 1, 2, 1, 2, 3, 2, 3, 1 };
 
-    int computePairScorePart2(std::pair<int, int> pair) {
         int outcomeScore = pair.second * 3;
-        size_t tableIndex = pair.first + pair.second * 3;
-        int shapeScore = ScoreTablePart2[tableIndex];
+        int tableIndex = pair.first + pair.second * 3;
+        int shapeScore = ScoreTable[tableIndex];
         return shapeScore + outcomeScore;
     }
 }

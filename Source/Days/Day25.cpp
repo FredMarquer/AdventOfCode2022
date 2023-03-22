@@ -38,10 +38,10 @@ namespace
     int64_t toDecimal(std::string_view view)
     {
         int64_t value = 0;
-        int64_t size = (int64_t)view.size();
-        for (int64_t i = 0; i < size; ++i) {
+        size_t size = view.size();
+        for (size_t i = 0; i < size; ++i) {
             int64_t digit = charToDigit(view[i]);
-            value += digit * (int64_t)pow(5, size - i - 1);
+            value += digit * (int64_t)pow(5, (int64_t)(size - i - 1));
         }
 
         return value;

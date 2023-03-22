@@ -13,29 +13,33 @@ namespace
             return letter - 'a' + 1;
         else if (letter >= 'A' && letter <= 'Z')
             return letter - 'A' + 27;
-        else {
-            error("invalid item: {}", letter);
-            return 0;
-        }
+        
+        error("invalid item: {}", letter);
+        return 0;
     }
 
-    void addCompartmentToBitField(std::string_view compartment, uint64_t& bitField)
+    uint64_t itemToBit(char letter)
     {
-        for (char item : compartment) {
-            // Use the priority as the bit position
-            int itemPriority = itemToPriority(item);
-            bitField |= (uint64_t)1 << itemPriority;
-        }
+        // Use the priority as the bit position
+        return (uint64_t)1 << itemToPriority(letter);
+    }
+
+    uint64_t compartmentToItemBits(std::string_view compartment)
+    {
+        uint64_t bits = 0;
+        for (char item : compartment)
+            bits |= itemToBit(item);
+
+        return bits;
     }
 
     char findSharedItem(const Day03::Rucksack& rucksack)
     {
-        uint64_t bitField = 0;
-        addCompartmentToBitField(rucksack.firstCompartment, bitField);
+        uint64_t itemBits = compartmentToItemBits(rucksack.firstCompartment);
 
         for (char item : rucksack.secondCompartment) {
-            int itemPriority = itemToPriority(item);
-            if ((bitField & ((uint64_t)1 << itemPriority)) != 0)
+            uint64_t itemBit = itemToBit(item);
+            if ((itemBits & itemBit) != 0)
                 return item;
         }
 
@@ -46,20 +50,20 @@ namespace
     char findBadgePriority(const Day03::Rucksack& rucksack1, const Day03::Rucksack& rucksack2, const Day03::Rucksack& rucksack3)
     {
         // Create a bit field for each rucksacks contents
-        uint64_t bitField1 = 0;
-        addCompartmentToBitField(rucksack1.firstCompartment, bitField1);
-        addCompartmentToBitField(rucksack1.secondCompartment, bitField1);
+        uint64_t itemBits1 = 0;
+        itemBits1 |= compartmentToItemBits(rucksack1.firstCompartment);
+        itemBits1 |= compartmentToItemBits(rucksack1.secondCompartment);
 
-        uint64_t bitField2 = 0;
-        addCompartmentToBitField(rucksack2.firstCompartment, bitField2);
-        addCompartmentToBitField(rucksack2.secondCompartment, bitField2);
+        uint64_t itemBits2 = 0;
+        itemBits2 |= compartmentToItemBits(rucksack2.firstCompartment);
+        itemBits2 |= compartmentToItemBits(rucksack2.secondCompartment);
 
-        uint64_t bitField3 = 0;
-        addCompartmentToBitField(rucksack3.firstCompartment, bitField3);
-        addCompartmentToBitField(rucksack3.secondCompartment, bitField3);
+        uint64_t itemBits3 = 0;
+        itemBits3 |= compartmentToItemBits(rucksack3.firstCompartment);
+        itemBits3 |= compartmentToItemBits(rucksack3.secondCompartment);
 
         // Find the common bit
-        uint64_t badgeBit = bitField1 & bitField2 & bitField3;
+        uint64_t badgeBit = itemBits1 & itemBits2 & itemBits3;
         if (badgeBit == 0) {
             error("shared item not found");
             return 0;
@@ -74,17 +78,12 @@ namespace
     }
 }
 
-Day03::Rucksack::Rucksack(Rucksack&& other) noexcept
-    : firstCompartment(std::move(other.firstCompartment))
-    , secondCompartment(std::move(other.secondCompartment))
-{}
-
 void Day03::parseFile(std::ifstream& file)
 {
     std::string line;
     while (std::getline(file, line)) {
         size_t compartmentSize = line.size() / 2;
-        Rucksack rucksack = Rucksack();
+        Rucksack rucksack{};
         rucksack.firstCompartment = std::string(line.begin(), line.begin() + compartmentSize);
         rucksack.secondCompartment = std::string(line.end() - compartmentSize, line.end());
         assert(rucksack.firstCompartment.size() == rucksack.secondCompartment.size());

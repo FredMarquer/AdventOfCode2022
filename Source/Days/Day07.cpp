@@ -29,23 +29,6 @@ namespace
     }
 }
 
-Day07::File::File(std::string_view name, int size)
-    : name(name)
-    , size(size)
-{}
-
-Day07::File::File(File&& other) noexcept
-    : name(std::move(other.name))
-    , size(other.size)
-{}
-
-Day07::Directory::Directory(Directory&& other) noexcept
-    : name(std::move(other.name))
-    , subDirectories(std::move(other.subDirectories))
-    , files(std::move(other.files))
-    , size(other.size)
-{}
-
 void Day07::Directory::initializeSize()
 {
     assert(size == 0);

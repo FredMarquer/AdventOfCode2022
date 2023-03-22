@@ -71,6 +71,8 @@ namespace
 
     Result findMarker(std::string_view signal, size_t markerLength)
     {
+        assert(markerLength > 0);
+
         LetterTracker letterTracker = LetterTracker(markerLength);
 
         // Add the first N-1 letters to the tracker
@@ -78,13 +80,10 @@ namespace
             letterTracker.addLetter(signal[i]);
 
         // Process the remaining letters
-        size_t size = signal.size();
-        for (size_t i = markerLength - 1; i < size; ++i) {
+        for (size_t i = markerLength - 1; i < signal.size(); ++i) {
             letterTracker.addLetter(signal[i]);
-
             if (letterTracker.isMarker())
                 return i + 1;
-
             letterTracker.removeLetter(signal[i - (markerLength - 1)]);
         }
 

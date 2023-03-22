@@ -166,9 +166,9 @@ void Day23::parseFile(std::ifstream& file)
     int32_t y = 0;
     std::string line;
     while (std::getline(file, line)) {
-        for (int32_t x = 0; x < line.size(); ++x) {
+        for (size_t x = 0; x < line.size(); ++x) {
             if (line[x] == '#')
-                elvesPositions.push_back(Int2(x, y));
+                elvesPositions.push_back(Int2((int32_t)x, y));
         }
         ++y;
     }

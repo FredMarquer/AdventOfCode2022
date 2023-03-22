@@ -73,7 +73,7 @@ namespace
             return false;
         }
 
-        log("part 1 result: {}", result);
+        info("part 1 result: {}", result);
 
         if (!expectedResult.isValid()) {
             debug("no expected result");
@@ -90,8 +90,8 @@ namespace
 
     bool runDay(int32_t dayNumber, int32_t part)
     {
-        log("");
-        log("---------- Day {} ----------", dayNumber);
+        info("");
+        info("---------- Day {} ----------", dayNumber);
 
         // Create the day instance
         std::unique_ptr<Solver> day = createDay(dayNumber);
@@ -120,7 +120,7 @@ namespace
             profileScope("file parsing");
             day->parseFile(file);
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             error("an exception has occured during file parsing:");
             error("{}", e.what());
@@ -169,12 +169,12 @@ namespace
         }
 
         // Log results
-        log("");
-        log("---------- Results ----------");
-        log("Valid days {}/{}", validDayCount, DayCount);
+        info("");
+        info("---------- Results ----------");
+        info("Valid days {}/{}", validDayCount, DayCount);
         if (validDayCount < DayCount)
             error("{} day(s) failed", DayCount - validDayCount);
-        log("");
+        info("");
 
         return validDayCount == DayCount;
     }

@@ -149,12 +149,6 @@ namespace
     }
 }
 
-Day11::Monkey::Monkey()
-    : testDivisor(0)
-    , monkeyIndexIfTrue(0)
-    , monkeyIndexIfFalse(0)
-{}
-
 void Day11::parseFile(std::ifstream& file)
 {
     std::optional<Day11::Monkey> monkey;

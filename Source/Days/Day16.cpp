@@ -273,7 +273,7 @@ Day16::ConnectedValve::ConnectedValve(std::string_view name)
     , index(0)
 {}
 
-Day16::Valve::Valve(std::string&& name, int flowRate)
+Day16::Valve::Valve(std::string name, int flowRate)
     : name(std::move(name))
     , index(0)
     , bit(0)

@@ -16,8 +16,7 @@ public:
 		std::string name;
 		int size;
 
-		File(std::string_view name, int size);
-		File(File&& other) noexcept;
+		File(std::string_view name, int size) : name(name), size(size) {}
 	};
 
 	struct Directory
@@ -28,7 +27,6 @@ public:
 		int size;
 
 		Directory(std::string_view name) : name(name), size(0) {}
-		Directory(Directory&& other) noexcept;
 
 		void initializeSize();
 		std::optional<size_t> tryGetSubDirectoryIndex(std::string_view directoryName) const;
