@@ -8,23 +8,56 @@
 #include "Utils/Int3.h"
 #include "Utils/Parsing.h"
 
-Int3 parsePosition(std::string_view line)
+namespace
 {
-    auto split_view = std::views::split(line, ',');
-    auto it = split_view.begin();
-    auto xRange = *it++;
-    auto yRange = *it++;
-    auto zRange = *it++;
+    Int3 parsePosition(std::string_view line)
+    {
+        auto split_view = std::views::split(line, ',');
+        auto it = split_view.begin();
+        auto xRange = *it++;
+        auto yRange = *it++;
+        auto zRange = *it++;
 
-    if (it != split_view.end())
-        exception("invalid line: {}", line);
+        if (it != split_view.end())
+            exception("invalid line: {}", line);
 
-    Int3 pos;
-    parse(std::string_view{ xRange.begin(), xRange.end() }, pos.x);
-    parse(std::string_view{ yRange.begin(), yRange.end() }, pos.y);
-    parse(std::string_view{ zRange.begin(), zRange.end() }, pos.z);
+        Int3 pos;
+        parse(std::string_view{ xRange.begin(), xRange.end() }, pos.x);
+        parse(std::string_view{ yRange.begin(), yRange.end() }, pos.y);
+        parse(std::string_view{ zRange.begin(), zRange.end() }, pos.z);
 
-    return pos;
+        return pos;
+    }
+
+    void updateSurfaceCountPart1(const Array3D<bool>& grid, const Int3& pos, int32_t& surfaceArea)
+    {
+        if (!grid.isInBounds(pos)) {
+            ++surfaceArea;
+            return;
+        }
+
+        if (grid[pos])
+            --surfaceArea;
+        else
+            ++surfaceArea;
+    }
+
+    const int32_t Empty = 0;
+    const int32_t Lava = 1;
+    const int32_t Air = 2;
+
+    void processNeighbourPart2(Array3D<int32_t>& grid, std::stack<Int3>& stack, const Int3& pos, int32_t& surfaceArea)
+    {
+        if (!grid.isInBounds(pos))
+            return;
+
+        if (grid[pos] == Lava)
+            ++surfaceArea;
+        else if (grid[pos] == Empty) {
+            stack.push(pos);
+            grid[pos] = Air;
+        }
+    }
 }
 
 void Day18::parseFile(std::ifstream& file)
@@ -46,19 +79,6 @@ void Day18::parseFile(std::ifstream& file)
     }
 }
 
-void updateSurfaceCountPart1(const Array3D<bool>& grid, const Int3& pos, int32_t& surfaceArea)
-{
-    if (!grid.isInBounds(pos)) {
-        ++surfaceArea;
-        return;
-    }
-
-    if (grid[pos])
-        --surfaceArea;
-    else
-        ++surfaceArea;
-}
-
 Result Day18::runPart1() const
 {
     Array3D<bool> grid((size_t)maxX + 1, (size_t)maxY + 1, (size_t)maxZ + 1);
@@ -78,23 +98,6 @@ Result Day18::runPart1() const
     }
 
     return surfaceArea;
-}
-
-const int32_t Empty = 0;
-const int32_t Lava = 1;
-const int32_t Air = 2;
-
-void processNeighbourPart2(Array3D<int32_t>& grid, std::stack<Int3>& stack, const Int3& pos, int32_t& surfaceArea)
-{
-    if (!grid.isInBounds(pos))
-        return;
-
-    if (grid[pos] == Lava)
-        ++surfaceArea;
-    else if (grid[pos] == Empty) {
-        stack.push(pos);
-        grid[pos] = Air;
-    }
 }
 
 Result Day18::runPart2() const

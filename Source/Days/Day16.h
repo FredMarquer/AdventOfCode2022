@@ -27,8 +27,6 @@ public:
 		std::vector<ConnectedValve> connectedValves;
 
 		Valve(std::string&& name, int flowRate);
-
-		bool operator<(const Valve& other) const;
 	};
 
 private:

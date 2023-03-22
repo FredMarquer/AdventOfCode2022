@@ -9,6 +9,71 @@
 #include "Utils/Parsing.h"
 #include "Utils/Range.h"
 
+namespace
+{
+    std::optional<Range> tryGetRangeAtY(const Day15::Report& report, int32_t y, bool excludeBeacon)
+    {
+        int32_t beaconDistance = std::abs(report.beacon.x - report.sensor.x) + std::abs(report.beacon.y - report.sensor.y);
+        int32_t distanceFromY = std::abs(y - report.sensor.y);
+
+        // Check if the report intersect with the raw y
+        int32_t delta = beaconDistance - distanceFromY;
+        if (delta < 0)
+            return std::nullopt;
+
+        Range range;
+        range.min = report.sensor.x - delta;
+        range.max = report.sensor.x + delta + 1;
+        assert(range.getSize() >= 1);
+
+        // Remove the beacon position from the range if necessary
+        if (excludeBeacon && report.beacon.y == y) {
+            if (range.getSize() == 1) {
+                assert(report.beacon.x == range.min);
+                return false;
+            }
+
+            if (report.beacon.x == range.min)
+                ++range.min;
+            else {
+                assert(report.beacon.x == (range.max - 1));
+                --range.max;
+            }
+        }
+
+        return range;
+    }
+
+    void getRangesAtY(const std::vector<Day15::Report>& reports, int32_t y, bool excludeBeaconCoord, std::vector<Range>& outRanges)
+    {
+        assert(outRanges.empty());
+
+        // Compute the range at y for each reports
+        for (const Day15::Report& report : reports) {
+            std::optional<Range> range = tryGetRangeAtY(report, y, excludeBeaconCoord);
+            if (range.has_value())
+                outRanges.push_back(range.value());
+        }
+
+        // Merge overlapping/touching ranges
+        for (size_t i = 0; i < outRanges.size(); ++i) {
+            Range& range = outRanges[i];
+            bool hasChanged = false;
+            do {
+                hasChanged = false;
+                for (size_t j = outRanges.size() - 1; j > i; --j) {
+                    const Range& other = outRanges[j];
+                    if (range.touch(other)) {
+                        range.encapsulate(other);
+                        outRanges.erase(outRanges.begin() + j);
+                        hasChanged = true;
+                    }
+                }
+            } while (hasChanged);
+        }
+    }
+}
+
 Day15::Report::Report(Int2 sensor, Int2 beacon)
     : sensor(sensor)
     , beacon(beacon)
@@ -28,68 +93,6 @@ void Day15::parseFile(std::ifstream& file)
         int beaconY = std::stoi(matches[4]);
         Report report(Int2(sensorX, sensorY), Int2(beaconX, beaconY));
         reports.push_back(report);
-    }
-}
-
-std::optional<Range> tryGetRangeAtY(const Day15::Report& report, int32_t y, bool excludeBeacon)
-{
-    int32_t beaconDistance = std::abs(report.beacon.x - report.sensor.x) + std::abs(report.beacon.y - report.sensor.y);
-    int32_t distanceFromY = std::abs(y - report.sensor.y);
-
-    // Check if the report intersect with the raw y
-    int32_t delta = beaconDistance - distanceFromY;
-    if (delta < 0)
-        return std::nullopt;
-
-    Range range;
-    range.min = report.sensor.x - delta;
-    range.max = report.sensor.x + delta + 1;
-    assert(range.getSize() >= 1);
-
-    // Remove the beacon position from the range if necessary
-    if (excludeBeacon && report.beacon.y == y) {
-        if (range.getSize() == 1) {
-            assert(report.beacon.x == range.min);
-            return false;
-        }
-
-        if (report.beacon.x == range.min)
-            ++range.min;
-        else {
-            assert(report.beacon.x == (range.max - 1));
-            --range.max;
-        }
-    }
-
-    return range;
-}
-
-void getRangesAtY(const std::vector<Day15::Report>& reports, int32_t y, bool excludeBeaconCoord, std::vector<Range>& outRanges)
-{
-    assert(outRanges.empty());
-
-    // Compute the range at y for each reports
-    for (const Day15::Report& report : reports) {
-        std::optional<Range> range = tryGetRangeAtY(report, y, excludeBeaconCoord);
-        if (range.has_value())
-            outRanges.push_back(range.value());
-    }
-
-    // Merge overlapping/touching ranges
-    for (size_t i = 0; i < outRanges.size(); ++i) {
-        Range& range = outRanges[i];
-        bool hasChanged = false;
-        do {
-            hasChanged = false;
-            for (size_t j = outRanges.size() - 1; j > i; --j) {
-                const Range& other = outRanges[j];
-                if (range.touch(other)) {
-                    range.encapsulate(other);
-                    outRanges.erase(outRanges.begin() + j);
-                    hasChanged = true;
-                }
-            }
-        } while (hasChanged);
     }
 }
 

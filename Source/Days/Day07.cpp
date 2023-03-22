@@ -6,6 +6,29 @@
 #include "Utils/Exception.h"
 #include "Utils/Parsing.h"
 
+namespace
+{
+    void sumPart1(const Day07::Directory& directory, int& result)
+    {
+        if (directory.size <= 100000)
+            result += directory.size;
+
+        for (const Day07::Directory& subDirectory : directory.subDirectories)
+            sumPart1(subDirectory, result);
+    }
+
+    void findDirectorySizeToDelete(const Day07::Directory& directory, int minSpaceToDelete, int& bestDirectorySize)
+    {
+        for (const Day07::Directory& subDirectory : directory.subDirectories) {
+            if (subDirectory.size >= minSpaceToDelete)
+                findDirectorySizeToDelete(subDirectory, minSpaceToDelete, bestDirectorySize);
+        }
+
+        if (directory.size < bestDirectorySize)
+            bestDirectorySize = directory.size;
+    }
+}
+
 Day07::File::File(std::string_view name, int size)
     : name(name)
     , size(size)
@@ -110,26 +133,6 @@ void Day07::parseFile(std::ifstream& file)
 
     // Initialize all directories' size
     rootDirectory.initializeSize();
-}
-
-void sumPart1(const Day07::Directory& directory, int& result)
-{
-    if (directory.size <= 100000)
-        result += directory.size;
-
-    for (const Day07::Directory& subDirectory : directory.subDirectories)
-        sumPart1(subDirectory, result);
-}
-
-void findDirectorySizeToDelete(const Day07::Directory& directory, int minSpaceToDelete, int& bestDirectorySize)
-{
-    for (const Day07::Directory& subDirectory : directory.subDirectories) {
-        if (subDirectory.size >= minSpaceToDelete)
-            findDirectorySizeToDelete(subDirectory, minSpaceToDelete, bestDirectorySize);
-    }
-
-    if (directory.size < bestDirectorySize)
-        bestDirectorySize = directory.size;
 }
 
 Result Day07::runPart1() const

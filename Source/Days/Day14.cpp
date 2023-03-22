@@ -9,77 +9,145 @@
 #include "Utils/Parsing.h"
 #include "Utils/Rect.h"
 
-const Int2 sourceCoord = Int2(500, 0);
-
-struct Line
+namespace
 {
-    Int2 start;
-    Int2 end;
-    Int2 direction;
-    int32_t distance;
+    const Int2 sourceCoord = Int2(500, 0);
 
-    Line(Int2 start, Int2 end)
-        : start(start)
-        , end(end)
+    struct Line
     {
-        // Convert (start, end) into (orign, direction, distance)
-        Int2 delta = end - start;
-        if (delta.x > 0) {
-            assert(delta.y == 0);
-            direction = Int2::Right;
-            distance = delta.x;
+        Int2 start;
+        Int2 end;
+        Int2 direction;
+        int32_t distance;
+
+        Line(Int2 start, Int2 end)
+            : start(start)
+            , end(end)
+        {
+            // Convert (start, end) into (orign, direction, distance)
+            Int2 delta = end - start;
+            if (delta.x > 0) {
+                assert(delta.y == 0);
+                direction = Int2::Right;
+                distance = delta.x;
+            }
+            else if (delta.x < 0) {
+                assert(delta.y == 0);
+                direction = Int2::Left;
+                distance = -delta.x;
+            }
+            else if (delta.y > 0) {
+                direction = Int2::Up;
+                distance = delta.y;
+            }
+            else {
+                assert(delta.y < 0);
+                direction = Int2::Down;
+                distance = -delta.y;
+            }
         }
-        else if (delta.x < 0) {
-            assert(delta.y == 0);
-            direction = Int2::Left;
-            distance = -delta.x;
-        }
-        else if (delta.y > 0) {
-            direction = Int2::Up;
-            distance = delta.y;
-        }
-        else {
-            assert(delta.y < 0);
-            direction = Int2::Down;
-            distance = -delta.y;
+    };
+
+    std::optional<Int2> tryParseNextPoint(std::string_view& view)
+    {
+        if (view.empty())
+            return std::nullopt;
+
+        Int2 point;
+
+        // Parse x
+        size_t comma = view.find_first_of(',');
+        parse(view.substr(0, comma), point.x);
+
+        // Parse y
+        view = view.substr(comma + 1);
+        size_t space = view.find_first_of(' ');
+        parse(view.substr(0, space), point.y);
+
+        view = view.substr(std::min(space + 4, view.size()));
+        return point;
+    }
+
+    void parseLine(const std::string& strLine, std::vector<Line>& lines)
+    {
+        std::string_view view = strLine;
+
+        // Parse the first point
+        std::optional<Int2> start = tryParseNextPoint(view);
+        if (!start.has_value())
+            exception("fail to parse the first point: {}", view);
+
+        // Parse the next points and add lines
+        std::optional<Int2> end;
+        while ((end = tryParseNextPoint(view)).has_value()) {
+            lines.push_back(Line(start.value(), end.value()));
+            start = end;
         }
     }
-};
 
-std::optional<Int2> tryParseNextPoint(std::string_view& view)
-{
-    if (view.empty())
-        return std::nullopt;
+    bool simulateSandUnit(Int2 source, Array2D<bool>& caveMap)
+    {
+        assert(caveMap.isInBounds(source));
 
-    Int2 point;
+        if (caveMap[source])
+        {
+            return false;
+        }
 
-    // Parse x
-    size_t comma = view.find_first_of(',');
-    parse(view.substr(0, comma), point.x);
+        // Simulate the sand unit until rest or reaching the bound of the map
+        Int2 coord = source;
+        while (true)
+        {
+            // Try to fall down
+            Int2 coordDown = coord + Int2::Up; // The map is inverted on the Y axis.
+            if (!caveMap.isInBounds(coordDown))
+                return false;
+            if (!caveMap[coordDown]) {
+                coord = coordDown;
+                continue;
+            }
 
-    // Parse y
-    view = view.substr(comma + 1);
-    size_t space = view.find_first_of(' ');
-    parse(view.substr(0, space), point.y);
+            // Try to fall down left
+            Int2 coordLeft = coordDown + Int2::Left;
+            if (!caveMap.isInBounds(coordLeft))
+                return false;
+            if (!caveMap[coordLeft]) {
+                coord = coordLeft;
+                continue;
+            }
 
-    view = view.substr(std::min(space + 4, view.size()));
-    return point;
-}
+            // Try to fall down right
+            Int2 coordRight = coordDown + Int2::Right;
+            if (!caveMap.isInBounds(coordRight))
+                return false;
+            if (!caveMap[coordRight]) {
+                coord = coordRight;
+                continue;
+            }
 
-void parseLine(const std::string& strLine, std::vector<Line>& lines)
-{
-    std::string_view view = strLine;
+            // Rest
+            assert(!caveMap[coord]);
+            caveMap[coord] = true;
+            return true;
+        }
 
-    // Parse the first point
-    std::optional<Int2> start = tryParseNextPoint(view);
-    if (!start.has_value())
-        exception("fail to parse the first point: {}", view);
-    
-    // Parse the next points and add lines
-    std::optional<Int2> end;
-    while ((end = tryParseNextPoint(view)).has_value()) {
-        lines.push_back(Line(start.value(), end.value()));
-        start = end;
+        return false;
+    }
+
+    int32_t simulate(Array2D<bool>& caveMap, Int2 caveOffset)
+    {
+        // Apply offset to source
+        Int2 source = sourceCoord;
+        source.x -= caveOffset.x;
+        assert(caveMap.isInBounds(source));
+
+        // Simulate sand units until the state is stable
+        int32_t sandUnitCount = 0;
+        while (simulateSandUnit(source, caveMap)) {
+            ++sandUnitCount;
+        }
+
+        return sandUnitCount;
     }
 }
 
@@ -116,71 +184,6 @@ void Day14::parseFile(std::ifstream& file)
             coord += line.direction;
         }
     }
-}
-
-bool simulateSandUnit(Int2 source, Array2D<bool>& caveMap)
-{
-    assert(caveMap.isInBounds(source));
-
-    if (caveMap[source])
-    {
-        return false;
-    }
-
-    // Simulate the sand unit until rest or reaching the bound of the map
-    Int2 coord = source;
-    while (true)
-    {
-        // Try to fall down
-        Int2 coordDown = coord + Int2::Up; // The map is inverted on the Y axis.
-        if (!caveMap.isInBounds(coordDown))
-            return false;
-        if (!caveMap[coordDown]) {
-            coord = coordDown;
-            continue;
-        }
-
-        // Try to fall down left
-        Int2 coordLeft = coordDown + Int2::Left;
-        if (!caveMap.isInBounds(coordLeft))
-            return false;
-        if (!caveMap[coordLeft]) {
-            coord = coordLeft;
-            continue;
-        }
-
-        // Try to fall down right
-        Int2 coordRight = coordDown + Int2::Right;
-        if (!caveMap.isInBounds(coordRight))
-            return false;
-        if (!caveMap[coordRight]) {
-            coord = coordRight;
-            continue;
-        }
-
-        // Rest
-        assert(!caveMap[coord]);
-        caveMap[coord] = true;
-        return true;
-    }
-
-    return false;
-}
-
-int32_t simulate(Array2D<bool>& caveMap, Int2 caveOffset)
-{
-    // Apply offset to source
-    Int2 source = sourceCoord;
-    source.x -= caveOffset.x;
-    assert(caveMap.isInBounds(source));
-
-    // Simulate sand units until the state is stable
-    int32_t sandUnitCount = 0;
-    while (simulateSandUnit(source, caveMap)) {
-        ++sandUnitCount;
-    }
-
-    return sandUnitCount;
 }
 
 Result Day14::runPart1() const

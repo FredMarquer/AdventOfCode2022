@@ -5,21 +5,42 @@
 #include "Result.h"
 #include "Utils/Exception.h"
 
-int parseLetter(char letter)
+namespace
 {
-    switch (letter) {
-    case 'A':
-    case 'X':
-        return 0;
-    case 'B':
-    case 'Y':
-        return 1;
-    case 'C':
-    case 'Z':
-        return 2;
+    int parseLetter(char letter)
+    {
+        switch (letter) {
+        case 'A':
+        case 'X':
+            return 0;
+        case 'B':
+        case 'Y':
+            return 1;
+        case 'C':
+        case 'Z':
+            return 2;
+        }
+
+        exception("invalid letter: {}", letter);
     }
 
-    exception("invalid letter: {}", letter);
+    static const int ScoreTablePart1[] = { 3, 0, 6, 6, 3, 0, 0, 6, 3 };
+
+    int computePairScorePart1(std::pair<int, int> pair) {
+        int shapeScore = pair.second + 1;
+        size_t tableIndex = pair.first + pair.second * 3;
+        int outcomeScore = ScoreTablePart1[tableIndex];
+        return shapeScore + outcomeScore;
+    }
+
+    static const int ScoreTablePart2[] = { 3, 1, 2, 1, 2, 3, 2, 3, 1 };
+
+    int computePairScorePart2(std::pair<int, int> pair) {
+        int outcomeScore = pair.second * 3;
+        size_t tableIndex = pair.first + pair.second * 3;
+        int shapeScore = ScoreTablePart2[tableIndex];
+        return shapeScore + outcomeScore;
+    }
 }
 
 void Day02::parseFile(std::ifstream& file)
@@ -32,24 +53,6 @@ void Day02::parseFile(std::ifstream& file)
         int second = parseLetter(line[2]);
         strategyGuide.push_back(std::pair(first, second));
     }
-}
-
-static const int ScoreTablePart1[] = { 3, 0, 6, 6, 3, 0, 0, 6, 3 };
-
-int computePairScorePart1(std::pair<int, int> pair) {
-    int shapeScore = pair.second + 1;
-    size_t tableIndex = pair.first + pair.second * 3;
-    int outcomeScore = ScoreTablePart1[tableIndex];
-    return shapeScore + outcomeScore;
-}
-
-static const int ScoreTablePart2[] = { 3, 1, 2, 1, 2, 3, 2, 3, 1 };
-
-int computePairScorePart2(std::pair<int, int> pair) {
-    int outcomeScore = pair.second * 3;
-    size_t tableIndex = pair.first + pair.second * 3;
-    int shapeScore = ScoreTablePart2[tableIndex];
-    return shapeScore + outcomeScore;
 }
 
 Result Day02::runPart1() const

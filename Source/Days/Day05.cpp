@@ -5,6 +5,42 @@
 #include "Result.h"
 #include "Utils/Exception.h"
 
+namespace
+{
+    void applyInstructionCrateMover9000(Day05::Instruction instruction, std::vector<std::vector<char>>& stacks)
+    {
+        std::vector<char>& fromStack = stacks[instruction.fromStackIndex];
+        std::vector<char>& toStack = stacks[instruction.toStackIndex];
+
+        for (int i = 0; i < instruction.numberOfBoxes; ++i) {
+            toStack.push_back(fromStack.back());
+            fromStack.pop_back();
+        }
+    }
+
+    void applyInstructionCrateMover9001(Day05::Instruction instruction, std::vector<std::vector<char>>& stacks)
+    {
+        std::vector<char>& fromStack = stacks[instruction.fromStackIndex];
+        std::vector<char>& toStack = stacks[instruction.toStackIndex];
+
+        size_t fromStackSize = fromStack.size();
+        for (size_t boxIndex = fromStackSize - instruction.numberOfBoxes; boxIndex < fromStackSize; ++boxIndex)
+            toStack.push_back(fromStack[boxIndex]);
+
+        for (int i = 0; i < instruction.numberOfBoxes; ++i)
+            fromStack.pop_back();
+    }
+
+    std::string computeResult(const std::vector<std::vector<char>>& stacks)
+    {
+        std::string result;
+        for (const auto& stack : stacks)
+            result.push_back(stack.back());
+
+        return result;
+    }
+}
+
 Day05::Instruction::Instruction(int numberOfBoxes, int fromStackIndex, int toStackIndex)
     : numberOfBoxes(numberOfBoxes)
     , fromStackIndex(fromStackIndex)
@@ -52,39 +88,6 @@ void Day05::parseFile(std::ifstream& file)
     }
 }
 
-void applyInstructionCrateMover9000(Day05::Instruction instruction, std::vector<std::vector<char>>& stacks)
-{
-    std::vector<char>& fromStack = stacks[instruction.fromStackIndex];
-    std::vector<char>& toStack = stacks[instruction.toStackIndex];
-
-    for (int i = 0; i < instruction.numberOfBoxes; ++i) {
-        toStack.push_back(fromStack.back());
-        fromStack.pop_back();
-    }
-}
-
-void applyInstructionCrateMover9001(Day05::Instruction instruction, std::vector<std::vector<char>>& stacks)
-{
-    std::vector<char>& fromStack = stacks[instruction.fromStackIndex];
-    std::vector<char>& toStack = stacks[instruction.toStackIndex];
-
-    size_t fromStackSize = fromStack.size();
-    for (size_t boxIndex = fromStackSize - instruction.numberOfBoxes; boxIndex < fromStackSize; ++boxIndex)
-        toStack.push_back(fromStack[boxIndex]);
-
-    for (int i = 0; i < instruction.numberOfBoxes; ++i)
-        fromStack.pop_back();
-}
-
-std::string result(const std::vector<std::vector<char>>& stacks)
-{
-    std::string result;
-    for (const auto& stack : stacks)
-        result.push_back(stack.back());
-
-    return result;
-}
-
 Result Day05::runPart1() const
 {
     // Copy the stacks
@@ -94,7 +97,7 @@ Result Day05::runPart1() const
     for (const Instruction& instruction : instructions)
         applyInstructionCrateMover9000(instruction, workingStacks);
 
-    return result(workingStacks);
+    return computeResult(workingStacks);
 }
 
 Result Day05::runPart2() const
@@ -106,7 +109,7 @@ Result Day05::runPart2() const
     for (const Instruction& instruction : instructions)
         applyInstructionCrateMover9001(instruction, workingStacks);
 
-    return result(workingStacks);
+    return computeResult(workingStacks);
 }
 
 Result Day05::getExpectedResultPart1() const

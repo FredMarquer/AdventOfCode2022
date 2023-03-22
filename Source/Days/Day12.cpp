@@ -9,23 +9,95 @@
 #include "Utils/Int2.h"
 #include "Utils/Log.h"
 
-int parseHeight(char c, bool& isStart, bool& isTarget)
+namespace
 {
-    isStart = false;
-    isTarget = false;
+    int parseHeight(char c, bool& isStart, bool& isTarget)
+    {
+        isStart = false;
+        isTarget = false;
 
-    if (c == 'S') {
-        isStart = true;
-        c = 'a';
-    }
-    else if (c == 'E') {
-        isTarget = true;
-        c = 'z';
-    }
-    else if (c < 'a' || c > 'z')
-        exception("invalid char: {}", c);
+        if (c == 'S') {
+            isStart = true;
+            c = 'a';
+        }
+        else if (c == 'E') {
+            isTarget = true;
+            c = 'z';
+        }
+        else if (c < 'a' || c > 'z')
+            exception("invalid char: {}", c);
 
-    return c - 'a';
+        return c - 'a';
+    }
+
+    typedef std::function<bool(int, int)> TransitionConditionFunction;
+    typedef std::function<bool(Int2)> TargetConditionFunction;
+
+    struct OpenNode
+    {
+        Int2 coord;
+        int distance;
+
+        OpenNode(Int2 coord, int distance)
+            : coord(coord)
+            , distance(distance)
+        {}
+
+        bool operator>(const OpenNode& other)
+        {
+            return distance > other.distance;
+        }
+    };
+
+    Result dijkstra(const Array2D<int>& heightMap, Int2 start, TransitionConditionFunction transitionFunction, TargetConditionFunction targetFunction)
+    {
+        const Int2 neighbourDirections[4] = { Int2::Right, Int2::Down, Int2::Left, Int2::Up };
+
+        BinaryHeap<OpenNode, std::greater<>> openSet;
+        Array2D<bool> closeSet(heightMap.getWidth(), heightMap.getHeight());
+
+        // Push the starting node
+        openSet.push(OpenNode(start, 0));
+
+        while (!openSet.isEmpty()) {
+            OpenNode current = openSet.pop();
+
+            // Has the current node already been visited ?
+            if (closeSet[current.coord])
+                continue;
+
+            // Do we reach the target ?
+            if (targetFunction(current.coord))
+                return current.distance;
+
+            // For each neighbours
+            int currentHeight = heightMap[current.coord];
+            for (const Int2& dir : neighbourDirections) {
+                Int2 neighbourCoord = current.coord + dir;
+
+                // Is the neihbour in range
+                if (!heightMap.isInBounds(neighbourCoord))
+                    continue;
+
+                // Has the neihbour already been visited ?
+                if (closeSet[neighbourCoord])
+                    continue;
+
+                // Check the height difference
+                if (!transitionFunction(currentHeight, heightMap[neighbourCoord]))
+                    continue;
+
+                // Push the neighbour to the open set
+                openSet.push(OpenNode(neighbourCoord, current.distance + 1));
+            }
+
+            // Set the current node as visited
+            closeSet[current.coord] = true;
+        }
+
+        error("no path found");
+        return Result::Invalid;
+    }
 }
 
 void Day12::parseFile(std::ifstream& file)
@@ -45,7 +117,7 @@ void Day12::parseFile(std::ifstream& file)
             bool isStart = false;
             bool isTarget = false;
             int cellHeight = parseHeight(line[i], isStart, isTarget);
-            
+
             if (isStart)
                 start = Int2(i, mapHeight);
             if (isTarget)
@@ -64,75 +136,6 @@ void Day12::parseFile(std::ifstream& file)
     }
 
     heightMap = Array2D(mapWidth, mapHeight, heightData);
-}
-
-typedef std::function<bool(int, int)> TransitionConditionFunction;
-typedef std::function<bool(Int2)> TargetConditionFunction;
-
-struct OpenNode
-{
-    Int2 coord;
-    int distance;
-
-    OpenNode(Int2 coord, int distance)
-        : coord(coord)
-        , distance(distance)
-    {}
-
-    bool operator>(const OpenNode& other)
-    {
-        return distance > other.distance;
-    }
-};
-
-Result dijkstra(const Array2D<int>& heightMap, Int2 start, TransitionConditionFunction transitionFunction, TargetConditionFunction targetFunction)
-{
-    const Int2 neighbourDirections[4] = { Int2::Right, Int2::Down, Int2::Left, Int2::Up };
-
-    BinaryHeap<OpenNode, std::greater<>> openSet;
-    Array2D<bool> closeSet(heightMap.getWidth(), heightMap.getHeight());
-
-    // Push the starting node
-    openSet.push(OpenNode(start, 0));
-
-    while (!openSet.isEmpty()) {
-        OpenNode current = openSet.pop();
-
-        // Has the current node already been visited ?
-        if (closeSet[current.coord])
-            continue;
-
-        // Do we reach the target ?
-        if (targetFunction(current.coord))
-            return current.distance;
-
-        // For each neighbours
-        int currentHeight = heightMap[current.coord];
-        for (const Int2& dir : neighbourDirections) {
-            Int2 neighbourCoord = current.coord + dir;
-
-            // Is the neihbour in range
-            if (!heightMap.isInBounds(neighbourCoord))
-                continue;
-
-            // Has the neihbour already been visited ?
-            if (closeSet[neighbourCoord])
-                continue;
-
-            // Check the height difference
-            if (!transitionFunction(currentHeight, heightMap[neighbourCoord]))
-                continue;
-
-            // Push the neighbour to the open set
-            openSet.push(OpenNode(neighbourCoord, current.distance + 1));
-        }
-
-        // Set the current node as visited
-        closeSet[current.coord] = true;
-    }
-
-    error("no path found");
-    return Result::Invalid;
 }
 
 Result Day12::runPart1() const

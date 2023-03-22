@@ -7,78 +7,88 @@
 #include "Utils/Log.h"
 #include "Utils/Parsing.h"
 
-void parseListNode(std::string_view& view, Day13::Node& currentNode)
+namespace
 {
-    assert(currentNode.isList());
-    
-    while (!view.empty()) {
-        char c = view[0];
-        if (c == '[') {
-            // New list node
-            Day13::Node newNode;
-            view = view.substr(1);
-            parseListNode(view, newNode);
-            assert(std::holds_alternative<std::vector<Day13::Node>>(newNode.data));
-            currentNode.getList().push_back(std::move(newNode));
+    void parseListNode(std::string_view& view, Day13::Node& currentNode)
+    {
+        assert(currentNode.isList());
+
+        while (!view.empty()) {
+            char c = view[0];
+            if (c == '[') {
+                // New list node
+                Day13::Node newNode;
+                view = view.substr(1);
+                parseListNode(view, newNode);
+                assert(std::holds_alternative<std::vector<Day13::Node>>(newNode.data));
+                currentNode.getList().push_back(std::move(newNode));
+            }
+            else if (c == ']') {
+                // End current list node
+                view = view.substr(1);
+                return;
+            }
+            else if (c == ',') {
+                // Go to next value
+                view = view.substr(1);
+                continue;
+            }
+            else {
+                // New integer node
+                int integer = 0;
+                size_t separator = std::min(view.find_first_of(','), view.find_first_of(']'));
+                parse(view.substr(0, separator), integer);
+                currentNode.getList().push_back(integer);
+                view = view.substr(separator);
+            }
         }
-        else if (c == ']') {
-            // End current list node
-            view = view.substr(1);
-            return;
-        }
-        else if (c == ',') {
-            // Go to next value
-            view = view.substr(1);
-            continue;
-        }
-        else {
-            // New integer node
-            int integer = 0;
-            size_t separator = std::min(view.find_first_of(','), view.find_first_of(']'));
-            parse(view.substr(0, separator), integer);
-            currentNode.getList().push_back(integer);
-            view = view.substr(separator);
-        }
+
+        exception("line ended but the list as not been closed");
     }
 
-    exception("line ended but the list as not been closed");
-}
+    Day13::Packet parsePacket(const std::string& line)
+    {
+        std::string_view view = line;
 
-Day13::Packet parsePacket(const std::string& line)
-{
-    std::string_view view = line;
+        if (view[0] != '[')
+            exception("line doesn't start with '[' : {}", view);
 
-    if (view[0] != '[')
-        exception("line doesn't start with '[' : {}", view);
+        // Skip the first '['
+        view = view.substr(1);
 
-    // Skip the first '['
-    view = view.substr(1);
+        // Create and parse packet node
+        Day13::Packet packet;
+        packet.line = line;
+        parseListNode(view, packet.rootNode);
 
-    // Create and parse packet node
-    Day13::Packet packet;
-    packet.line = line;
-    parseListNode(view, packet.rootNode);
+        if (!view.empty())
+            exception("invalid view at end of line parsing: {}", view);
 
-    if (!view.empty())
-        exception("invalid view at end of line parsing: {}", view);
-    
-    return packet;
-}
-
-void Day13::parseFile(std::ifstream& file)
-{
-    std::string line;
-    while (std::getline(file, line)) {
-        if (line.empty())
-            continue;
-
-        // Parse the packet line
-        Packet packet = parsePacket(line);
-        packets.push_back(std::move(packet));
+        return packet;
     }
 
-    if (packets.size() % 2 != 0)
-        exception("odd number of packets (= {}), it should be even", packets.size());
+    // Foward declare
+    int32_t compareNodes(const Day13::Node& lhs, const Day13::Node& rhs);
+
+    int32_t compareLists(std::span<const Day13::Node> lhs, std::span<const Day13::Node> rhs)
+    {
+        size_t count = std::min(lhs.size(), rhs.size());
+        for (size_t i = 0; i < count; ++i) {
+            int32_t result = compareNodes(lhs[i], rhs[i]);
+            if (result != 0)
+                return result;
+        }
+
+        return (int32_t)lhs.size() - (int32_t)rhs.size();
+    }
+
+    int32_t compareNodes(const Day13::Node& lhs, const Day13::Node& rhs)
+    {
+        if (lhs.isInteger() && rhs.isInteger())
+            return lhs.getInteger() - rhs.getInteger();
+
+        return compareLists(lhs, rhs);
+    }
 }
 
 Day13::Node::Node()
@@ -124,29 +134,6 @@ const std::vector<Day13::Node>& Day13::Node::getList() const
     return std::get<std::vector<Day13::Node>>(this->data);
 }
 
-// Foward declare
-int32_t compareNodes(const Day13::Node& lhs, const Day13::Node& rhs);
-
-int32_t compareLists(std::span<const Day13::Node> lhs, std::span<const Day13::Node> rhs)
-{
-    size_t count = std::min(lhs.size(), rhs.size());
-    for (size_t i = 0; i < count; ++i) {
-        int32_t result = compareNodes(lhs[i], rhs[i]);
-        if (result != 0)
-            return result;
-    }
-
-    return (int32_t)lhs.size() - (int32_t)rhs.size();
-}
-
-int32_t compareNodes(const Day13::Node& lhs, const Day13::Node& rhs)
-{
-    if (lhs.isInteger() && rhs.isInteger())
-        return lhs.getInteger() - rhs.getInteger();
-
-    return compareLists(lhs, rhs);
-}
-
 bool Day13::Packet::operator==(const std::string& value) const
 {
     return line == value;
@@ -155,6 +142,22 @@ bool Day13::Packet::operator==(const std::string& value) const
 bool Day13::Packet::operator<(const Day13::Packet& rhs) const
 {
     return compareNodes(rootNode, rhs.rootNode) < 0;
+}
+
+void Day13::parseFile(std::ifstream& file)
+{
+    std::string line;
+    while (std::getline(file, line)) {
+        if (line.empty())
+            continue;
+
+        // Parse the packet line
+        Packet packet = parsePacket(line);
+        packets.push_back(std::move(packet));
+    }
+
+    if (packets.size() % 2 != 0)
+        exception("odd number of packets (= {}), it should be even", packets.size());
 }
 
 Result Day13::runPart1() const
