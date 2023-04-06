@@ -2,7 +2,6 @@
 
 #include <fstream>
 #include <span>
-#include <string>
 #include <variant>
 #include <vector>
 
@@ -19,26 +18,19 @@ public:
 		Node();
 		Node(int integer);
 
-		operator std::span<const Node>() const;
-
 		bool isInteger() const;
 		bool isList() const;
 		int getInteger() const;
 		std::vector<Node>& getList();
 		const std::vector<Node>& getList() const;
-	};
 
-	struct Packet
-	{
-		std::string line;
-		Node rootNode;
+		std::span<const Node> toSpan() const;
 
-		bool operator==(const std::string& value) const;
-		bool operator<(const Packet& rhs) const;
+		bool operator<(const Node& rhs) const;
 	};
 
 private:
-	std::vector<Packet> packets;
+	std::vector<Node> packets;
 
 public:
 	const char* getInputPath() const override { return "Inputs/13.txt"; }

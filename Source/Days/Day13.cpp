@@ -46,10 +46,8 @@ namespace
         exception("line ended but the list as not been closed");
     }
 
-    Day13::Packet parsePacket(const std::string& line)
+    Day13::Node parsePacket(std::string_view view)
     {
-        std::string_view view = line;
-
         if (view[0] != '[')
             exception("line doesn't start with '[' : {}", view);
 
@@ -57,37 +55,20 @@ namespace
         view = view.substr(1);
 
         // Create and parse packet node
-        Day13::Packet packet;
-        packet.line = line;
-        parseListNode(view, packet.rootNode);
+        Day13::Node rootNode{};
+        parseListNode(view, rootNode);
 
         if (!view.empty())
             exception("invalid view at end of line parsing: {}", view);
 
-        return packet;
+        return rootNode;
     }
 
-    // Foward declare
-    int32_t compareNodes(const Day13::Node& lhs, const Day13::Node& rhs);
-
-    int32_t compareLists(std::span<const Day13::Node> lhs, std::span<const Day13::Node> rhs)
+    size_t binarySearch(const std::vector<Day13::Node>& sortedPackets, const Day13::Node& packet)
     {
-        size_t count = std::min(lhs.size(), rhs.size());
-        for (size_t i = 0; i < count; ++i) {
-            int32_t result = compareNodes(lhs[i], rhs[i]);
-            if (result != 0)
-                return result;
-        }
-
-        return (int32_t)lhs.size() - (int32_t)rhs.size();
-    }
-
-    int32_t compareNodes(const Day13::Node& lhs, const Day13::Node& rhs)
-    {
-        if (lhs.isInteger() && rhs.isInteger())
-            return lhs.getInteger() - rhs.getInteger();
-
-        return compareLists(lhs, rhs);
+        auto dividerIt = std::ranges::lower_bound(sortedPackets, packet, std::less{});
+        assert(dividerIt != sortedPackets.end());
+        return dividerIt - sortedPackets.begin() + 1;
     }
 }
 
@@ -98,16 +79,6 @@ Day13::Node::Node()
 Day13::Node::Node(int integer)
     : data(integer)
 {}
-
-Day13::Node::operator std::span<const Day13::Node>() const
-{
-    if (isInteger())
-        return std::span<const Day13::Node>(this, 1);
-    
-    assert(isList());
-    const std::vector<Day13::Node>& list = getList();
-    return std::span<const Day13::Node>(list.data(), list.size());
-}
 
 bool Day13::Node::isInteger() const
 {
@@ -134,14 +105,21 @@ const std::vector<Day13::Node>& Day13::Node::getList() const
     return std::get<std::vector<Day13::Node>>(this->data);
 }
 
-bool Day13::Packet::operator==(const std::string& value) const
+std::span<const Day13::Node> Day13::Node::toSpan() const
 {
-    return line == value;
+    if (isInteger())
+        return std::span<const Day13::Node>(this, 1);
+
+    assert(isList());
+    return getList();
 }
 
-bool Day13::Packet::operator<(const Day13::Packet& rhs) const
+bool Day13::Node::operator<(const Day13::Node& rhs) const
 {
-    return compareNodes(rootNode, rhs.rootNode) < 0;
+    if (this->isInteger() && rhs.isInteger())
+        return this->getInteger() < rhs.getInteger();
+
+    return std::ranges::lexicographical_compare(this->toSpan(), rhs.toSpan(), std::less{});
 }
 
 void Day13::parseFile(std::ifstream& file)
@@ -152,7 +130,7 @@ void Day13::parseFile(std::ifstream& file)
             continue;
 
         // Parse the packet line
-        Packet packet = parsePacket(line);
+        Node packet = parsePacket(line);
         packets.push_back(std::move(packet));
     }
 
@@ -167,8 +145,7 @@ Result Day13::runPart1() const
     size_t pairCount = packets.size() / 2;
     for (size_t pairIndex = 0; pairIndex < pairCount; ++pairIndex) {
         size_t i = pairIndex * 2;
-        size_t j = i + 1;
-        if (compareNodes(packets[i].rootNode, packets[j].rootNode) < 0)
+        if (packets[i] < packets[i + 1])
             sum += pairIndex + 1;
     }
 
@@ -177,27 +154,22 @@ Result Day13::runPart1() const
 
 Result Day13::runPart2() const
 {
-    const std::string divider1 = "[[2]]";
-    const std::string divider2 = "[[6]]";
-
     // Copy the vector of packets
-    std::vector<Packet> sortedPackets = packets;
+    std::vector<Node> sortedPackets = packets;
 
     // Add divider packets
-    Packet dividerPacket1 = parsePacket(divider1);
-    Packet dividerPacket2 = parsePacket(divider2);
-    sortedPackets.push_back(std::move(dividerPacket1));
-    sortedPackets.push_back(std::move(dividerPacket2));
+    Node dividerPacket1 = parsePacket("[[2]]");
+    Node dividerPacket2 = parsePacket("[[6]]");
+    sortedPackets.push_back(dividerPacket1);
+    sortedPackets.push_back(dividerPacket2);
 
     // Sort
     std::sort(sortedPackets.begin(), sortedPackets.end());
 
     // Find and multiply indices of divider packets
-    auto dividerIterator1 = std::find(sortedPackets.begin(), sortedPackets.end(), divider1);
-    auto dividerIterator2 = std::find(sortedPackets.begin(), sortedPackets.end(), divider2);
-    size_t dividerIndex1 = dividerIterator1 - sortedPackets.begin() + 1;
-    size_t dividerIndex2 = dividerIterator2 - sortedPackets.begin() + 1;
-    return dividerIndex1 * dividerIndex2;
+    size_t index1 = binarySearch(sortedPackets, dividerPacket1);
+    size_t index2 = binarySearch(sortedPackets, dividerPacket2);
+    return index1 * index2;
 }
 
 Result Day13::getExpectedResultPart1() const
