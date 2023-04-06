@@ -148,14 +148,14 @@ void Day10::parseFile(std::ifstream& file)
 
 Result Day10::runPart1() const
 {
-    SamplerPart1 sampler;
+    SamplerPart1 sampler{};
     runInstructions(instructions, &sampler);
     return sampler.getResult();
 }
 
 Result Day10::runPart2() const
 {
-    SamplerPart2 sampler;
+    SamplerPart2 sampler{};
     runInstructions(instructions, &sampler);
     return sampler.getResult();
 }

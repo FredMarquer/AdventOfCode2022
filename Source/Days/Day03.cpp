@@ -94,13 +94,10 @@ void Day03::parseFile(std::ifstream& file)
 Result Day03::runPart1() const
 {
     // Sum the priority of all shared items
-    int sum = 0;
-    for (const Rucksack& rucksack : rucksacks) {
-        char sharedItem = findSharedItem(rucksack);
-        sum += itemToPriority(sharedItem);
-    }
-
-    return sum;
+    auto view = rucksacks
+        | std::ranges::views::transform(findSharedItem)
+        | std::ranges::views::transform(itemToPriority);
+    return std::accumulate(std::begin(view), std::end(view), 0);
 }
 
 Result Day03::runPart2() const

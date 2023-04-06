@@ -24,24 +24,41 @@ namespace
         exception("invalid letter: {}", letter);
     }
 
-    int computePairScorePart1(std::pair<int, int> pair)
+    int computePairScorePart1(int first, int second)
     {
-        static constexpr int ScoreTable[] = { 3, 0, 6, 6, 3, 0, 0, 6, 3 };
+        static constexpr int ScoreTable[] { 3, 0, 6, 6, 3, 0, 0, 6, 3 };
 
-        int shapeScore = pair.second + 1;
-        int tableIndex = pair.first + pair.second * 3;
+        int shapeScore = second + 1;
+        int tableIndex = first + second * 3;
         int outcomeScore = ScoreTable[tableIndex];
         return shapeScore + outcomeScore;
     }
 
-    int computePairScorePart2(std::pair<int, int> pair)
+    int computePairScorePart2(int first, int second)
     {
-        static constexpr int ScoreTable[] = { 3, 1, 2, 1, 2, 3, 2, 3, 1 };
+        static constexpr int ScoreTable[] { 3, 1, 2, 1, 2, 3, 2, 3, 1 };
 
-        int outcomeScore = pair.second * 3;
-        int tableIndex = pair.first + pair.second * 3;
+        int outcomeScore = second * 3;
+        int tableIndex = first + second * 3;
         int shapeScore = ScoreTable[tableIndex];
         return shapeScore + outcomeScore;
+    }
+
+    int simulate(const std::vector<std::pair<int, int>>& strategyGuide, std::function<int(int, int)> computePairScore)
+    {
+        // Precompute all possible pair scores
+        std::array<std::array<int, 3>, 3> pairScores;
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 3; ++j)
+                pairScores[i][j] = computePairScore(i, j);
+        }
+
+        // Sum the score of all pairs in the strategy guide
+        int score = 0;
+        for (std::pair pair : strategyGuide)
+            score += pairScores[pair.first][pair.second];
+
+        return score;
     }
 }
 
@@ -59,22 +76,12 @@ void Day02::parseFile(std::ifstream& file)
 
 Result Day02::runPart1() const
 {
-    // Sum the score of all pairs
-    int score = 0;
-    for (std::pair pair : strategyGuide)
-        score += computePairScorePart1(pair);
-
-    return score;
+    return simulate(strategyGuide, computePairScorePart1);
 }
 
 Result Day02::runPart2() const
 {
-    // Sum the score of all pairs, using the new scoring rule
-    int score = 0;
-    for (std::pair pair : strategyGuide)
-        score += computePairScorePart2(pair);
-
-    return score;
+    return simulate(strategyGuide, computePairScorePart2);
 }
 
 Result Day02::getExpectedResultPart1() const

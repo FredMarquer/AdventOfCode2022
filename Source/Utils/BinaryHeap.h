@@ -26,20 +26,20 @@ template<class T, class Compare>
 BinaryHeap<T, Compare>::BinaryHeap(std::vector<T>&& vector) noexcept
 {
 	data = std::move(vector);
-	std::make_heap(data.begin(), data.end(), Compare());
+	std::ranges::make_heap(data, Compare());
 }
 
 template<class T, class Compare>
 void BinaryHeap<T, Compare>::push(const T& value)
 {
 	data.push_back(value);
-	std::push_heap(data.begin(), data.end(), Compare());
+	std::ranges::push_heap(data, Compare());
 }
 
 template<class T, class Compare>
 T BinaryHeap<T, Compare>::pop()
 {
-	std::pop_heap(data.begin(), data.end(), Compare());
+	std::ranges::pop_heap(data, Compare());
 	T value = data.back();
 	data.pop_back();
 	return value;

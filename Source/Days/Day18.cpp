@@ -14,14 +14,14 @@ namespace
     {
         auto split_view = std::views::split(line, ',');
         auto it = split_view.begin();
-        auto xRange = *it++;
-        auto yRange = *it++;
-        auto zRange = *it++;
+        auto xRange = *(it++);
+        auto yRange = *(it++);
+        auto zRange = *(it++);
 
         if (it != split_view.end())
             exception("invalid line: {}", line);
 
-        Int3 pos;
+        Int3 pos{};
         parse(std::string_view{ xRange.begin(), xRange.end() }, pos.x);
         parse(std::string_view{ yRange.begin(), yRange.end() }, pos.y);
         parse(std::string_view{ zRange.begin(), zRange.end() }, pos.z);

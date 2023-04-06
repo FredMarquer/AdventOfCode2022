@@ -25,26 +25,20 @@ void Day04::parseFile(std::ifstream& file)
 Result Day04::runPart1() const
 {
     // Count the number of pairs where one range contains the other
-    int containsCount = 0;
-    for (const auto& pair : pairs) {
-        if (pair.first.contains(pair.second) ||
-            pair.second.contains(pair.first))
-            ++containsCount;
-    }
-
-    return containsCount;
+    return std::ranges::count_if(pairs,
+        [](const auto& pair) {
+            return pair.first.contains(pair.second)
+                || pair.second.contains(pair.first);
+        });
 }
 
 Result Day04::runPart2() const
 {
     // Count the number of overlapping pairs
-    int overlapCount = 0;
-    for (const auto& pair : pairs) {
-        if (pair.first.overlap(pair.second))
-            ++overlapCount;
-    }
-
-    return overlapCount;
+    return std::ranges::count_if(pairs,
+        [](const auto& pair) {
+            return pair.first.overlap(pair.second);
+        });
 }
 
 Result Day04::getExpectedResultPart1() const

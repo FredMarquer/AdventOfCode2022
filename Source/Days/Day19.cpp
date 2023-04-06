@@ -141,7 +141,7 @@ void Day19::parseFile(std::ifstream& file)
         if (!std::regex_search(line, matches, regex))
             exception("no match found for line: {}", line);
 
-        Blueprint blueprint = Blueprint(std::stoi(matches[1]));
+        Blueprint blueprint{ std::stoi(matches[1]) };
 
         // Set robots costs
         blueprint.robotCosts[OreIndex].costPerResources[OreIndex] = std::stoi(matches[2]);

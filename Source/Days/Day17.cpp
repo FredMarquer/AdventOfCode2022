@@ -17,13 +17,6 @@ namespace
         int32_t length;
         int32_t height;
         std::vector<int32_t> heightDiffSequence;
-
-        Sequence()
-            : startIndex(0)
-            , startHeight(0)
-            , length(0)
-            , height(0)
-        {}
     };
 
     bool move(const Array2D<bool>& tower, const Day17::Rock& rock, Int2& position, Int2 direction)
@@ -53,7 +46,7 @@ namespace
                 if (std::equal(first1, last1, first2))
                 {
                     // Sequence found! Return the result
-                    Sequence sequence;
+                    Sequence sequence{};
                     sequence.startIndex = (int32_t)historySize - doubleSampleLength - index;
                     sequence.startHeight = heightHistory[sequence.startIndex];
                     sequence.length = sampleLength + index;
