@@ -25,21 +25,24 @@ namespace
         }
     }
 
-    void parseLine(const std::string& line, std::string& outName, Day21::Monkey& outMonkey)
+    std::tuple<std::string, Day21::Monkey> parseLine(const std::string& line)
     {
-        outName = line.substr(0, 4);
+        std::string name = line.substr(0, 4);
 
+        Day21::Monkey monkey{};
         if (line[6] >= '0' && line[6] <= '9') {
             int value;
             parse(line.substr(6), value);
-            outMonkey = value;
+            monkey = value;
         }
         else {
             std::smatch matches;
             if (!std::regex_search(line, matches, operationRegex))
                 exception("no match found for line: {}", line);
-            outMonkey = Day21::Operation(charToOpCode(line[11]), matches[1], matches[2]);
+            monkey = Day21::Operation(charToOpCode(line[11]), matches[1], matches[2]);
         }
+
+        return std::make_tuple(std::move(name), std::move(monkey));
     }
 
     void setMonkeyParent(const std::string& monkeyName, const std::string& parentName, const std::unordered_map<std::string, int>& nameToIndex, std::vector<Day21::Monkey>& monkeys)
@@ -147,9 +150,7 @@ void Day21::parseFile(std::ifstream& file)
 {
     std::string line;
     while (std::getline(file, line)) {
-        std::string name;
-        Monkey monkey;
-        parseLine(line, name, monkey);
+        auto [name, monkey] = parseLine(line);
         nameToIndex.emplace(std::move(name), (int)monkeys.size());
         monkeys.push_back(std::move(monkey));
     }
