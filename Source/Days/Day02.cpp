@@ -24,35 +24,20 @@ namespace
         exception("invalid letter: {}", letter);
     }
 
-    int computePairScorePart1(int first, int second)
-    {
-        static constexpr int ScoreTable[] { 3, 0, 6, 6, 3, 0, 0, 6, 3 };
-
-        int shapeScore = second + 1;
-        int tableIndex = first + second * 3;
-        int outcomeScore = ScoreTable[tableIndex];
-        return shapeScore + outcomeScore;
-    }
-
-    int computePairScorePart2(int first, int second)
-    {
-        static constexpr int ScoreTable[] { 3, 1, 2, 1, 2, 3, 2, 3, 1 };
-
-        int outcomeScore = second * 3;
-        int tableIndex = first + second * 3;
-        int shapeScore = ScoreTable[tableIndex];
-        return shapeScore + outcomeScore;
-    }
-
-    int simulate(const std::vector<std::pair<int, int>>& strategyGuide, std::function<int(int, int)> computePairScore)
+    consteval std::array<std::array<int, 3>, 3> computePairScores(auto computePairScore)
     {
         // Precompute all possible pair scores
-        std::array<std::array<int, 3>, 3> pairScores;
+        std::array<std::array<int, 3>, 3> pairScores{};
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 3; ++j)
                 pairScores[i][j] = computePairScore(i, j);
         }
 
+        return pairScores;
+    }
+
+    int simulate(const std::vector<std::pair<int, int>>& strategyGuide, const std::array<std::array<int, 3>, 3>& pairScores)
+    {
         // Sum the score of all pairs in the strategy guide
         int score = 0;
         for (std::pair pair : strategyGuide)
@@ -76,12 +61,28 @@ void Day02::parseFile(std::ifstream& file)
 
 Result Day02::runPart1() const
 {
-    return simulate(strategyGuide, computePairScorePart1);
+    constexpr std::array<std::array<int, 3>, 3> pairScores = computePairScores([](int first, int second){
+        constexpr int scoreTable[]{ 3, 0, 6, 6, 3, 0, 0, 6, 3 };
+        int shapeScore = second + 1;
+        int tableIndex = first + second * 3;
+        int outcomeScore = scoreTable[tableIndex];
+        return shapeScore + outcomeScore;
+    });
+
+    return simulate(strategyGuide, pairScores);
 }
 
 Result Day02::runPart2() const
 {
-    return simulate(strategyGuide, computePairScorePart2);
+    constexpr std::array<std::array<int, 3>, 3> pairScores = computePairScores([](int first, int second) {
+        constexpr int scoreTable[]{ 3, 1, 2, 1, 2, 3, 2, 3, 1 };
+        int outcomeScore = second * 3;
+        int tableIndex = first + second * 3;
+        int shapeScore = scoreTable[tableIndex];
+        return shapeScore + outcomeScore;
+    });
+
+    return simulate(strategyGuide, pairScores);
 }
 
 Result Day02::getExpectedResultPart1() const
